@@ -98,13 +98,7 @@
           </form>
 
           <div class="tab-content">
-            <form id="reset">
-              <div class="field-wrap forg_wrap">
-            <label>
-              Login<span class="req">*</span>
-            </label>
-            <input type="text" name="login" autocomplete="off"/>
-          </div>
+            <form id="email">
              <div class="field-wrap forg_wrap">
             <label>
               Email Address<span class="req">*</span>

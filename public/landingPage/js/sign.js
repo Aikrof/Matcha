@@ -86,28 +86,70 @@ $('.form').on('submit', function(event){
     }
 
     ajaxSender('/' + event.target.id, obj, function(request){
-        if (request.susses_registr)
-            swal(request.susses_registr, "", "success");
-        else if (request.url)
-            location.href = request.url;
-        else if (request.verified_email)
-        {
-            var iframe = document.createElement("iframe");
-            iframe.style.width = '400px';
-            iframe.style.height = '280px';
-            iframe.setAttribute('src', 'landingPage/view/verify.php');
-            iframe.setAttribute('obj', obj.login);
-            swal({
-                icon: "warning",
-                title: 'Verify Your Email Address',
-                content: iframe,
-                dangerMode: true,
-                buttons: "Cancel",
-            });
-        }
-        else
-            swal(request, "", "error");
+        processRequest(request, obj);
     });
 
     return false;
 });
+
+function processRequest(request, obj)
+{
+    if (request.susses_registr)
+        swalCreater(request.susses_registr, "", "success");
+    else if (request.url)
+        location.href = request.url;
+    else if (request.email_send)
+    {
+        let title = (!request.email_send.status) ?
+                    "Something was wrong" :
+                    "Please check your email for a reset password link";
+        let msg = (!request.email_send.status) ?
+                    "Error" : "";
+        let icon = (!request.email_send.status) ?
+                    "error" : "success";
+        
+        swalCreater(title, msg, icon);
+    }
+    else if (request.verified_email)
+    {
+        var compl = {
+            'icon' : "warning",
+            'title' : "Verify Your Email Address",
+            'content' : creatIframe(obj),
+            'danger' : true,
+            'button' : "Cancel",
+        };
+
+        swalCreater(compl.title, "", compl.icon, compl);
+    }
+    else
+        swalCreater(request, "", "error");
+
+}
+
+function swalCreater(title, msg, icon, compl = null)
+{
+    if (!compl)
+        swal(title, msg, icon);
+    else
+    {
+        swal({
+            icon: compl.icon,
+            title: compl.title,
+            content: compl.content,
+            dangerMode: compl.danger,
+            buttons: compl.button,
+        });
+    }
+}
+
+function creatIframe(obj)
+{
+    var iframe = document.createElement("iframe");
+    iframe.style.width = '400px';
+    iframe.style.height = '280px';
+    iframe.setAttribute('src', 'landingPage/view/verify.php');
+    iframe.setAttribute('obj', obj.login);
+
+    return (iframe);
+}

@@ -19,4 +19,5 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'login' => 'User with this login does not exist.',
     'inv_email' => 'Invalid email address.',
+    'email_exist' => 'User with this email does not exist.'
 ];

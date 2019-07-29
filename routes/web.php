@@ -21,6 +21,7 @@ Route::group(['as' => 'landing','prefix' => 'landing', 'namespace' => 'Auth'], f
 Auth::routes(['verify' => true]);
 Route::post('/resend', 'Auth\VerificationController@resend');
 Route::post('/reset', 'Auth\ResetPasswordController@reset');
+Route::post('/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
 
 // Route::post('/register', 'Auth\RegisterController@register');
 // Route::post('/login', 'Auth\LoginController@login');
