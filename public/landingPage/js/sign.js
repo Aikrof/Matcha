@@ -90,18 +90,19 @@ $('.form').on('submit', function(event){
             swal(request.susses_registr, "", "success");
         else if (request.verified_email)
         {
-         var iframe = document.createElement("iframe");
-        iframe.style.width = '400px';
-        iframe.style.height = '280px';
-        iframe.style.backgroundColor = 'red';
-        iframe.setAttribute('src', 'landingPage/view/verify.php');
-        iframe.setAttribute('data', $('meta[name="csrf-token"]').attr('content'));
-
-swal({
-    title: 'Verify Your Email Address', 
-    content: iframe,
-    allowOutsideClick: "true" 
-});
+            var iframe = document.createElement("iframe");
+            iframe.style.width = '400px';
+            iframe.style.height = '280px';
+            iframe.setAttribute('src', 'landingPage/view/verify.php');
+            iframe.setAttribute('obj', obj.login);
+            swal({
+                icon: "warning",
+                title: 'Verify Your Email Address',
+                content: iframe,
+                allowOutsideClick: "true" 
+            }, function(asd){
+                console.log(123);
+            });
         }
         else
             swal(request, "", "error");

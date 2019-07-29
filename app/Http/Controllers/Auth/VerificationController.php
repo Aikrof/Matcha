@@ -69,15 +69,9 @@ class VerificationController extends Controller
      */
     public function resend(Request $request)
     {
-        echo"<pre>"; 
-        var_dump('reset');
-        exit;
-        // if ($request->user()->hasVerifiedEmail()) {
-        //     return redirect($this->redirectPath());
-        // }
-        $userId = $request->route('id');
+        $login = $request->all()['login'];
        
-        $user = User::findOrFail($userId);
+        $user = User::find(User::where('login', $login)->first()['id']);
         
         $user->sendEmailVerificationNotification();
 

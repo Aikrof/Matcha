@@ -42,22 +42,7 @@
     </div>
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <script type="text/javascript" src="/js/sender.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-        $('meta').attr('name', 'csrf_token');
-        $('meta').attr('content', window.parent.frames.document.all.csrf_token.content);
-        });
-$('#resend').on('click', function(event){
-    var obj = {
-        'login' : 'mina'
-    };
-     ajaxSender('/' + event.target.id, obj, function(request){
-        console.log(request);
-    });
-
-    return false;
-});
-    </script>
+    <script type="text/javascript" src="/landingPage/js/verify.js"></script>
 </body>
 </html>
 
