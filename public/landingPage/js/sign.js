@@ -88,6 +88,8 @@ $('.form').on('submit', function(event){
     ajaxSender('/' + event.target.id, obj, function(request){
         if (request.susses_registr)
             swal(request.susses_registr, "", "success");
+        else if (request.url)
+            location.href = request.url;
         else if (request.verified_email)
         {
             var iframe = document.createElement("iframe");
@@ -99,9 +101,8 @@ $('.form').on('submit', function(event){
                 icon: "warning",
                 title: 'Verify Your Email Address',
                 content: iframe,
-                allowOutsideClick: "true" 
-            }, function(asd){
-                console.log(123);
+                dangerMode: true,
+                buttons: "Cancel",
             });
         }
         else

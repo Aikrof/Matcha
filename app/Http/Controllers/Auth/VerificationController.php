@@ -75,6 +75,6 @@ class VerificationController extends Controller
         
         $user->sendEmailVerificationNotification();
 
-        return back()->with('resent', true);
+        exit(json_encode(['ok' => 'well done!']));
     }
 }

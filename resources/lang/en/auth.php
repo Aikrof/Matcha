@@ -17,5 +17,6 @@ return [
     ],
     'failed' => 'User with this login or password does not exist.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-
+    'login' => 'User with this login does not exist.',
+    'inv_email' => 'Invalid email address.',
 ];

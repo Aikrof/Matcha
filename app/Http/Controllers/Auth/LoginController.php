@@ -95,10 +95,17 @@ class LoginController extends Controller
 
     protected function validateLogin(Request $request)
     {
+        $custom_message = [
+            'required' => 'The :attribute field is empty.',
+            'password.regex' => 'Password must have letters
+                                 numbers and special characters like: @, #, $, %, else... 
+                                ',
+        ];
+
         $validation = Validator::make($request->all(), [
             'login' => ['required', 'string', 'alpha_dash', 'between:4,24'],
             // 'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\s]).{8,}/'],
-        ]);
+        ], $custom_message);
         if ($validation->fails())
         {
             die(
@@ -126,6 +133,22 @@ class LoginController extends Controller
         return $this->guard()->attempt(
             $this->credentials($request), $request->filled('remember')
         );
+    }
+
+    /**
+     * Send the response after the user was authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function sendLoginResponse(Request $request)
+    {
+        $request->session()->regenerate();
+
+        $this->clearLoginAttempts($request);
+
+        return $this->authenticated($request, $this->guard()->user())
+                ?: json_encode(['url' => '/']);
     }
 
     /**

@@ -98,19 +98,19 @@
           </form>
 
           <div class="tab-content">
-            <form id="password/reset">
+            <form id="reset">
+              <div class="field-wrap forg_wrap">
+            <label>
+              Login<span class="req">*</span>
+            </label>
+            <input type="text" name="login" autocomplete="off"/>
+          </div>
              <div class="field-wrap forg_wrap">
             <label>
               Email Address<span class="req">*</span>
             </label>
             <input type="email" name="email" autocomplete="off"/>
            </div>
-               <div class="field-wrap forg_wrap">
-            <label>
-              Password<span class="req">*</span>
-            </label>
-            <input type="password" name="password" autocomplete="off"/>
-          </div>
           <div class="error_container forg_wrap">
             <p class="error"></p>
           </div>

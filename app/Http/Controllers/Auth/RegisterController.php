@@ -60,22 +60,22 @@ class RegisterController extends Controller
         exit(json_encode(['susses_registr' => 'Please, check your email to confirm registration']));
     }
 
-    /**
-     * Validate request email domain.
-     *
-     * @param  string  $email
-     * @return bool
-     */
-    protected function checkEmailDomain($email)
-    {
-        $domain = substr(strrchr($email, "@"), 1);
-        $mx = getmxrr($domain, $mx_records, $mx_weight);
-        if ($mx == false || count($mx_records) == 0 ||
-            (count($mx_records) == 1 && ($mx_records[0] == null || $mx_records[0] == "0.0.0.0")))
-            return false;
-        else
-            return true;
-    }
+    // /**
+    //  * Validate request email domain.
+    //  *
+    //  * @param  string  $email
+    //  * @return bool
+    //  */
+    // protected function checkEmailDomain($email)
+    // {
+    //     $domain = substr(strrchr($email, "@"), 1);
+    //     $mx = getmxrr($domain, $mx_records, $mx_weight);
+    //     if ($mx == false || count($mx_records) == 0 ||
+    //         (count($mx_records) == 1 && ($mx_records[0] == null || $mx_records[0] == "0.0.0.0")))
+    //         return false;
+    //     else
+    //         return true;
+    // }
 
     /**
      * Get a validator for an incoming registration request.
@@ -98,8 +98,8 @@ class RegisterController extends Controller
             'last_name' => ['required', 'string', 'max:20', 'alpha'],
             'login' => ['required', 'string', 'alpha_dash', 'between:4,24', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:64', 'unique:users'],
-            // 'password' => ['required', 'string', 'min:8', 'same:confirm', 'regex:/^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\s]).{8,}/'],
-            // 'confirm' => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\s]).{8,}/'],
+            'password' => ['required', 'string', 'min:8', 'same:confirm', 'regex:/^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\s]).{8,}/'],
+            'confirm' => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\s]).{8,}/'],
             'gender' => ['required'],
         ], $custom_message);
 
@@ -109,7 +109,7 @@ class RegisterController extends Controller
                 json_encode($validation->messages()->first())
             );
         }
-        else if (!$this->checkEmailDomain($data['email']))
+        else if (!User::checkEmailDomain($data['email']))
             die(
                 json_encode('Invalid email address')
             );
