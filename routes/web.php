@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth',], function(){
 	Route::get('/', 'MainController@index');
 });
 
@@ -22,6 +22,7 @@ Route::group(['as' => 'landing','prefix' => 'landing', 'namespace' => 'Auth'], f
 });
 
 Auth::routes(['verify' => true]);
+Route::post('/resend', 'Auth\VerificationController@resend');
 // Route::post('/register', 'Auth\RegisterController@register');
 // Route::post('/login', 'Auth\LoginController@login');
 // Route::post('password/reset', 'Auth\ResetPasswordController@reset');

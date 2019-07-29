@@ -3,6 +3,7 @@
 namespace App;
 
 use Auth;
+use Hash;
 use App\Notifications\ConfirmEmailSender;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -60,7 +61,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new ConfirmEmailSender());
     }
 
-    public function confirmed()
+    public static function confirmed()
     {
         return (!!Auth::user()['email_verified_at']);
     }

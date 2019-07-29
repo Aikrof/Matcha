@@ -8,7 +8,7 @@ function ajaxSender(url, arr, call)
    		type: 'POST',
    		headers:{
     		'X-CSRF-TOKEN':
-    		$('meta[name="csrf-token"]').attr('content'),
+    		$('meta[name="csrf_token"]').attr('content'),
   		},
 		data: JSON.stringify(arr),
 		contentType: "application/json",

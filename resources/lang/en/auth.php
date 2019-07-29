@@ -12,6 +12,9 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'email' => [
+        'verified_email' => 'erno',
+    ],
     'failed' => 'User with this login or password does not exist.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 

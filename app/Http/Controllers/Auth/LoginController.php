@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Auth;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-// use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -62,8 +62,6 @@ class LoginController extends Controller
     {
         $this->validateLogin($request);
         
-        // $this->validateVerified($request->all()['login']);
-
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
         // the IP address of the client making these requests into this application.
@@ -73,8 +71,8 @@ class LoginController extends Controller
 
             return $this->sendLockoutResponse($request);
         }
-        
-        if ($this->attemptLogin($request)) {
+
+        if ($this->attemptLogin($request)){
             return $this->sendLoginResponse($request);
         }
 
@@ -94,12 +92,40 @@ class LoginController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+
     protected function validateLogin(Request $request)
     {
-        $request->validate([
-            $this->username() => 'required|string|alpha_dash|between:4,24',
-            'password' => 'required|string|min:8|regex:/^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\s]).{8,}/',
+        $validation = Validator::make($request->all(), [
+            'login' => ['required', 'string', 'alpha_dash', 'between:4,24'],
+            // 'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\s]).{8,}/'],
         ]);
+        if ($validation->fails())
+        {
+            die(
+                json_encode($validation->messages()->first())
+            );
+        }
+    }
+
+    /**
+     * Attempt to log the user into the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function attemptLogin(Request $request)
+    {
+        $user = $this->credentials($request);
+
+        $db_user = User::where('login', $user['login'])->first();
+        if (!isset($db_user))
+            return (false);
+        else if (!$db_user['email_verified_at'])
+            $this->sendFailedLoginResponse(true);
+
+        return $this->guard()->attempt(
+            $this->credentials($request), $request->filled('remember')
+        );
     }
 
     /**
@@ -110,15 +136,10 @@ class LoginController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function sendFailedLoginResponse()
+    protected function sendFailedLoginResponse($new_msg = false)
     {
-        exit(json_encode(trans('auth.failed')));
-    }
+        $msg = $new_msg === false ? 'auth.failed' : 'auth.email';
 
-    protected function validateVerified($login)
-    {
-        // throw ValidationException::withMessages([
-        //     $this->username() => 'wtf',
-        // ]);
+        exit(json_encode(trans($msg)));
     }
 }

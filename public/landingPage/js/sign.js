@@ -88,6 +88,21 @@ $('.form').on('submit', function(event){
     ajaxSender('/' + event.target.id, obj, function(request){
         if (request.susses_registr)
             swal(request.susses_registr, "", "success");
+        else if (request.verified_email)
+        {
+         var iframe = document.createElement("iframe");
+        iframe.style.width = '400px';
+        iframe.style.height = '280px';
+        iframe.style.backgroundColor = 'red';
+        iframe.setAttribute('src', 'landingPage/view/verify.php');
+        iframe.setAttribute('data', $('meta[name="csrf-token"]').attr('content'));
+
+swal({
+    title: 'Verify Your Email Address', 
+    content: iframe,
+    allowOutsideClick: "true" 
+});
+        }
         else
             swal(request, "", "error");
     });

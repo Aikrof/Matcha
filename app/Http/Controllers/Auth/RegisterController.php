@@ -98,8 +98,8 @@ class RegisterController extends Controller
             'last_name' => ['required', 'string', 'max:20', 'alpha'],
             'login' => ['required', 'string', 'alpha_dash', 'between:4,24', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:64', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'same:confirm', 'regex:/^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\s]).{8,}/'],
-            'confirm' => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\s]).{8,}/'],
+            // 'password' => ['required', 'string', 'min:8', 'same:confirm', 'regex:/^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\s]).{8,}/'],
+            // 'confirm' => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\s]).{8,}/'],
             'gender' => ['required'],
         ], $custom_message);
 

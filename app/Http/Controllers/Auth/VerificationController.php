@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 
@@ -34,8 +37,50 @@ class VerificationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
+    }
+
+    /**
+     * Mark the authenticated user's email address as verified.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function verify(Request $request)
+    {
+        $userId = $request->route('id');
+        $user = User::findOrFail($userId);
+
+        if ($user->markEmailAsVerified()) {
+            event(new Verified($user));
+        }
+
+        return redirect($this->redirectPath())->with('verified', true);
+    }
+
+    /**
+     * Resend the email verification notification.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function resend(Request $request)
+    {
+        echo"<pre>"; 
+        var_dump('reset');
+        exit;
+        // if ($request->user()->hasVerifiedEmail()) {
+        //     return redirect($this->redirectPath());
+        // }
+        $userId = $request->route('id');
+       
+        $user = User::findOrFail($userId);
+        
+        $user->sendEmailVerificationNotification();
+
+        return back()->with('resent', true);
     }
 }

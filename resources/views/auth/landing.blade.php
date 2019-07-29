@@ -3,7 +3,7 @@
 	<head>
 		<title>Matcha</title>
 		<meta charset="utf-8" />
-		<meta name="csrf-token" content="{{ csrf_token() }}">
+		<meta name="csrf_token" content="{{ csrf_token() }}">
 		<link rel="stylesheet" href="landingPage/css/main.css" />
 		<link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
