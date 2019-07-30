@@ -60,23 +60,6 @@ class RegisterController extends Controller
         exit(json_encode(['susses_registr' => 'Please, check your email to confirm registration']));
     }
 
-    // /**
-    //  * Validate request email domain.
-    //  *
-    //  * @param  string  $email
-    //  * @return bool
-    //  */
-    // protected function checkEmailDomain($email)
-    // {
-    //     $domain = substr(strrchr($email, "@"), 1);
-    //     $mx = getmxrr($domain, $mx_records, $mx_weight);
-    //     if ($mx == false || count($mx_records) == 0 ||
-    //         (count($mx_records) == 1 && ($mx_records[0] == null || $mx_records[0] == "0.0.0.0")))
-    //         return false;
-    //     else
-    //         return true;
-    // }
-
     /**
      * Get a validator for an incoming registration request.
      *
@@ -124,6 +107,8 @@ class RegisterController extends Controller
      */
     protected function createUser(array $data)
     {
+        $icon = resource_path() . '/defaulUserIcon/' . $data['gender'];
+        
         return User::create([
             'first_name' => ucfirst(strtolower($data['first_name'])),
             'last_name' => ucfirst(strtolower($data['last_name'])),
@@ -131,6 +116,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'gender' => $data['gender'],
+            'icon' => $icon,
         ]);
     }
 }

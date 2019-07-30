@@ -104,7 +104,7 @@ class LoginController extends Controller
 
         $validation = Validator::make($request->all(), [
             'login' => ['required', 'string', 'alpha_dash', 'between:4,24'],
-            // 'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\s]).{8,}/'],
+            'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\s]).{8,}/'],
         ], $custom_message);
         if ($validation->fails())
         {

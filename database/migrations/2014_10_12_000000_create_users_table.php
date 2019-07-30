@@ -22,9 +22,9 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('icon')->default('null');
+            $table->string('icon');
             $table->string('gender', 10);
-            $table->boolean('first_entry')->default(false);
+            $table->boolean('first_entry')->default(true);
             $table->boolean('online')->default(false);
             $table->rememberToken();
             $table->timestamps();

@@ -56,7 +56,7 @@
           </div>
           <div class="field-wrap">
             <div id="gen_cont">
-              <span class="gender mitmash_v1" id="f_gender">Man</span><span class="gere">*</span> <span class="mitmash_v1">/</span> <span class="gender mitmash_v1" id="t_gender">Woman</span><span class="gere">*</span>
+              <span class="gender mitmash_v1" id="f_gender">Male</span><span class="gere">*</span> <span class="mitmash_v1">/</span> <span class="gender mitmash_v1" id="t_gender">Female</span><span class="gere">*</span>
               <input type="hidden" name="gender" id="gender">
             </div>
           </div>
