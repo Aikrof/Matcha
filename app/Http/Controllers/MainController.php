@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
+	/**
+     * Show the index page.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-    	echo"<pre>"; 
-    	var_dump('index');
-    	exit;
-    	// return ($this->_view->render());
-    	// return (view('index')->with($this->title));
+    	return (view('index'));
     }
 }
