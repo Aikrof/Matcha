@@ -40,9 +40,9 @@
         <!-- /PRELOADER -->
         
         <!-- NAVIGATION BUTTON -->
-        <div class="navigation-button">
+        <div class="navigation-button firs">
 
-             <a href="/{{ucfirst(strtolower(Auth::user()->login))}}"><p class="i"><i class="fa fa-info" aria-hidden="true"></i></p></a>
+             <a href="/{{ucfirst(strtolower(Auth::user()->login))}}"><p class="i"><i class="fa fa-external-link-square"></i></p></a>
         </div>
         @yield('i')
         <!-- /NAVIGATION BUTTON -->

@@ -9,6 +9,7 @@ class UserProfileController extends Controller
 {
     public function getProfile()
     {
+    	// abort(404);
     	return (view('user_profile'));
     }
 }

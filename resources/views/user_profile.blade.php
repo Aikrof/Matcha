@@ -6,7 +6,7 @@
 @extends('layouts.default')
 
 @section('i')
-	<div class="navigation-button">
+	<div class="navigation-button second">
 		<a href="{{$back}}"><p><i class="fa fa-close" aria-hidden="true"></i></p></a>
 	</div>
 @endsection
