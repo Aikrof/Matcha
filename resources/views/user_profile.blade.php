@@ -7,7 +7,7 @@
 
 @section('i')
 	<div class="navigation-button second">
-		<a href="{{$back}}"><p><i class="fa fa-close" aria-hidden="true"></i></p></a>
+		<div class="i"><a href="{{$back}}"><i class="fa fa-close"></i></a></div>
 	</div>
 @endsection
 

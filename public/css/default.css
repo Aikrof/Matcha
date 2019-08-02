@@ -58,7 +58,7 @@ a
 
 h1
 {
-    font-size: 6rem;
+    font-size: 3rem;
 }
 
 h2
@@ -113,11 +113,9 @@ a:hover
     z-index: 10;
     top: 0;
     right: 0;
-
-    cursor: pointer;
 }
 
-.navigation-button p
+.navigation-button div
 {
     font-size: 2.8rem;
     font-weight: 400;
@@ -139,7 +137,7 @@ a:hover
     background: none;
 }
 
-.navigation-button p:after
+.navigation-button div:after
 {
     position: absolute;
     z-index: -2;
@@ -156,9 +154,15 @@ a:hover
     border-color: transparent #d80247 transparent transparent;
 }
 
-.navigation-button p:hover:after
+.navigation-button .i_b:after
 {
     border-color: transparent #111 transparent transparent;
+}
+
+.navigation-button .fa
+{
+    color: #ffff;
+    font-size: 1.9em;
 }
 
 @media (max-width:700px)
@@ -174,6 +178,13 @@ a:hover
     html
     {
         font-size: 6px !important;
+    }
+}
+
+@media (max-width: 350px)
+{
+    h1{
+        font-size: 2.5rem;
     }
 }
 
@@ -413,7 +424,7 @@ a:hover
 {
     font-weight: bold;
 
-    margin: 2rem 0 2rem 5rem;
+    margin: 2rem 0 0.3rem 2rem;
 }
 
 .hero .front-content h1

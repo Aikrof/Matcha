@@ -40,13 +40,16 @@
         <!-- /PRELOADER -->
         
         <!-- NAVIGATION BUTTON -->
-        <div class="navigation-button firs">
+        <div class="navigation-button first">
 
-             <a href="/{{ucfirst(strtolower(Auth::user()->login))}}"><p class="i"><i class="fa fa-external-link-square"></i></p></a>
+             <div class="i"><a href="/{{ucfirst(strtolower(Auth::user()->login))}}"><i class="fa fa-external-link-square"></i></a></div>
         </div>
         @yield('i')
         <!-- /NAVIGATION BUTTON -->
 
+        <!-- SEARCH -->
+        
+        <!-- SEARCH -->
 
         <!-- HERO -->
         <div class="hero">
