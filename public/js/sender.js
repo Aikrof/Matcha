@@ -19,7 +19,8 @@ function ajaxSender(url, arr, call)
 		error: function (xhr) {
      		if (xhr.status === 422)
      			console.dir(xhr.responseText);
-     		console.dir(xhr.responseText);
+     		else if (xhr.status === 401)
+     			location.href = '/landing';
   		}
 	});
 }

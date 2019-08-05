@@ -1,13 +1,13 @@
 @extends('layouts.default')
 
-@section('user')
+@section('maps')
 {{'active'}}
 @endsection
 
 <!-- CONTENT -->
 @section('content')
 
-{{'user profile'}}
+{{'maps'}}
 
 @endsection
 <!-- /CONTENT -->

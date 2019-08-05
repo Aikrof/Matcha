@@ -14,7 +14,7 @@ class ProfileController extends Controller
     	$title = [
     		'title' => env('APP_NAME') . ' -> ' . $login,
     	];
-    	
+
     	if (ucfirst(strtolower($request->user()['login'])) === $login)
     		return ((new UserProfileController())->getProfile($request)->with($title));
     	else

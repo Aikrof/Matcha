@@ -1,13 +1,13 @@
 @extends('layouts.default')
 
-@section('user')
+@section('following')
 {{'active'}}
 @endsection
 
 <!-- CONTENT -->
 @section('content')
 
-{{'user profile'}}
+{{'following'}}
 
 @endsection
 <!-- /CONTENT -->

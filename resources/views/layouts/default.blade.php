@@ -2,113 +2,214 @@
 
 <html lang="en">
    
-   
-    <head>
 
-        <!-- META -->
-        <meta charset="utf-8">
-        <meta name="csrf_token" content="{{ csrf_token() }}">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<head>
 
-        <!-- PAGE TITLE -->
-        <title>{{isset($title) ? $title : env('APP_NAME')}}</title>
+    <!-- META -->
+    <meta charset="utf-8">
+    <meta name="csrf_token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!-- PAGE TITLE -->
+    <title>{{isset($title) ? $title : env('APP_NAME')}}</title>
 
-        <!-- FAVICON -->
-        <!-- <link rel="shortcut icon" href="assets/img/favicon.png"> -->
+    <!-- FAVICON -->
+    <!-- <link rel="shortcut icon" href="assets/img/favicon.png"> -->
 
-        <!-- FONTS -->
-        <!-- <link href="https://fonts.googleapis.com/css?family=Bellefair&amp;subset=latin-ext" rel="stylesheet"> -->
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bellefair&amp;subset=latin-ext" rel="stylesheet">
 
-        <!-- STYLESHEETS -->
-        <link rel="stylesheet" type="text/css" href="/css/default_plugin.css">
-        <link rel="stylesheet" type="text/css" href="/css/default.css">
+    <!-- STYLESHEETS -->
+    <!-- <link rel="stylesheet" type="text/css" href="css/reset.css"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/css/default.css"> -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/light-bootstrap-default.css" rel="stylesheet" />
+    <!-- SEARCH STYLESHEET FILE-->
+    <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="css/search.css" rel="stylesheet">
+    
+</head>
 
 
-    </head>
+<body>
 
+<div class="wrapper">
+    <div class="sidebar hh" data-image="img/sidebar/sidebar-5.jpg" data-color="blue">
+    <!--
+    Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
-    <body>
-
-    <header>
-
-        <!-- PRELOADER -->
-        <div class="preloader">
-           
-            <div class="bounce"></div>
-            
+    Tip 2: you can also add an image using data-image tag
+    -->
+        <div class="sidebar-wrapper">
+            <a href="/"><img src="img/logo1.png" class="img-responsive logo" alt="logo"></a>
+            <ul class="nav">
+                <li class="nav-item @yield('home')">
+                    <a class="nav-link" href="/">
+                        <i class="fa fa-home"></i>
+                        <p>Home</p>
+                    </a>
+                </li>
+                <li class="@yield('user')">
+                    <a class="nav-link" href="{{ucfirst(strtolower(Auth::user()->login))}}">
+                        <i class="fa fa-user-circle-o"></i>
+                        <p>User Profile</p>
+                    </a>
+                </li>
+                <li class="@yield('following')">
+                    <a class="nav-link" href="/following">
+                        <i class="fa fa-eye"></i>
+                        <p>Following</p>
+                    </a>
+                </li>
+                <li class="@yield('followers')">
+                    <a class="nav-link" href="/followers">
+                        <i class="fa fa-eye-slash"></i>
+                        <p>Followers</p>
+                    </a>
+                </li>
+                <li class="@yield('rating')">
+                    <a class="nav-link" href="/rating">
+                        <i class="fa fa-users"></i>
+                        <p>Rating</p>
+                    </a>
+                </li>
+                <li class="@yield('setting')">
+                    <a class="nav-link" href="/setting">
+                        <i class="fa fa-cog"></i>
+                        <p>Settings</p>
+                    </a>
+                </li>
+                <li class="@yield('maps')">
+                    <a class="nav-link" href="/maps">
+                        <i class="fa fa-map-marker"></i>
+                        <p>Maps</p>
+                    </a>
+                </li>
+                <li class="@yield('notifi')">
+                    <a class="nav-link" href="/notifications">
+                        <i class="fa fa-bell"></i>
+                        <p>Notifications</p>
+                    </a>
+                </li>
+            </ul>
         </div>
-        <!-- /PRELOADER -->
-        
-        <!-- NAVIGATION BUTTON -->
-        <div class="navigation-button first">
-
-             <div class="i"><a href="/{{ucfirst(strtolower(Auth::user()->login))}}"><i class="fa fa-external-link-square"></i></a></div>
-        </div>
-        @yield('i')
-        <!-- /NAVIGATION BUTTON -->
-
-        <!-- SEARCH -->
-        
-        <!-- SEARCH -->
-
-        <!-- HERO -->
-        <div class="hero">
-
-
-            <!-- FRONT CONTENT -->
-            <div class="front-content">
-                   
-                <a href="/"><img src="img/logo.png" class="img-responsive logo" alt="logo"></a>
-                <h1>We make your love</h1>
-
+    </div>
+    <div class="main-panel">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg " color-on-scroll="500">
+            <div class="container-fluid">
+                <a class="navbar-brand">
+                    <span class="no-icon sign_login">{{ucfirst(strtolower(Auth::user()->login))}}</span>
+                </a>
+                <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-bar burger-lines"></span>
+                    <span class="navbar-toggler-bar burger-lines"></span>
+                    <span class="navbar-toggler-bar burger-lines"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                    <ul class="nav navbar-nav mr-auto">
+                        <li class="dropdown nav-item">
+                            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                                <i class="fa fa-spinner"></i>
+                                <span class="d-lg-none">Style</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Notification 1</a>
+                                <a class="dropdown-item" href="#">Notification 2</a>
+                                <a class="dropdown-item" href="#">Notification 3</a>
+                                <a class="dropdown-item" href="#">Notification 4</a>
+                                <a class="dropdown-item" href="#">Another notification</a>
+                            </ul>
+                        </li>
+                        <li class="dropdown nav-item">
+                            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                                <i class="fa fa-envelope"></i>
+                                <span class="notification">5</span>
+                                <span class="d-lg-none">Notification</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Notification 1</a>
+                                <a class="dropdown-item" href="#">Notification 2</a>
+                                <a class="dropdown-item" href="#">Notification 3</a>
+                                <a class="dropdown-item" href="#">Notification 4</a>
+                                <a class="dropdown-item" href="#">Another notification</a>
+                            </ul>
+                        </li>
+                        <li class="nav-item search_btn">
+                            <div class="nav-link search-box-collapse">
+                                    <i class="fa fa-search"></i>
+                                    <span class="d-lg-block">&nbsp;Search</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="no-icon">Dropdown</span>
+                                </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <div class="divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link logout">
+                                <span class="no-icon">Log out</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <!-- /FRONT CONTENT -->
-
-
-        </div>
-        <!-- /HERO -->
-    </header>
-
+        </nav>
+        <!-- End Navbar -->
+        
         <!-- CONTENT -->
-        <div class="container">
+        <div class="content">
             @yield('content')
         </div>
         <!-- /CONTENT -->
-        
-        <!-- FOOTER -->
-        <div class="footer">
-            
-            
-            <!-- FOOTER INNER -->
-            <div class="footer-inner">
-      
-                <p>© 2017 Your Brand | Design by <a href="https://templatefoundation.com">Template Foundation</a></p>
-                
-                <!-- SOCIAL ICONS -->
-                <ul class="social-icons scroll-animated-from-right">
-
-                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                    <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-                    <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-
-                </ul>
-                <!-- /SOCIAL ICONS -->
-
-            
-            </div>
-            <!-- /FOOTER INNER -->
-            
-
-        </div>
-        <!-- /FOOTER -->
-
-
-        <!-- JAVASCRIPTS -->
-        <script type="text/javascript" src="js/default_plugin.js"></script>
-        <script type="text/javascript" src="js/default.js"></script>
-
-
-    </body> 
     
+    </div>
+</div>
+
+    <!-- SEARCH CONTENT -->
+    @include('components.search')
+    <!-- /SEARCH CONTENT -->
+
+    
+    <!-- JAVASCRIPTS -->
+    <!--   Core JS Files   -->
+    <script src="js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+    <script src="js/core/popper.min.js" type="text/javascript"></script>
+    <script src="js/core/bootstrap.min.js" type="text/javascript"></script>
+    <!-- TEMPL SWEET ALERT -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <!-- SENDER -->
+    <script type="text/javascript" src="js/sender.js"></script>
+    <!-- DEFAULT -->
+    <script type="text/javascript" src="js/default.js"></script>
+    <!-- Control Center for Light Bootstrap Dashboard: scripts -->
+    <script src="js/light-bootstrap-default.js" type="text/javascript"></script>
+     <!--SEARCH -->
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/scrollreveal/scrollreveal.min.js"></script>
+    <script src="js/search.js"></script>
+
+    @if (Auth::user()->first_entry)
+    {
+        <!-- FIRST ENTRY -->
+        <script type="text/javascript" src="js/first_entry.js"></script>
+    }
+    @endif
+
+</body>
 </html>

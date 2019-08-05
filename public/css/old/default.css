@@ -298,7 +298,7 @@ a:hover
     position: relative;
     top: 0;
     left: 0;
-
+    /*display: flex;*/
     /*width: 100%;*/
 }
 
@@ -406,14 +406,14 @@ a:hover
 
 .hero .front-content
 {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     position: relative;
     left: 0;
 
-    width: 60%;
+    /*width: 90%;*/
 
     padding: 0 30px;
 
@@ -436,7 +436,47 @@ a:hover
     color: #d80f48;
 }
 
+.hero_cont
+{
+    display: inline-flex;
+    width: 70%;
+    justify-content: flex-end;
+    align-items: center;
 
+    margin-right: 200px;
+}
+
+.search_b
+{
+    cursor: pointer;
+    border: 0;
+    font-size: 2.3rem;
+    line-height: 6.4rem;
+    line-height: 6.4rem;
+
+    position: relative;
+
+    display: inline-block;
+    overflow: hidden;
+
+    width: 6.4rem;
+    height: 6.4rem;
+    margin: 0;
+    margin-right: 1em;
+
+    -webkit-transition: .1s ease;
+         -o-transition: .1s ease;
+            transition: .1s ease;
+    text-align: center;
+
+    color: #fff;
+    border-radius: 100%;
+    background: #d80f48;
+}
+.search_b:hover
+{
+    background: #111;
+}
 
 /** 5. Portfolio
 *******************************************************************/
