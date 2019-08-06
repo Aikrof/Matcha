@@ -1,6 +1,4 @@
-
-  <div class="form">
-      
+  <div class="form"> 
       <ul class="tab-group">
         <li class="tab active"><a href="#signup">Sign Up</a></li>
         <li class="tab"><a href="#signin">Sign In</a></li>
@@ -54,14 +52,12 @@
             </label>
             <input type="password" name="confirm" autocomplete="off"/>
           </div>
+
           <div class="field-wrap">
             <div id="gen_cont">
               <span class="gender mitmash_v1" id="f_gender">Male</span><span class="gere">*</span> <span class="mitmash_v1">/</span> <span class="gender mitmash_v1" id="t_gender">Female</span><span class="gere">*</span>
               <input type="hidden" name="gender" id="gender">
             </div>
-          </div>
-          <div class="error_container">
-            <p class="error" id="register_err"></p>
           </div>
           <button type="submit" class="sign_button sign_button-block"/>Sign Up</button>
           
@@ -87,12 +83,9 @@
             </label>
             <input type="password" name="password" autocomplete="off"/>
           </div>
-          
+
           <div class="forg_cont">
             <p class="forgot"><a>Forgot Password?</a></p>
-          </div>
-          <div class="error_container sig">
-            <p class="error" id="login_err"></p>
           </div>
           <button type="submit" class="sign_button sign_button-block sig"/>Sign In</button>
           </form>
@@ -105,9 +98,6 @@
             </label>
             <input type="email" name="email" autocomplete="off"/>
            </div>
-          <div class="error_container forg_wrap">
-            <p class="error"></p>
-          </div>
           <div class="field-wrap forg_wrap">
             <button type="submit" class="sign_button sign_button-block"/>Send New Password</button>
           </div>

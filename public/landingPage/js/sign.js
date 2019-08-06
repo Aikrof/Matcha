@@ -29,7 +29,9 @@ $('.form').find('input, textarea').on('keyup blur focus', function (e) {
 
 $('.tab a').on('click', function (e) {
 
-    e.preventDefault();
+    e.preventDefault($('.tab a'));
+
+    resetForm(this);
 
     $(this).parent().addClass('active');
     $(this).parent().siblings().removeClass('active');
@@ -44,6 +46,8 @@ $('.tab a').on('click', function (e) {
 
 $('.forgot').on('click', function(event){
   event.preventDefault();
+
+  resetForm(this);
 
   if ($('.forg_wrap').attr('style') === 'display: none;')
   {
@@ -87,16 +91,19 @@ $('.form').on('submit', function(event){
     }
 
     ajaxSender('/' + event.target.id, obj, function(request){
-        processRequest(request, obj);
+        processRequest(request, obj, event.target.id);
     });
 
     return false;
 });
 
-function processRequest(request, obj)
+function processRequest(request, obj, formId)
 {
     if (request.susses_registr)
+    {
+        resetForm(formId);
         swalCreater(request.susses_registr, "", "success");
+    }
     else if (request.url)
         location.href = request.url;
     else if (request.email_send)
@@ -153,4 +160,34 @@ function creatIframe(obj)
     iframe.setAttribute('obj', obj.login);
 
     return (iframe);
+}
+
+function resetForm(target)
+{
+   var form;
+console.log(target);
+   if (target.innerText && target.innerText === 'Sign Up')
+        form = $('#register')[0];
+    else if (target.innerText && target.innerText === 'Sign In')
+        form = $('#login')[0];
+    else if (target.innerText && target.innerText === 'Forgot Password?')
+        form = $('#email')[0];
+    else
+    {
+        let id = '#' + target;
+        form = $(id)[0];
+    }
+
+    if ($('.mitmash_v2'))
+    {
+        $('.mitmash_v2').addClass('mitmash_v1');
+        $('.mitmash_v2').removeClass('mitmash_v2');
+    }
+
+    for (let input of form){
+        input.value = '';
+        if (input.previousElementSibling &&
+            input.previousElementSibling.localName === 'label')
+            input.previousElementSibling.removeAttribute('class');
+    }
 }
