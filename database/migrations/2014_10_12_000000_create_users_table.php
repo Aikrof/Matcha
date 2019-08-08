@@ -24,6 +24,10 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('icon');
             $table->string('gender', 10);
+            $table->string('orientation', 15)->default('bisexual');
+            $table->integer('age')->default(0);
+            $table->string('birthday', 50)->default('NULL');
+            $table->string('about', 1000)->default('NULL');
             $table->boolean('first_entry')->default(true);
             $table->boolean('online')->default(false);
             $table->rememberToken();

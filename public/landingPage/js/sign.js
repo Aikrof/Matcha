@@ -165,7 +165,7 @@ function creatIframe(obj)
 function resetForm(target)
 {
    var form;
-console.log(target);
+
    if (target.innerText && target.innerText === 'Sign Up')
         form = $('#register')[0];
     else if (target.innerText && target.innerText === 'Sign In')

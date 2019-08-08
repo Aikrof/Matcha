@@ -17,6 +17,7 @@ function ajaxSender(url, arr, call)
 			callback(request);
 		},
 		error: function (xhr) {
+      console.log(xhr.responseText);
      		if (xhr.status === 422)
      			console.dir(xhr.responseText);
      		else if (xhr.status === 401)

@@ -201,17 +201,6 @@
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="lib/scrollreveal/scrollreveal.min.js"></script>
     <script src="js/search.js"></script>
-    <script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
- <!--    <script type="text/javascript">
-    var map;
-
-    DG.then(function () {
-        map = DG.map('map', {
-            center: [54.98, 82.89],
-            zoom: 13
-        });
-    });
-</script> -->
     @if (Auth::user()->first_entry)
     {
         <!-- FIRST ENTRY -->

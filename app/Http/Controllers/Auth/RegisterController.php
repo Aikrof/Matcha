@@ -107,7 +107,7 @@ class RegisterController extends Controller
      */
     protected function createUser(array $data)
     {
-        $icon = resource_path() . '/defaulUserIcon/' . $data['gender'];
+        $icon = public_path() . '/img/icons/spy.png';
         
         return User::create([
             'first_name' => ucfirst(strtolower($data['first_name'])),

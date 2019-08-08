@@ -53,7 +53,7 @@ entry = {
         return ('\
             <div class="form-group f_interests_cont">\
                 <label for="comment">List of interests</label>\
-                <textarea placeholder="Add your interests with tag #" class="form-control"></textarea>\
+                <textarea name="interests" placeholder="Add your interests with tag #" class="form-control"></textarea>\
             </div>\
         ');
     },
@@ -62,7 +62,7 @@ entry = {
         return ('\
             <div class="form-group f_about_cont">\
                 <label for="comment">About:</label>\
-                <textarea placeholder="Add some info about yourself" class="form-control"></textarea>\
+                <textarea name="about" placeholder="Add some info about yourself" class="form-control"></textarea>\
             </div>\
         ')
     },
@@ -72,7 +72,8 @@ entry = {
             <div class="form-group f_location">\
                 <i class="fa fa-map-marker"></i>\
                 <p class="class="btn add_local">Add your location</p>\
-                <input type="hidden" name="location">\
+                <input type="hidden" name="latitude">\
+                <input type="hidden" name="longitude">\
             </div>\
         ')
     }
@@ -135,7 +136,7 @@ Swal.fire({
     showCloseButton: true,
 }).then((result) =>{
     if (result)
-        (new FirstEntrySend($('#firstEntry'))).init();
+        (new FirstEntrySend($('#firstEntry'))).send();
 });
 
 function FirstEntrySend($form){
@@ -143,33 +144,52 @@ function FirstEntrySend($form){
     var formProcessing = function(){
         var $data = {};
 
-        $form.find ('input, textearea').each(function(){
+        $form.find ('input, textarea').each(function(){
             if (this.name)
                 $data[this.name] = $(this).val();
         });
+
+        $data['birthday'] = {
+            'day' : $data['day'],
+            'month' : $data['month'],
+            'year' : $data['year'],
+        }
+        $data['location'] = {
+            'latitude' : $data['latitude'],
+            'longitude' : $data['longitude'],
+        };
+        delete $data['day'];
+        delete $data['month'];
+        delete $data['year'];
+        delete $data['latitude'];
+        delete $data['longitude'];
+
         return $data; 
     }
 
-    this.init = function(){
-        var sendValue = formProcessing();
-        console.log(sendValue);
+    this.send = function(){
+        var obj = formProcessing();
+        console.log(obj);
+        ajaxSender('/firstEntry', obj, function(request){
+            console.log(request);
+        });
     }
 
 
 }
 
-navigator.geolocation.getCurrentPosition(function(position){
-    var latitude = position.coords.latitude;
-    var longitude = position.coords.longitude;
+// navigator.geolocation.getCurrentPosition(function(position){
+//     var latitude = position.coords.latitude;
+//     var longitude = position.coords.longitude;
 
 
-    // var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+ latitude +','+ longitude +'&sensor=false&key=AIzaSyAFlQz9H-L0209Sq94idC1aY9wKOhiH0gs';
-    var url = 'http://api.geonames.org/findNearbyPlaceNameJSON?lat='+latitude+'&lng='+longitude+'&username=localdev'
-    // var url =  'https://restcountries.eu/rest/v2/all';
-    $.getJSON(url,function (data, textStatus) {
-           console.log(data);
-      });
-});
+//     // var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+ latitude +','+ longitude +'&sensor=false&key=AIzaSyAFlQz9H-L0209Sq94idC1aY9wKOhiH0gs';
+//     var url = 'http://api.geonames.org/findNearbyPlaceNameJSON?lat='+latitude+'&lng='+longitude+'&username=localdev'
+//     // var url =  'https://restcountries.eu/rest/v2/all';
+//     $.getJSON(url,function (data, textStatus) {
+//            console.log(data);
+//       });
+// });
 
 $('.f_dropdown-item-month').click(function(){
     $('input[name="month"]').val(this.innerText);
@@ -179,33 +199,29 @@ $('.f_dropdown-item-month').click(function(){
 $('.f_dropdown-item-orient').click(function(){
     $('input[name="orient"]').val(this.innerText);
     $('.orient_dropdown-item')[0].innerHTML = this.innerText;
-})
+});
 
 $('.f_location').click(function(){
     navigator.geolocation.getCurrentPosition(function(position){
-        var latitude = position.coords.latitude;
-        var longitude = position.coords.longitude;
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
 
-        // var url = 'http://api.geonames.org/findNearbyPlaceNameJSON?lat='+latitude+'&lng='+longitude+'&username=localdev';
-        // $.getJSON(url,function (data){
-        //     let geonames = data.geonames[0];
-
-        //     if (geonames)
-        //     {
-        //         let country = geonames.countryName;
-        //         let city = geonames.adminName1.split(' ')[0];
-        //     }
-
-        // });
-    var map;
-    var marker;
-
-    DG.then(function () {
-        map = DG.map('map', {
-            center: [latitude, longitude],
-            zoom: 13
-        });
-       console.log((new DG.GeoPoint(82.927810142519, 55.0289362348260)));
+    var location = {
+        'latitude' : latitude,
+        'longitude' : longitude
+    };
+    $('input[name="latitude"]').val(latitude);
+    $('input[name="longitude"]').val(longitude);
+    // var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+ latitude +','+ longitude +'&sensor=false&key=AIzaSyAFlQz9H-L0209Sq94idC1aY9wKOhiH0gs';
+    var url = 'http://api.geonames.org/findNearbyPlaceNameJSON?lat='+latitude+'&lng='+longitude+'&username=localdev'
+    // var url =  'https://restcountries.eu/rest/v2/all';
+        $.getJSON(url, function(data, textStatus){
+            var geonames = data.geonames[0];
+            if (geonames)
+            {
+                var country = geonames.countryName;
+                var city = geonames.adminName1.split(' ')[0];
+            }
         });
     });
 });
