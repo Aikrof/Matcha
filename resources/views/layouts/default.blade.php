@@ -22,8 +22,6 @@
     <link href="https://fonts.googleapis.com/css?family=Bellefair&amp;subset=latin-ext" rel="stylesheet">
 
     <!-- STYLESHEETS -->
-    <!-- <link rel="stylesheet" type="text/css" href="css/reset.css"> -->
-    <!-- <link rel="stylesheet" type="text/css" href="/css/default.css"> -->
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/light-bootstrap-default.css" rel="stylesheet" />
     <!-- SEARCH STYLESHEET FILE-->
@@ -203,13 +201,22 @@
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="lib/scrollreveal/scrollreveal.min.js"></script>
     <script src="js/search.js"></script>
+    <script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
+ <!--    <script type="text/javascript">
+    var map;
 
+    DG.then(function () {
+        map = DG.map('map', {
+            center: [54.98, 82.89],
+            zoom: 13
+        });
+    });
+</script> -->
     @if (Auth::user()->first_entry)
     {
         <!-- FIRST ENTRY -->
         <script type="text/javascript" src="js/first_entry.js"></script>
     }
     @endif
-
 </body>
 </html>

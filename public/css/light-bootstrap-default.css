@@ -186,6 +186,132 @@ h1 .subtitle {
     color: #d80247;
 }
 
+/*** FIRST ENTRY STYLESHEETS ***/
+#firstEntry{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#firstEntry .form-group{
+    margin: 0;
+    margin-bottom: 15px;
+}
+.f_icon_con{
+    height: 163px;
+    display: flex;
+    flex-direction: column;
+}
+.f_icon_con img{
+    cursor: pointer;
+    width: 134px;
+    height: 134px;
+    border: 5px solid #777777;
+    border-radius: 50%;
+}
+#f_icon{
+    display: none;
+}
+.f_icon_con div label p{
+
+}
+.f_sexual{
+    display: flex;
+    flex-direction: column;
+}
+.f_age_cont{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.f_age_cont .form-control{
+    border: 2px solid #777777;
+    width: 25%;
+}
+.f_birthday{
+    display: flex;
+    justify-content: center;
+}
+.f_birthday input[type='text']:first-child{
+    width: 12%;
+    margin-right: 10px;
+    border: 2px solid #777777;
+}
+.f_birthday div{
+    display: flex;
+    width: 40%;
+    margin-right: 10px; 
+}
+.f_birthday div p{
+    width: 100%;
+}
+.f_birthday div .month_cont{
+    display: flex;
+    flex-direction: column;
+}
+.f_birthday div .moth_cont label{
+    margin: 0;
+}
+.f_birthday input[type='text']:last-child{
+    width: 14%;
+    border: 2px solid #777777;
+}
+.f_birthday div p span{
+    display: inline-block;
+    width: 90%;
+}
+.f_birthday div .month_cont label{
+    margin: 0;
+}
+.f_birthday_buttn{
+    margin: 0;
+}
+.f_sexual{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.f_sexual p{
+    margin: 0;
+}
+.f_sexual .dropdown-menu{
+    display: flex;
+    flex-direction: column;
+}
+.f_orient label{
+    margin: 0;
+}
+.orient_dropdown-item{
+    width: 40%;
+}
+.f_interests_cont{
+    width: 80%;
+    height: 120px;
+}
+.f_about_cont{
+    width: 80%;
+    height: 150px;
+}
+.f_location{
+    cursor: pointer;
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 0;
+}
+.f_location p{
+    margin: 0;
+    margin-left: 10px;
+}
+.f_interests_cont .form-control{
+    min-height: 100px;
+    resize: none;
+    border: 2px solid #777777;
+}
+.f_about_cont .form-control{
+    min-height: 120px;
+    resize: none;
+    border: 2px solid #777777;
+}
+/*** /FIRST ENTRY STYLESHEETS ***/
 .text-muted {
     color: #9A9A9A;
 }

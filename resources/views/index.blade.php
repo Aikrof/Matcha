@@ -10,12 +10,6 @@
 {{Auth::user()}}
 <br>{{' index page'}}
 
-<div class="row" style="width: 40%;">
-    <div class="col">
-      <input type="text" class="form-control" placeholder="First name">
-       <input type="text" class="form-control" placeholder="First name">
-    </div>
-</div>
-
+<div id="map" style="width:500px; height:400px"></div>
 @endsection
 <!-- /CONTENT -->

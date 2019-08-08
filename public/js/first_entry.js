@@ -1,29 +1,46 @@
 entry = {
+    icon: function(){
+        return ('\
+            <div class="form-group f_icon_con">\
+                <label>Add icon:</label>\
+                <div class="custom-file">\
+                    <label>\
+                        <input type="file" id="f_icon">\
+                        <img src="img/icons/spy.png">\
+                    </label>\
+                </div>\
+            </div>\
+        ')
+    },
+
     sexualOrient: function(){
         return ('\
-                <div class="dropdown open">\
-                <p class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">Sexual orientations</p>'
+                <div class="dropdown open f_sexual">\
+                <label>Sexual orientations:</label>\
+                <p class="btn btn-secondary dropdown-toggle orient_dropdown-item" data-toggle="dropdown">Sexual orientations</p>\
+                <input type="hidden" name="orient">'
                 + ((new orient).getOrientation()) +
                 '</div>\
         ');
     },
     age: function(){
         return ('\
-            <div class="form-group">\
-                <label>Age</label>\
-                <input type="text" class="form-control" maxlength="2" placeholder="Age">\
-                </div>\
+            <div class="form-group f_age_cont">\
+                <label>Age:</label>\
+                <input type="text" class="form-control" maxlength="2" placeholder="Age" name="age">\
+            </div>\
         ');
     },
 
     birthday: function(){
         return ('\
             <div class="form-group">\
-                <label>Birthday</label>\
-                <div>\
+                <label>Birthday:</label>\
+                <div class="f_birthday">\
                     <input type="text" name="day" class="form-control" maxlength="2" placeholder="Day">\
                     <div class="dropdown open">\
-                        <p class="btn dropdown-toggle" data-toggle="dropdown">Mounth</p>'
+                        <p class="btn dropdown-toggle f_birthday_buttn" data-toggle="dropdown"><span class="month_dropdown-item">Month</span></p>\
+                        <input type="hidden" name="month">'
                         + (new month()).getMonth() + 
                     '</div>\
                     <input type="text" name="year" class="form-control" maxlength="4" placeholder="Year">\
@@ -34,25 +51,35 @@ entry = {
 
     interests: function(){
         return ('\
-            <div class="form-group">\
+            <div class="form-group f_interests_cont">\
                 <label for="comment">List of interests</label>\
-                <textarea placeholder="Add your interests with tag #" class="form-control" rows="5" id="interests"></textarea>\
+                <textarea placeholder="Add your interests with tag #" class="form-control"></textarea>\
             </div>\
         ');
     },
 
     about: function(){
         return ('\
-            <div class="form-group">\
-                <label for="comment">About</label>\
-                <textarea placeholder="Add some info about yourself" class="form-control" rows="5" id="interests"></textarea>\
+            <div class="form-group f_about_cont">\
+                <label for="comment">About:</label>\
+                <textarea placeholder="Add some info about yourself" class="form-control"></textarea>\
+            </div>\
+        ')
+    },
+
+    location: function(){
+        return ('\
+            <div class="form-group f_location">\
+                <i class="fa fa-map-marker"></i>\
+                <p class="class="btn add_local">Add your location</p>\
+                <input type="hidden" name="location">\
             </div>\
         ')
     }
 }
 
 var orient = function(){
-    this.div = '<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">';
+    this.div = '<div class="dropdown-menu f_orient" aria-labelledby="dropdownMenuLink">';
     this.orientations = [
         "Heterosexual", "Bisexual", "Homosexual"
     ];
@@ -61,8 +88,7 @@ var orient = function(){
         var val = '';
         for (let pref of this.orientations){
             val += '<label>\
-                        <input style="display: none;" type="checkbox" name="sexual_pref" value="'+ pref +'">\
-                        <span class="dropdown-item">' + pref + '</span>\
+                        <span class="dropdown-item f_dropdown-item-orient">' + pref + '</span>\
                     </label>';
         }
 
@@ -75,7 +101,7 @@ var orient = function(){
 }
 
 var month = function(){
-    this.div = '<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">';
+    this.div = '<div class="dropdown-menu month_cont" aria-labelledby="dropdownMenuLink">';
     this.year = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December',
@@ -86,8 +112,7 @@ var month = function(){
 
         for (let month of this.year){
             val += '<label>\
-                    <input style="display: none;" type="checkbox" name="month" value="' + month + '">\
-                    <span class="dropdown-item">' + month + '</span>\
+                    <span class="dropdown-item f_dropdown-item-month">' + month + '</span>\
                 </label>';
         }
 
@@ -103,36 +128,84 @@ Swal.fire({
     type: 'question',
     title: 'Add info about yourself',
     html: '<form id="firstEntry">' +
-            entry.age() + entry.birthday() + entry.sexualOrient() +
-            entry.interests() + entry.about() +
+            entry.icon() + entry.age() + entry.birthday() +
+            entry.sexualOrient() + entry.interests() +
+            entry.about() + entry.location() +
             '</form>',
     showCloseButton: true,
+}).then((result) =>{
+    if (result)
+        (new FirstEntrySend($('#firstEntry'))).init();
 });
 
-// navigator.geolocation.getCurrentPosition(function(position){
-//     var latitude = position.coords.latitude;
-//     var longitude = position.coords.longitude;
+function FirstEntrySend($form){
 
-//     var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+ latitude +','+ longitude +'&sensor=false&key=AIzaSyAFlQz9H-L0209Sq94idC1aY9wKOhiH0gs';
-//     $.getJSON(url,function (data, textStatus) {
-//            console.log(data);
-//       });
-// });
+    var formProcessing = function(){
+        var $data = {};
 
-// if (navigator.geolocation) {
-//     navigator.geolocation.getCurrentPosition(function (position) {
+        $form.find ('input, textearea').each(function(){
+            if (this.name)
+                $data[this.name] = $(this).val();
+        });
+        return $data; 
+    }
 
-//         //GET USER CURRENT LOCATION
-//         var locCurrent = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    this.init = function(){
+        var sendValue = formProcessing();
+        console.log(sendValue);
+    }
 
-//         //CHECK IF THE USERS GEOLOCATION IS IN AUSTRALIA
-//         var geocoder = new google.maps.Geocoder();
-//             geocoder.geocode({ 'latLng': locCurrent }, function (results, status) {
-//                 var locItemCount = results.length;
-//                 var locCountryNameCount = locItemCount - 1;
-//                 var locCountryName = results[locCountryNameCount].formatted_address;
 
-             
-//         });
-//     });
-// }
+}
+
+navigator.geolocation.getCurrentPosition(function(position){
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+
+
+    // var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+ latitude +','+ longitude +'&sensor=false&key=AIzaSyAFlQz9H-L0209Sq94idC1aY9wKOhiH0gs';
+    var url = 'http://api.geonames.org/findNearbyPlaceNameJSON?lat='+latitude+'&lng='+longitude+'&username=localdev'
+    // var url =  'https://restcountries.eu/rest/v2/all';
+    $.getJSON(url,function (data, textStatus) {
+           console.log(data);
+      });
+});
+
+$('.f_dropdown-item-month').click(function(){
+    $('input[name="month"]').val(this.innerText);
+    $('.month_dropdown-item')[0].innerHTML = this.innerText;
+});
+
+$('.f_dropdown-item-orient').click(function(){
+    $('input[name="orient"]').val(this.innerText);
+    $('.orient_dropdown-item')[0].innerHTML = this.innerText;
+})
+
+$('.f_location').click(function(){
+    navigator.geolocation.getCurrentPosition(function(position){
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+
+        // var url = 'http://api.geonames.org/findNearbyPlaceNameJSON?lat='+latitude+'&lng='+longitude+'&username=localdev';
+        // $.getJSON(url,function (data){
+        //     let geonames = data.geonames[0];
+
+        //     if (geonames)
+        //     {
+        //         let country = geonames.countryName;
+        //         let city = geonames.adminName1.split(' ')[0];
+        //     }
+
+        // });
+    var map;
+    var marker;
+
+    DG.then(function () {
+        map = DG.map('map', {
+            center: [latitude, longitude],
+            zoom: 13
+        });
+       console.log((new DG.GeoPoint(82.927810142519, 55.0289362348260)));
+        });
+    });
+});
