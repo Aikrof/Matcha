@@ -18,7 +18,7 @@ entry = {
                 <div class="dropdown open f_sexual">\
                 <label>Sexual orientations:</label>\
                 <p class="btn btn-secondary dropdown-toggle orient_dropdown-item" data-toggle="dropdown">Sexual orientations</p>\
-                <input type="hidden" name="orient">'
+                <input type="hidden" name="orientation">'
                 + ((new orient).getOrientation()) +
                 '</div>\
         ');

@@ -18,6 +18,7 @@ class CreateLocationsTable extends Migration
             $table->bigInteger('id');
             $table->string('latitude', 100);
             $table->string('longitude', 100);
+            $table->boolean('user_access');
         });
     }
 

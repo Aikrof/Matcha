@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Interests extends Model
+class Info extends Model
 {
-    protected $primaryKey = 'id';
+   protected $primaryKey = 'id';
 
     /**
      * The attributes that are mass assignable.
@@ -14,6 +14,6 @@ class Interests extends Model
      * @var array
      */
     protected $fillable = [
-        'interests'
+        'id', 'first_name', 'last_name', 'gender', 'orientation', 'age', 'birthday', 'interests', 'about'
     ];
 }

@@ -8,7 +8,5 @@
 @section('content')
 
 {{Auth::user()}}
-<br>{{' index page'}}
-
 @endsection
 <!-- /CONTENT -->

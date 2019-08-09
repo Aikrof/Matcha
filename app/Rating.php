@@ -4,10 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Location extends Model
+class Rating extends Model
 {
-
-	 /**
+     /**
      * The name of the "created at" column.
      *
      * @var string

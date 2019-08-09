@@ -202,10 +202,8 @@
     <script src="lib/scrollreveal/scrollreveal.min.js"></script>
     <script src="js/search.js"></script>
     @if (Auth::user()->first_entry)
-    {
         <!-- FIRST ENTRY -->
         <script type="text/javascript" src="js/first_entry.js"></script>
-    }
     @endif
 </body>
 </html>
