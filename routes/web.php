@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['middleware' => 'auth',], function(){
+Route::group(['middleware' => 'auth'], function(){
 	Route::get('/', 'MainController@index');
 
 	Route::get('/{login}', [

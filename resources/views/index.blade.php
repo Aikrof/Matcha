@@ -8,5 +8,6 @@
 @section('content')
 
 {{Auth::user()}}
+
 @endsection
 <!-- /CONTENT -->

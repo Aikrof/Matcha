@@ -3,31 +3,55 @@
 namespace App\Http\Controllers;
 
 use DB;
+use App\Info;
 use App\User;
 use App\Location;
-use App\Interests;
+use App\Rating;
 use Illuminate\Http\Request;
 
 class FirstEntryController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | FirstEntry Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles the first entry info about user
+    | like user age, birthday, sexual orientation, information of user interests, and location.
+    |
+    */
+
+
+    /**
+    * Handle a user data request for the application.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return void
+    */
     public function firstEntry(Request $request)
     {
-        // $this->SuccessfulUserFirstEntry($request);
+        $this->SuccessfulUserFirstEntry($request);
 
     	$info = $this->validateRequest($request);
 
         $this->userAddInfo($request, $info);
-        $this->creatLocation($request, $info);
-        $this->creatInterests($request, $info);
+        $this->createRating($request, $info);
+        $this->createLocation($request, $info);
+        exit();
     }
 
+    /**
+    * Validation an incoming data request.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return array $info
+    */
     protected function validateRequest(Request $request)
     {
     	$info = [];
 
     	$info['orientation'] = !empty($request->orientation) ? 
-                                lcfirst($request->orientation) : 'bisexual';
-    	
+                                lcfirst($request->orientation) : null;
     	$info['age'] = (is_numeric($request->age) &&
                         ($request->age > 10)) ? $request->age : 0;
 
@@ -78,23 +102,44 @@ class FirstEntryController extends Controller
     	return ($info);
     }
 
-    protected function userAddInfo(Request $request, $info)
+    /**
+    * Add data to info table.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param   array $ifno 
+    * @return void
+    */
+    protected function userAddInfo(Request $request, array $info)
     {
-        $request->info()->fill([
-            'id' => $request->user()['id'],
-            'orientation' => $info['orientation'],
+        $user_info = Info::find($request->user()['id']);
+        $user_info->update([
+            'orientation' => ($info['orientation'] !== null) ? $info['orientation'] : 'bisexual',
             'age' => $info['age'],
             'birthday' => $this->yearConversion($info['birthday']),
+            'interests' => $info['interests'],
             'about' => $info['about']
         ]);
-        $request->user()->save();
+        $user_info->save();
     }
 
+
+    /**
+    * Remember the first user entrance add.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return void
+    */
     private function SuccessfulUserFirstEntry(Request $request)
     {
         DB::update('update `users` set first_entry = false WHERE `id` = ?', [$request->user()['id']]);
     }
 
+    /**
+    * Conversion user birthday into string numeric date.
+    *
+    * @param  array  $birthday
+    * @return string $birthday
+    */
     private function yearConversion($birthday)
     {
         if (!$birthday)
@@ -116,7 +161,14 @@ class FirstEntryController extends Controller
         return (implode('-', $birthday));
     }
 
-    protected function creatLocation(Request $request, $info)
+    /**
+    * Create a new location instance.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  array $info
+    * @return void
+    */
+    protected function createLocation(Request $request, array $info)
     {
         $user_access = true;
 
@@ -134,6 +186,12 @@ class FirstEntryController extends Controller
         ]);
     }
 
+    /**
+    * Get user location if he did not indicate.
+    *
+    * @param  user ip $ip
+    * @return array location cords 
+    */
     private function getUserLocation($ip)
     {
         $query = @unserialize (file_get_contents('http://ip-api.com/php/'));
@@ -144,11 +202,30 @@ class FirstEntryController extends Controller
         ]);
     }
 
-    protected function creatInterests(Request $request, $info)
+    /**
+    * Count the rating and create a new rating instance.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  array $info
+    * @return void
+    */
+    protected function createRating(Request $request, array $info)
     {
-        Interests::create([
+        $rating = 0.0;
+
+        foreach ($info as $key => $value){
+            if ($value)
+            {
+                if ($key === 'location')
+                    $rating += 2;
+                else
+                    $rating += 0.5;
+            }
+        }
+
+        Rating::create([
             'id' => $request->user()['id'],
-            'interests' => $info['interests'],
+            'rating' => $rating
         ]);
     }
 }

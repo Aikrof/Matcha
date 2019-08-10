@@ -14,6 +14,6 @@ class Info extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'first_name', 'last_name', 'gender', 'orientation', 'age', 'birthday', 'interests', 'about'
+        'id', 'first_name', 'last_name', 'gender', 'icon', 'orientation', 'age', 'birthday', 'interests', 'about'
     ];
 }

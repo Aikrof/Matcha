@@ -197,7 +197,7 @@ $('.f_dropdown-item-month').click(function(){
 });
 
 $('.f_dropdown-item-orient').click(function(){
-    $('input[name="orient"]').val(this.innerText);
+    $('input[name="orientation"]').val(this.innerText);
     $('.orient_dropdown-item')[0].innerHTML = this.innerText;
 });
 

@@ -28,6 +28,6 @@ class Rating extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'latitude', 'longitude', 'user_access'
+        'id', 'rating'
     ];
 }

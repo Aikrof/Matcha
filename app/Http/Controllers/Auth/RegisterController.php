@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Info;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -55,8 +56,10 @@ class RegisterController extends Controller
         $data = $request->all();
         
         event(new Registered($user = $this->createUser($data)));
-        
+        $this->createInfo($data, $user['id']);
+
         User::creatUserDir(ucfirst(strtolower($data['login'])));
+        
         exit(json_encode(['susses_registr' => 'Please, check your email to confirm registration']));
     }
 
@@ -107,14 +110,27 @@ class RegisterController extends Controller
      */
     protected function createUser(array $data)
     {
-        $icon = public_path() . '/img/icons/spy.png';
-        
         return User::create([
-            'first_name' => ucfirst(strtolower($data['first_name'])),
-            'last_name' => ucfirst(strtolower($data['last_name'])),
             'login' => strtolower($data['login']),
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+        ]);
+    }
+
+    /**
+     * Create a new info instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return void
+     */
+    protected function createInfo(array $data, int $user_id)
+    {
+        $icon = public_path() . '/img/icons/spy.png';
+
+        Info::create([
+            'id' => $user_id,
+            'first_name' => ucfirst(strtolower($data['first_name'])),
+            'last_name' => ucfirst(strtolower($data['last_name'])),
             'gender' => $data['gender'],
             'icon' => $icon,
         ]);
