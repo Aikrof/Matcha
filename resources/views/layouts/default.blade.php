@@ -192,7 +192,7 @@
     <!-- TEMPL SWEET ALERT -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <!-- SENDER -->
-    <script type="text/javascript" src="js/sender.js"></script>
+    <script type="text/javascript" src="js/helper.js"></script>
     <!-- DEFAULT -->
     <script type="text/javascript" src="js/default.js"></script>
     <!-- Control Center for Light Bootstrap Dashboard: scripts -->

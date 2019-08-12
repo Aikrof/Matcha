@@ -89,6 +89,8 @@ class FirstEntryController extends Controller
     		foreach ($interests as $key => $value){
     			if ($value === "")
     				unset($interests[$key]);
+                else if($value)
+                    $interests[$key] = $value . "  ";
     		}
 
     		$info['interests'] = !empty($interests) ? implode('#', $interests) : null;
@@ -135,7 +137,7 @@ class FirstEntryController extends Controller
     }
 
     /**
-    * Conversion user birthday into string numeric date.
+    * Conversion array user birthday into string.
     *
     * @param  array  $birthday
     * @return string $birthday
@@ -145,20 +147,11 @@ class FirstEntryController extends Controller
         if (!$birthday)
             return (NULL);
 
-        $month = [
-            'January', 'February', 'March', 'April', 'May',
-            'June', 'July', 'August', 'September', 'October',
-            'November', 'December'
-        ];
-
-        foreach ($month as $key => $value){
-            if ($birthday['month'] == $value)
-            {
-                $birthday['month'] = ($key + 1 < 10) ? '0' . ($key + 1) : $key + 1;
-                break;
-            }
-        }
-        return (implode('-', $birthday));
+        return (implode('-', [
+            'month' => $birthday['month'],
+            'day' => $birthday['day'],
+            'year' => $birthday['year']
+        ]));
     }
 
     /**

@@ -92,7 +92,6 @@ class LoginController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-
     protected function validateLogin(Request $request)
     {
         $custom_message = [

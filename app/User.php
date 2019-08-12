@@ -43,16 +43,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public static function creatUserDir($login)
-    {
-        $path = resource_path() . '/profiles/';
-
-        if (!file_exists($path))
-            mkdir($path);
-        if (!file_exists($path . $login))
-            mkdir($path . $login);
-    }
-
     /**
     * Override default method sendEmailVerificationNotification Illuminate/Auth/Listeners/SendEmailVerificationNotification
     */

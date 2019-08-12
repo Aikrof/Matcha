@@ -6,7 +6,7 @@ entry = {
                 <div class="custom-file">\
                     <label>\
                         <input type="file" id="f_icon">\
-                        <img src="img/icons/spy.png">\
+                        <img id="f_img_icon" src="img/icons/spy.png">\
                     </label>\
                 </div>\
             </div>\
@@ -184,30 +184,11 @@ function FirstEntrySend($form){
 
 }
 
-// navigator.geolocation.getCurrentPosition(function(position){
-//     var latitude = position.coords.latitude;
-//     var longitude = position.coords.longitude;
-
-
-//     // var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+ latitude +','+ longitude +'&sensor=false&key=AIzaSyAFlQz9H-L0209Sq94idC1aY9wKOhiH0gs';
-//     var url = 'http://api.geonames.org/findNearbyPlaceNameJSON?lat='+latitude+'&lng='+longitude+'&username=localdev'
-//     // var url =  'https://restcountries.eu/rest/v2/all';
-//     $.getJSON(url,function (data, textStatus) {
-//            console.log(data);
-//       });
-// });
-
 $('#f_icon').change(function(icon){
-    var $file = $(this);   
-    $file = $file.prop('files')[0];
-    
-    if (!$file || !$file.type.match('image*') ||
-        $file.size >  7000000 || $file.size == 0)
-         return;
-    
-    ajaxFileSender('/saveUserIcon', $file, function(request){
-        console.log('suss->' + request);
-    });    
+    let $url = '/saveUserIcon';
+
+    let $file = new ImgWorker($(this));
+    $file.imgSend($url, $('#f_img_icon'));   
 });
 
 $('.f_dropdown-item-month').click(function(){

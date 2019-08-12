@@ -312,6 +312,17 @@ h1 .subtitle {
     border: 2px solid #777777;
 }
 /*** /FIRST ENTRY STYLESHEETS ***/
+
+/*** USER PAGE STYLESHEETS ***/
+.about .form-control{
+    height: 150px;
+    resize: none;
+}
+.interests .form-control{
+    height: 80px;
+    resize: none;
+}
+/*** /USER PAGE STYLESHEETS ***/
 .text-muted {
     color: #9A9A9A;
 }

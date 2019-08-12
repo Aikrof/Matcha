@@ -57,8 +57,6 @@ class RegisterController extends Controller
         
         event(new Registered($user = $this->createUser($data)));
         $this->createInfo($data, $user['id']);
-
-        User::creatUserDir(ucfirst(strtolower($data['login'])));
         
         exit(json_encode(['susses_registr' => 'Please, check your email to confirm registration']));
     }

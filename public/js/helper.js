@@ -53,3 +53,18 @@ function ajaxFileSender(url, $file, call)
         }
     });
 }
+
+function ImgWorker($inp)
+{
+    this.file = $inp.prop('files')[0];
+
+    this.imgSend = function($url, $puResultInto, $putErrorInto){
+        
+        ajaxFileSender($url, this.file, function(request){
+            if (request.src && $puResultInto !== undefined)
+                $puResultInto.attr('src', request.src);
+            else if (request.error && $putErrorInto)
+                console.log(request.error);
+        });   
+    }
+}
