@@ -74,6 +74,8 @@ entry = {
                 <p class="class="btn add_local">Add your location</p>\
                 <input type="hidden" name="latitude">\
                 <input type="hidden" name="longitude">\
+                <input type="hidden" name="country">\
+                <input type="hidden" name="city">\
             </div>\
         ')
     }
@@ -157,12 +159,16 @@ function FirstEntrySend($form){
         $data['location'] = {
             'latitude' : $data['latitude'],
             'longitude' : $data['longitude'],
+            'country' : $data['country'],
+            'city' : $data['city'],
         };
         delete $data['day'];
         delete $data['month'];
         delete $data['year'];
         delete $data['latitude'];
         delete $data['longitude'];
+        delete $data['country'];
+        delete $data['city'];
 
         return $data; 
     }
@@ -190,6 +196,19 @@ function FirstEntrySend($form){
 //            console.log(data);
 //       });
 // });
+
+$('#f_icon').change(function(icon){
+    var $file = $(this);   
+    $file = $file.prop('files')[0];
+    
+    if (!$file || !$file.type.match('image*') ||
+        $file.size >  7000000 || $file.size == 0)
+         return;
+    
+    ajaxFileSender('/saveUserIcon', $file, function(request){
+        console.log('suss->' + request);
+    });    
+});
 
 $('.f_dropdown-item-month').click(function(){
     $('input[name="month"]').val(this.innerText);
@@ -221,6 +240,9 @@ $('.f_location').click(function(){
             {
                 var country = geonames.countryName;
                 var city = geonames.adminName1.split(' ')[0];
+
+                $('input[name="country"]').val(country);
+                $('input[name="city"]').val(city);
             }
         });
     });

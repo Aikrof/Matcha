@@ -30,7 +30,7 @@ class FirstEntryController extends Controller
     */
     public function firstEntry(Request $request)
     {
-        $this->SuccessfulUserFirstEntry($request);
+        // $this->SuccessfulUserFirstEntry($request);
 
     	$info = $this->validateRequest($request);
 
@@ -174,7 +174,7 @@ class FirstEntryController extends Controller
 
         if (empty($info['location']))
         {
-            $info['location'] = $this->getUserLocation($request->ip());
+            $info['location'] = $this->getUserLocation();
             $user_access = false;
         }
 
@@ -182,6 +182,8 @@ class FirstEntryController extends Controller
             'id' => $request->user()['id'],
             'latitude' => $info['location']['latitude'],
             'longitude' => $info['location']['longitude'],
+            'country' => $info['location']['country'],
+            'city' => $info['location']['city'],
             'user_access' => $user_access,
         ]);
     }
@@ -189,16 +191,17 @@ class FirstEntryController extends Controller
     /**
     * Get user location if he did not indicate.
     *
-    * @param  user ip $ip
     * @return array location cords 
     */
-    private function getUserLocation($ip)
+    private function getUserLocation()
     {
         $query = @unserialize (file_get_contents('http://ip-api.com/php/'));
 
         return ([
             'latitude' => $query['lat'],
             'longitude' => $query['lon'],
+            'country' => $query['country'],
+            'city' => $query['city'],
         ]);
     }
 

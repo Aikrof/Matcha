@@ -10,13 +10,15 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => ['auth', 'verified']], function(){
 	Route::get('/', 'MainController@index');
 
 	Route::get('/{login}', [
 		'uses' => 'Profile\ProfileController@getUserProfile'])->where(['login' => '^[A_Z](.[a-z0-9-_]+)']);
 
 	Route::post('/firstEntry', 'FirstEntryController@firstEntry');
+
+	Route::post('/saveUserIcon', 'ImageController@userIcon');
 });
 
 Route::group(['as' => 'landing','prefix' => 'landing', 'namespace' => 'Auth'], function(){
