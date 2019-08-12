@@ -31,7 +31,7 @@
   </main>
     </div>
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-    <script type="text/javascript" src="/js/sender.js"></script>
+    <script type="text/javascript" src="/js/helper.js"></script>
     <script type="text/javascript" src="/landingPage/js/verify.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>

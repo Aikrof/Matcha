@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!-- PAGE TITLE -->
-    <title>{{isset($title) ? $title : env('APP_NAME')}}</title>
+    <title>{{isset($title) ? $title : 'Matcha'}}</title>
 
     <!-- FAVICON -->
     <!-- <link rel="shortcut icon" href="assets/img/favicon.png"> -->
@@ -37,14 +37,15 @@
 <body>
 
 <div class="wrapper">
-    <div class="sidebar hh" data-image="img/sidebar/sidebar-5.jpg" data-color="blue">
+    <div class="sidebar hh" data-image="img/sidebar/sidebar-9.jpg" data-color="blue">
     <!--
     Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
     Tip 2: you can also add an image using data-image tag
     -->
         <div class="sidebar-wrapper">
-            <a href="/"><img src="img/logo1.png" class="img-responsive logo" alt="logo"></a>
+            <a href="/"><img src="img/logo1.png" class="img-responsive lo
+                go" alt="logo"></a>
             <ul class="nav">
                 <li class="nav-item @yield('home')">
                     <a class="nav-link" href="/">

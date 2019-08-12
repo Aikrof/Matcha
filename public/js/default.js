@@ -1,3 +1,3 @@
 $('.logout').click(function(){
-	ajaxSender('/logout');
+	sender.form('/logout');
 });

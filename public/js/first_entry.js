@@ -176,7 +176,7 @@ function FirstEntrySend($form){
     this.send = function(){
         var obj = formProcessing();
         console.log(obj);
-        ajaxSender('/firstEntry', obj, function(request){
+        sender.form('/firstEntry', obj, function(request){
             console.log(request);
         });
     }
@@ -192,7 +192,7 @@ $('#tagHelper').bind('input', function(){
     
     if ($tag && $tag.length > 2)
     {
-        ajaxSender('/searchTag', {'tag' : $tag}, function(request){
+        sender.form('/searchTag', {'tag' : $tag}, function(request){
             console.log(request);
         });
     }

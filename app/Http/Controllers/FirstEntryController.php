@@ -6,7 +6,6 @@ use DB;
 use App\Info;
 use App\User;
 use App\Location;
-use App\Rating;
 use App\Tags;
 use Illuminate\Http\Request;
 
@@ -224,10 +223,9 @@ class FirstEntryController extends Controller
             }
         }
 
-        Rating::create([
-            'id' => $request->user()['id'],
-            'rating' => $rating
-        ]);
+        $user = User::find($request->user()['id']);
+        $user->rating = $rating;
+        $user->save();
     }
 
     /**

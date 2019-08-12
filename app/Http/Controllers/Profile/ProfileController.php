@@ -12,7 +12,7 @@ class ProfileController extends Controller
     public function getUserProfile(Request $request, $login)
     {
     	$title = [
-    		'title' => env('APP_NAME') . ' -> ' . $login,
+    		'title' => 'Matcha' . ' -> ' . $login,
     	];
 
     	if (ucfirst(strtolower($request->user()['login'])) === $login)

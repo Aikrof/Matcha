@@ -90,7 +90,7 @@ $('.form').on('submit', function(event){
         obj[input.name] = input.value;
     }
 
-    ajaxSender('/' + event.target.id, obj, function(request){
+    sender.form('/' + event.target.id, obj, function(request){
         processRequest(request, obj, event.target.id);
     });
 

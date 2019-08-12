@@ -5,7 +5,7 @@ $('#resend').on('click', function(event){
 	var obj = {
 		'login' : window.parent.frames.document.activeElement.attributes.obj.value,
 	};
-	ajaxSender('/' + event.target.id, obj, function(request){
+	sender.form('/' + event.target.id, obj, function(request){
 		swal({
                 icon: "success",
                 title: 'Please check your email for a verification link.',
