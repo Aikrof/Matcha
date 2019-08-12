@@ -53,7 +53,7 @@ entry = {
         return ('\
             <div class="form-group f_interests_cont">\
                 <label for="comment">List of interests</label>\
-                <textarea name="interests" placeholder="Add your interests with tag #" class="form-control"></textarea>\
+                <textarea name="interests" placeholder="Add your interests with tag #" class="form-control" id="tagHelper"></textarea>\
             </div>\
         ');
     },
@@ -183,6 +183,20 @@ function FirstEntrySend($form){
 
 
 }
+
+$('#tagHelper').bind('input', function(){
+    $tag = $(this).val().split('#');
+
+    $tag[0] = null;
+    $tag = $tag[$tag.length - 1];
+    
+    if ($tag && $tag.length > 2)
+    {
+        ajaxSender('/searchTag', {'tag' : $tag}, function(request){
+            console.log(request);
+        });
+    }
+});
 
 $('#f_icon').change(function(icon){
     let $url = '/saveUserIcon';

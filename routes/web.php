@@ -17,8 +17,8 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
 		'uses' => 'Profile\ProfileController@getUserProfile'])->where(['login' => '^[A_Z](.[a-z0-9-_]+)']);
 
 	Route::post('/firstEntry', 'FirstEntryController@firstEntry');
-
 	Route::post('/saveUserIcon', 'ImageController@userIcon');
+	Route::post('/searchTag', 'TagsHelperController@tagWriter');
 });
 
 Route::group(['as' => 'landing','prefix' => 'landing', 'namespace' => 'Auth'], function(){

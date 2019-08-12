@@ -119,15 +119,13 @@
         <div class="card-body">
             <div class="author">
                 <a href="#">
-                	<img class="avatar border-gray" src="img/icons/spy.png" alt="...">
-                	<h5 class="title">Mike Andrew</h5>
+                	<img class="avatar border-gray" src="{{$data['info']['icon']}}" alt="...">
+                	<h5 class="title">{{$data['info']['first_name'] . " " . $data['info']['last_name']}}</h5>
                 </a>
-                <p class="description">michael24</p>
+                <p class="description">{{$data['user']['login']}}</p>
             </div>
             <p class="description text-center">
-                                        "Lamborghini Mercy
-                                        <br> Your chick she so thirsty
-                                        <br> I'm in that two seat Lambo"
+                {{$data['info']['about']}}
             </p>
        	</div>
        	<hr>

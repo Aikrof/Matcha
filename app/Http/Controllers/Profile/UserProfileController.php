@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Profile;
 
+use File;
 use Auth;
 use App\User;
 use App\Info;
@@ -28,7 +29,7 @@ class UserProfileController extends Controller
     public function getProfile(Request $request)
     {
     	// abort(404);
-    	$data = $this->creatArrInfo();
+    	$data = $this->createArrInfo();
 
     	return (view('user_profile')->with('data', $data));
     }
@@ -38,7 +39,7 @@ class UserProfileController extends Controller
      *
      * @return array $data
      */
-    private function creatArrInfo()
+    private function createArrInfo()
     {
     	$id = Auth::user()['id'];
 
@@ -48,6 +49,16 @@ class UserProfileController extends Controller
     		'location' => Location::find($id)
     	];
 
-    	return ($data);
+        if ($data['info']['icon'] !== 'spy.png')
+            $file_path = storage_path('app/profiles/' . Auth::user()['login'] . '/icon/' . $data['info']['icon']);
+        else
+            $file_path = public_path('img/icons/spy.png');
+        
+        $contents = file_get_contents($file_path);
+        $mime_type = File::mimeType($file_path);
+        $base = "data:image/" . $mime_type . ";base64," . base64_encode($contents);
+        $data['info']['icon'] = $base;
+    	
+        return ($data);
     }
 }

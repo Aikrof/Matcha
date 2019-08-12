@@ -3164,6 +3164,7 @@ Copyright (c) 2015 Daniel Eden
 
 .card-user .avatar.border-gray {
     border-color: #EEEEEE;
+    background-color: #ffffff;
 }
 
 .card-user .title {

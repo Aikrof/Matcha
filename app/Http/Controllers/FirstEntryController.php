@@ -7,13 +7,14 @@ use App\Info;
 use App\User;
 use App\Location;
 use App\Rating;
+use App\Tags;
 use Illuminate\Http\Request;
 
 class FirstEntryController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | FirstEntry Controller
+    | First Entry Controller
     |--------------------------------------------------------------------------
     |
     | This controller handles the first entry info about user
@@ -37,7 +38,8 @@ class FirstEntryController extends Controller
         $this->userAddInfo($request, $info);
         $this->createRating($request, $info);
         $this->createLocation($request, $info);
-        exit();
+        $this->addTags($request, $info);
+        exit;
     }
 
     /**
@@ -82,7 +84,7 @@ class FirstEntryController extends Controller
 
     	if (!empty($request->interests))
     	{
-    		$interests = explode('#', $request->interests);
+    		$interests = array_unique(explode('#', $request->interests));
     		
     		$interests[0] = null;
 
@@ -90,7 +92,10 @@ class FirstEntryController extends Controller
     			if ($value === "")
     				unset($interests[$key]);
                 else if($value)
+                {
+                    $info['tags'][$key] = $value;
                     $interests[$key] = $value . "  ";
+                }
     		}
 
     		$info['interests'] = !empty($interests) ? implode('#', $interests) : null;
@@ -223,5 +228,24 @@ class FirstEntryController extends Controller
             'id' => $request->user()['id'],
             'rating' => $rating
         ]);
+    }
+
+    /**
+    * Add user interests in to tags table.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  array $info
+    * @return void
+    */
+    private function addTags(Request $request, $info)
+    {
+        if (!$info['interests'])
+            return;
+
+        foreach ($info['tags'] as $value) {
+            $tag = Tags::firstOrNew(['tag' => $value]);
+            $tag->count += 1;
+            $tag->save();
+        }
     }
 }

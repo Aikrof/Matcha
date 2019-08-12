@@ -123,7 +123,7 @@ class RegisterController extends Controller
      */
     protected function createInfo(array $data, int $user_id)
     {
-        $icon = public_path() . '/img/icons/spy.png';
+        $icon = 'spy.png';
 
         Info::create([
             'id' => $user_id,
