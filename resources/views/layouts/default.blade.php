@@ -205,6 +205,8 @@
     @if (Auth::user()->first_entry)
         <!-- FIRST ENTRY -->
         <script type="text/javascript" src="js/first_entry.js"></script>
+        <!-- /FIRST ENTRY -->
     @endif
+    @yield('script')
 </body>
 </html>

@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->boolean('first_entry')->default(true);
             $table->boolean('online')->default(false);
             $table->double('rating')->nullable()->default(0);
-            $table->string('backgroundImg', 100)->default('sidebar-5');
+            $table->string('backgroundImg', 100)->default('sidebar-5.jpg');
             $table->string('backgroundColor', 100)->default('blue');
             $table->rememberToken();
             $table->timestamps();

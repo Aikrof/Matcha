@@ -202,7 +202,9 @@ $('#f_icon').change(function(icon){
     let $url = '/saveUserIcon';
 
     let $file = new ImgWorker($(this));
-    $file.imgSend($url, $('#f_img_icon'));   
+    $file.imgSend($url, $('#f_img_icon'), function(request){
+        console.log(request);
+    });   
 });
 
 $('.f_dropdown-item-month').click(function(){

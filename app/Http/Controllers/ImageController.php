@@ -53,7 +53,7 @@ class ImageController extends Controller
         $file = array('image' => $data);
 
         $validator = Validator::make($file, [
-            'image' => 'mimes:jpeg,jpg,png,gif|required|max:7000000'
+            'image' => 'mimes:jpeg,jpg,png,gif|required|max:7000000|image',
         ]);
 
         if ($validator->fails())

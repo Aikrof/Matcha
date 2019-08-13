@@ -322,6 +322,16 @@ h1 .subtitle {
     height: 80px;
     resize: none;
 }
+.flexible{
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.orient_choose{
+    margin-top: 10px;
+    cursor: pointer;
+}
 /*** /USER PAGE STYLESHEETS ***/
 .text-muted {
     color: #9A9A9A;

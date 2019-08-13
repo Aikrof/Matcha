@@ -52,7 +52,7 @@ class FirstEntryController extends Controller
     	$info = [];
 
     	$info['orientation'] = !empty($request->orientation) ? 
-                                lcfirst($request->orientation) : null;
+                                $request->orientation : null;
     	$info['age'] = (is_numeric($request->age) &&
                         ($request->age > 10)) ? $request->age : 0;
 
@@ -119,7 +119,7 @@ class FirstEntryController extends Controller
     {
         $user_info = Info::find($request->user()['id']);
         $user_info->update([
-            'orientation' => ($info['orientation'] !== null) ? $info['orientation'] : 'bisexual',
+            'orientation' => ($info['orientation'] !== null) ? $info['orientation'] : 'Bisexual',
             'age' => $info['age'],
             'birthday' => $this->yearConversion($info['birthday']),
             'interests' => $info['interests'],

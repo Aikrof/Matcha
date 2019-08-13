@@ -61,4 +61,34 @@ class UserProfileController extends Controller
     	
         return ($data);
     }
+
+    public function updateProfile(Request $request)
+    {
+        $this->validateRequest($request->all());
+    
+        $info = Info::find($request->user()->id);
+
+        foreach ($request->all() as $key => $value) {
+           $info->$key = $value;
+        }
+
+        $info->save();
+
+        // $user = User::where('login', 'denis_mina132')->first();
+        // echo "<pre>";
+        // var_dump($user['id']);
+        // exit;
+    }
+
+    private function validateRequest($data)
+    {
+        // $class = 'App\Helper\ProfileInfoHelper';
+        
+        // foreach ($data as $key => $value){
+        //     $call = $class . "::" . $key;
+            
+        //     if (is_callable($call))
+        //         call_user_func($call, [$key => $value]);
+        // }
+    }
 }

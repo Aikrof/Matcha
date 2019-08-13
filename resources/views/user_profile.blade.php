@@ -20,13 +20,13 @@
         <div class="card-body">
         <form>
             <div class="row">
-            	<div class="col-md-4 px-1">
+            	<div class="col-md-5 px-1">
                 	<div class="form-group">
                 		<label>Username</label>
                 		<input type="text" class="form-control" placeholder="Username" disabled="" value="{{ucfirst(strtolower($data['user']['login']))}}">
                 	</div>
             	</div>
-            	<div class="col-md-8 pl-1">
+            	<div class="col-md-7 pl-1">
                 	<div class="form-group">
                     	<label for="exampleInputEmail1">Email address</label>
                     	<input type="email" class="form-control" placeholder="Email" disabled="" value="{{$data['user']['email']}}">
@@ -37,13 +37,13 @@
                 <div class="col-md-6 pr-1">
                     <div class="form-group">
                         <label>First Name</label>
-                        <input type="text" class="form-control" placeholder="Company" value="{{$data['info']['first_name']}}">
+                        <input type="text" class="form-control edit edit_inp" name="first_name" placeholder="First Name" value="{{$data['info']['first_name']}}">
                     </div>
                 </div>
                 <div class="col-md-6 pl-1">
                     <div class="form-group">
                         <label>Last Name</label>
-                        <input type="text" class="form-control" placeholder="Last Name" value="{{$data['info']['last_name']}}">
+                        <input type="text" class="form-control edit_inp" name="last_name" placeholder="Last Name" value="{{$data['info']['last_name']}}">
                 	</div>
                 </div>
             </div>
@@ -57,7 +57,15 @@
                 <div class="col-md-6 pr-1">
                     <div class="form-group">
                         <label>Orientation</label>
-                        <input type="text" class="form-control" placeholder="orientation" value="{{$data['info']['orientation']}}">
+                        <p class="form-control dropdown-toggle nav-link flexible" data-toggle="dropdown">
+                            <span>{{$data['info']['orientation']}}</span>
+                        </p>
+                        <input type="hidden" class="form-control">
+                        <ul class="dropdown-menu orient_choose">
+                            <a class="dropdown-item edit_orient" name="orientation" change="flexible">Heterosexual</a>
+                            <a class="dropdown-item edit_orient" name="orientation" change="flexible">Bisexual</a>
+                            <a class="dropdown-item edit_orient" name="orientation" change="flexible">Homosexual</a>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -65,13 +73,13 @@
                 <div class="col-md-4 pr-1">
                     <div class="form-group">
                         <label>Age</label>
-                        <input type="text" class="form-control" placeholder="Age" value="{{($data['info']['age'] === 0) ? '' : $data['info']['age']}}">
+                        <input type="text" class="form-control edit_inp" name="age" placeholder="Age" value="{{($data['info']['age'] === 0) ? '' : $data['info']['age']}}">
                     </div>
                 </div>
                 <div class="col-md-8 pr-1">
                     <div class="form-group">
                         <label>Birthday</label>
-                        <input type="text" class="form-control" placeholder="Birthday" value="{{$data['info']['birthday']}}">
+                        <input type="text" class="form-control edit_inp" name="birthday" placeholder="Birthday" value="{{$data['info']['birthday']}}">
                     </div>
                 </div>
             </div>
@@ -105,8 +113,6 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-info btn-fill pull-right">Update Profile</button>
-            <div class="clearfix"></div>
         </form>
     	</div>
     </div>
@@ -114,7 +120,7 @@
 <div class="col-md-4">
     <div class="card card-user">
         <div class="card-image">
-            <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" alt="...">
+            <img src="{{'img/sidebar/' . $data['user']['backgroundImg']}}" alt="...">
        	</div>
         <div class="card-body">
             <div class="author">
@@ -128,18 +134,6 @@
                 {{$data['info']['about']}}
             </p>
        	</div>
-       	<hr>
-       	<div class="button-container mr-auto ml-auto">
-           	<button href="#" class="btn btn-simple btn-link btn-icon">
-               	<i class="fa fa-facebook-square"></i>
-            </button>
-           	<button href="#" class="btn btn-simple btn-link btn-icon">
-               	<i class="fa fa-twitter"></i>
-            </button>
-            <button href="#" class="btn btn-simple btn-link btn-icon">
-                <i class="fa fa-google-plus-square"></i>
-            </button>
-        </div>
     </div>
 </div>
 </div>
@@ -147,3 +141,9 @@
 
 @endsection
 <!-- /CONTENT -->
+
+<!-- CONTENT SCRIPT -->
+@section('script')
+    <script type="text/javascript" src="js/user.js"></script>
+@endsection
+ <!-- /CONTENT SCRIPT -->
