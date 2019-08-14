@@ -332,6 +332,44 @@ h1 .subtitle {
     margin-top: 10px;
     cursor: pointer;
 }
+.birthday_cont{
+    display: flex;
+}
+.birthday_cont input[type='text']:first-child{
+    width: 12%;
+    margin-right: 10px;
+}
+.birthday_cont div{
+    display: flex;
+    width: 40%;
+    margin-right: 10px; 
+}
+.birthday_cont div p{
+    width: 100%;
+}
+.birthday_cont div .month_cont{
+    display: flex;
+    flex-direction: column;
+}
+.birthday_cont div .moth_cont label{
+    margin: 0;
+}
+.birthday_cont input[type='text']:last-child{
+    width: 14%;
+}
+.birthday_cont div p span{
+    display: inline-block;
+    width: 90%;
+}
+.birthday_cont div .month_cont label{
+    margin: 0;
+}
+.birthday_buttn{
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 /*** /USER PAGE STYLESHEETS ***/
 .text-muted {
     color: #9A9A9A;

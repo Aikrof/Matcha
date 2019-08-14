@@ -7,6 +7,7 @@ use App\Info;
 use App\User;
 use App\Location;
 use App\Tags;
+use App\Birthday;
 use Illuminate\Http\Request;
 
 class FirstEntryController extends Controller
@@ -35,8 +36,9 @@ class FirstEntryController extends Controller
     	$info = $this->validateRequest($request);
 
         $this->userAddInfo($request, $info);
-        $this->createRating($request, $info);
+        $this->createBirthday($request, $info['birthday']);
         $this->createLocation($request, $info);
+        $this->createRating($request, $info);
         $this->addTags($request, $info);
         exit;
     }
@@ -69,7 +71,7 @@ class FirstEntryController extends Controller
     				$info['age'] = null;
     		}
     		else
-    			$info['birthday'] = date('Y') - $request->birthday['year'] >= 100 ? null : $request->birthday;
+    			$info['birthday'] = date('Y') - $request->birthday['year'] >= 65 ? null : $request->birthday;
     	}
     	else
     		$info['birthday'] = null;
@@ -121,7 +123,6 @@ class FirstEntryController extends Controller
         $user_info->update([
             'orientation' => ($info['orientation'] !== null) ? $info['orientation'] : 'Bisexual',
             'age' => $info['age'],
-            'birthday' => $this->yearConversion($info['birthday']),
             'interests' => $info['interests'],
             'about' => $info['about']
         ]);
@@ -141,21 +142,19 @@ class FirstEntryController extends Controller
     }
 
     /**
-    * Conversion array user birthday into string.
+    * Add birthday data to birthday table.
     *
     * @param  array  $birthday
-    * @return string $birthday
+    * @return void
     */
-    private function yearConversion($birthday)
+    protected function createBirthday(Request $request, $birthday)
     {
-        if (!$birthday)
-            return (NULL);
-
-        return (implode('-', [
-            'month' => $birthday['month'],
+        Birthday::create([
+            'id' => $request->user()['id'],
             'day' => $birthday['day'],
-            'year' => $birthday['year']
-        ]));
+            'month' => $birthday['month'],
+            'year' => $birthday['year'],
+        ]);
     }
 
     /**

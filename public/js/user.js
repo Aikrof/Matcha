@@ -1,4 +1,4 @@
-$('.edit_orient').click(function(){
+$('.edit_select').click(function(){
 	$change = $(this).attr('change');
 
 	if ($change)
@@ -18,3 +18,4 @@ function editProfile($target, $value)
 	let $obj = {[$name] : $value};
 	sender.form('/profileUpdate', $obj);
 }
+

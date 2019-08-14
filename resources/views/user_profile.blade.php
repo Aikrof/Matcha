@@ -20,13 +20,13 @@
         <div class="card-body">
         <form>
             <div class="row">
-            	<div class="col-md-5 px-1">
+            	<div class="col-md-6 pr-1">
                 	<div class="form-group">
                 		<label>Username</label>
                 		<input type="text" class="form-control" placeholder="Username" disabled="" value="{{ucfirst(strtolower($data['user']['login']))}}">
                 	</div>
             	</div>
-            	<div class="col-md-7 pl-1">
+            	<div class="col-md-6 pr-1">
                 	<div class="form-group">
                     	<label for="exampleInputEmail1">Email address</label>
                     	<input type="email" class="form-control" placeholder="Email" disabled="" value="{{$data['user']['email']}}">
@@ -40,7 +40,7 @@
                         <input type="text" class="form-control edit edit_inp" name="first_name" placeholder="First Name" value="{{$data['info']['first_name']}}">
                     </div>
                 </div>
-                <div class="col-md-6 pl-1">
+                <div class="col-md-6 pr-1">
                     <div class="form-group">
                         <label>Last Name</label>
                         <input type="text" class="form-control edit_inp" name="last_name" placeholder="Last Name" value="{{$data['info']['last_name']}}">
@@ -48,13 +48,13 @@
                 </div>
             </div>
             <div class="row user_a_b">
-                <div class="col-md-6 pr-1">
+                <div class="col-md-4 pr-1">
                     <div class="form-group">
                         <label>Gender</label>
                         <input type="text" class="form-control" placeholder="gender" disabled="" value="{{ $data['info']['gender']}}">
                     </div>
                 </div>
-                <div class="col-md-6 pr-1">
+                <div class="col-md-4 pr-1">
                     <div class="form-group">
                         <label>Orientation</label>
                         <p class="form-control dropdown-toggle nav-link flexible" data-toggle="dropdown">
@@ -62,35 +62,65 @@
                         </p>
                         <input type="hidden" class="form-control">
                         <ul class="dropdown-menu orient_choose">
-                            <a class="dropdown-item edit_orient" name="orientation" change="flexible">Heterosexual</a>
-                            <a class="dropdown-item edit_orient" name="orientation" change="flexible">Bisexual</a>
-                            <a class="dropdown-item edit_orient" name="orientation" change="flexible">Homosexual</a>
+                            <a class="dropdown-item edit_select" name="orientation" change="flexible">Heterosexual</a>
+                            <a class="dropdown-item edit_select" name="orientation" change="flexible">Bisexual</a>
+                            <a class="dropdown-item edit_select" name="orientation" change="flexible">Homosexual</a>
                         </ul>
                     </div>
                 </div>
-            </div>
-            <div class="row user_a_b">
                 <div class="col-md-4 pr-1">
                     <div class="form-group">
                         <label>Age</label>
                         <input type="text" class="form-control edit_inp" name="age" placeholder="Age" value="{{($data['info']['age'] === 0) ? '' : $data['info']['age']}}">
                     </div>
                 </div>
-                <div class="col-md-8 pr-1">
+            </div>
+            <div class="row user_a_b">
+                <div class="col-md-4 pr-1">
                     <div class="form-group">
-                        <label>Birthday</label>
-                        <input type="text" class="form-control edit_inp" name="birthday" placeholder="Birthday" value="{{$data['info']['birthday']}}">
+                        <label>Birthday Day</label>
+                        <input type="text" maxlength="2" class="form-control edit_inp" name="day" placeholder="Day" value="{{($data['birthday']['day'] === 0) ? '' : $data['birthday']['day']}}">
                     </div>
                 </div>
+                <div class="col-md-4 pr-1">
+                    <div class="form-group">
+                        <label>Birtday Month</label>
+                        <p class="form-control dropdown-toggle nav-link birthday_buttn" data-toggle="dropdown">
+                            <span>{{$data['birthday']['month'] === null ? 'Month' : $data['birthday']['month']}}</span>
+                        </p>
+                        <input type="hidden" class="form-control">
+                        <ul class="dropdown-menu orient_choose">
+                            <a class="dropdown-item edit_select" name="month" change="birthday_buttn">January</a>
+                            <a class="dropdown-item edit_select" name="month" change="birthday_buttn">February</a>
+                            <a class="dropdown-item edit_select" name="month" change="birthday_buttn">March</a>
+                            <a class="dropdown-item edit_select" name="month" change="birthday_buttn">April</a>
+                            <a class="dropdown-item edit_select" name="month" change="birthday_buttn">May</a>
+                            <a class="dropdown-item edit_select" name="month" change="birthday_buttn">June</a>
+                            <a class="dropdown-item edit_select" name="month" change="birthday_buttn">July</a>
+                            <a class="dropdown-item edit_select" name="month" change="birthday_buttn">August</a>
+                            <a class="dropdown-item edit_select" name="month" change="birthday_buttn">September</a>
+                            <a class="dropdown-item edit_select" name="month" change="birthday_buttn">October</a>
+                            <a class="dropdown-item edit_select" name="month" change="birthday_buttn">November</a>
+                            <a class="dropdown-item edit_select" name="month" change="birthday_buttn">December</a>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 pr-1">
+                    <div class="form-group">
+                        <label>Birthday year</label>
+                        <input type="text" maxlength="4" class="form-control edit_inp" name="year" placeholder="year" value="{{($data['birthday']['year'] === 0) ? '' : $data['birthday']['year']}}">
+                    </div>
+                </div>
+
             </div>
             <div class="row">
-            	<div class="col-md-4 pr-1">
+            	<div class="col-md-5 pr-1">
                 	<div class="form-group">
                     	<label>City</label>
                     	<input type="text" class="form-control" placeholder="City" disabled="" value="{{$data['location']['city']}}">
                 	</div>
             	</div>
-            	<div class="col-md-4 px-1">
+            	<div class="col-md-5 pr-1">
                 	<div class="form-group">
                     	<label>Country</label>
                     	<input type="text" class="form-control" placeholder="Country" disabled="" value="{{$data['location']['country']}}">

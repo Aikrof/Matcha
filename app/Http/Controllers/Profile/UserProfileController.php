@@ -7,6 +7,8 @@ use Auth;
 use App\User;
 use App\Info;
 use App\Location;
+use App\Birthday;
+use App\Helper\profileInfoHelper as ProfileHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -46,14 +48,18 @@ class UserProfileController extends Controller
     	$data = [
     		'user' => User::find($id),
     		'info' => Info::find($id),
-    		'location' => Location::find($id)
+    		'location' => Location::find($id),
+            'birthday' => Birthday::find($id),
     	];
 
         if ($data['info']['icon'] !== 'spy.png')
             $file_path = storage_path('app/profiles/' . Auth::user()['login'] . '/icon/' . $data['info']['icon']);
         else
             $file_path = public_path('img/icons/spy.png');
-        
+
+        if ($this->checkBirthday($data['birthday']))
+            $data['birthday'] = null;
+
         $contents = file_get_contents($file_path);
         $mime_type = File::mimeType($file_path);
         $base = "data:image/" . $mime_type . ";base64," . base64_encode($contents);
@@ -62,33 +68,37 @@ class UserProfileController extends Controller
         return ($data);
     }
 
+    private function checkBirthday($birthday)
+    {
+        return (
+            in_array(null,
+                ['day' => $birthday->day,
+                'month' => $birthday->month,
+                'year' => $birthday->year
+            ])
+        );
+    }
+
+
     public function updateProfile(Request $request)
     {
-        $this->validateRequest($request->all());
-    
-        $info = Info::find($request->user()->id);
+        ProfileHelper::validateRequest($request->all(), $request->user()->id);
+        
+        $arr_key = key($request->all());
+        if ($arr_key === 'day' || $arr_key === 'month' || $arr_key === 'year')
+            $table = Birthday::find($request->user()->id);
+        else
+            $table = Info::find($request->user()->id);
 
-        foreach ($request->all() as $key => $value) {
-           $info->$key = $value;
+        foreach ($request->all() as $key => $value){
+           $table->$key = $value;
         }
 
-        $info->save();
+        $table->save();
 
         // $user = User::where('login', 'denis_mina132')->first();
         // echo "<pre>";
         // var_dump($user['id']);
         // exit;
-    }
-
-    private function validateRequest($data)
-    {
-        // $class = 'App\Helper\ProfileInfoHelper';
-        
-        // foreach ($data as $key => $value){
-        //     $call = $class . "::" . $key;
-            
-        //     if (is_callable($call))
-        //         call_user_func($call, [$key => $value]);
-        // }
     }
 }
