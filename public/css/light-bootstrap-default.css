@@ -370,6 +370,11 @@ h1 .subtitle {
     justify-content: space-between;
     align-items: center;
 }
+.form-group > .user_location{
+    cursor: pointer;
+    border: 2px solid #888888;
+    color: #888888;
+}
 /*** /USER PAGE STYLESHEETS ***/
 .text-muted {
     color: #9A9A9A;

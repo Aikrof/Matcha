@@ -78,13 +78,13 @@
             <div class="row user_a_b">
                 <div class="col-md-4 pr-1">
                     <div class="form-group">
-                        <label>Birthday Day</label>
+                        <label>Birth Day</label>
                         <input type="text" maxlength="2" class="form-control edit_inp" name="day" placeholder="Day" value="{{($data['birthday']['day'] === 0) ? '' : $data['birthday']['day']}}">
                     </div>
                 </div>
                 <div class="col-md-4 pr-1">
                     <div class="form-group">
-                        <label>Birtday Month</label>
+                        <label>Birth Month</label>
                         <p class="form-control dropdown-toggle nav-link birthday_buttn" data-toggle="dropdown">
                             <span>{{$data['birthday']['month'] === null ? 'Month' : $data['birthday']['month']}}</span>
                         </p>
@@ -107,7 +107,7 @@
                 </div>
                 <div class="col-md-4 pr-1">
                     <div class="form-group">
-                        <label>Birthday year</label>
+                        <label>Birth Year</label>
                         <input type="text" maxlength="4" class="form-control edit_inp" name="year" placeholder="year" value="{{($data['birthday']['year'] === 0) ? '' : $data['birthday']['year']}}">
                     </div>
                 </div>
@@ -117,37 +117,34 @@
             	<div class="col-md-6 pr-1">
                 	<div class="form-group">
                     	<label>City</label>
-                    	<input type="text" class="form-control" placeholder="City" disabled="" value="{{$data['location']['user_access'] === 1 ? $data['location']['city'] : ''}}">
+                    	<input type="text" class="form-control"disabled="" value="{{$data['location']['user_access'] === 1 ? $data['location']['city'] : ''}}">
                 	</div>
             	</div>
-            	<div class="col-md-6 pr-1">
+                <div class="col-md-6 pr-1">
                 	<div class="form-group">
                     	<label>Country</label>
-                    	<input type="text" class="form-control" placeholder="Country" disabled="" value="{{$data['location']['user_access'] === 1 ? $data['location']['country'] : ''}}">
+                    	<input type="text" class="form-control" disabled="" value="{{$data['location']['user_access'] === 1 ? $data['location']['country'] : ''}}">
                 	</div>
             	</div>
-                <div class="col-md-12 pr-1" style="margin: 0;padding: 0;display: flex;justify-content: center;">
-                <div class="col-md-4 pr-1" style="margin: 0;padding: 0;">
-                    <div class="form-group" style="margin: 0;padding: 0;display: inline-flex;">
-                        <label></label>
-                        <p class="btn form-control" style="display: flex;justify-content: center;align-items: center;cursor: pointer;">Add location
-                        <i class="fa fa-map-marker" aria-hidden="true" style="font-size: 35px;margin: 0 0 5px 2px;"></i></p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2 pr-1">
+                    <div class="form-group">
+                        <label>Location</label>
+                        <p class="btn form-control user_location">Add Location</p>
+                        <p class="btn form-control user_location">Remove Location</p>
                     </div>
-                </div>
-                 <div class="col-md-4 pr-1" style="margin: 0;padding: 0;">
-                    <div class="form-group" style="margin: 0;padding: 0;display: inline-flex;">
-                        <label></label>
-                        <p class="btn form-control" style="display: flex;justify-content: center;align-items: center;cursor: pointer;">Remove location
-                        <i class="fa fa-map-marker" aria-hidden="true" style="font-size: 35px;margin: 0 0 5px 2px;"></i></p>
-                    </div>
-                </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group interests">
+                <div class="col-md-5">
+                    <div class="form-group">
                         <label>Interests</label>
-                        <textarea rows="4" cols="80" class="form-control" placeholder="Add your interests with tag #">{{$data['info']['interests']}}</textarea>
+                        <div style="display: flex;">
+                            <input class="form-control" placeholder="Add your interests with tag #">
+                            <p class="btn" style="margin-left: 10px;cursor: pointer;">Add</p>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -52,8 +52,14 @@ entry = {
     interests: function(){
         return ('\
             <div class="form-group f_interests_cont">\
-                <label for="comment">List of interests</label>\
-                <textarea name="interests" placeholder="Add your interests with tag #" class="form-control" id="tagHelper"></textarea>\
+                <label>List of interests</label>\
+                <div class="form-group">\
+                        <label>Interests</label>\
+                        <div style="display: flex;">\
+                            <input class="form-control" placeholder="Add your interests with tag #" id="tagHelper">\
+                            <p class="btn" style="margin-left: 10px">Add</p>\
+                        </div>\
+                    </div>\
             </div>\
         ');
     },

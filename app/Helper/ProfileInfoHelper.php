@@ -21,11 +21,16 @@ class ProfileInfoHelper
         $validation = Validator::make($data, [
             'first_name' => ['string', 'max:20', 'alpha'],
             'last_name' => ['string', 'max:20', 'alpha'],
-            'age' => ['max:2', 'integer'],
+            'age' => ['max:2'],
         ]);
 
         if ($validation->fails())
+        {
+            echo"<pre>"; 
+            var_dump(123);
             exit;
+            exit;
+        }
 
         if (isset($data['birthday']) && !self::validateBirthday($data, $user_id))
             exit;
