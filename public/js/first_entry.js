@@ -71,7 +71,7 @@ entry = {
         return ('\
             <div class="form-group f_location">\
                 <i class="fa fa-map-marker"></i>\
-                <p class="class="btn add_local">Add your location</p>\
+                <p class="add_local">Add your location</p>\
                 <input type="hidden" name="latitude">\
                 <input type="hidden" name="longitude">\
                 <input type="hidden" name="country">\

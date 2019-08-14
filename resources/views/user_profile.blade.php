@@ -114,18 +114,34 @@
 
             </div>
             <div class="row">
-            	<div class="col-md-5 pr-1">
+            	<div class="col-md-6 pr-1">
                 	<div class="form-group">
                     	<label>City</label>
-                    	<input type="text" class="form-control" placeholder="City" disabled="" value="{{$data['location']['city']}}">
+                    	<input type="text" class="form-control" placeholder="City" disabled="" value="{{$data['location']['user_access'] === 1 ? $data['location']['city'] : ''}}">
                 	</div>
             	</div>
-            	<div class="col-md-5 pr-1">
+            	<div class="col-md-6 pr-1">
                 	<div class="form-group">
                     	<label>Country</label>
-                    	<input type="text" class="form-control" placeholder="Country" disabled="" value="{{$data['location']['country']}}">
+                    	<input type="text" class="form-control" placeholder="Country" disabled="" value="{{$data['location']['user_access'] === 1 ? $data['location']['country'] : ''}}">
                 	</div>
             	</div>
+                <div class="col-md-12 pr-1" style="margin: 0;padding: 0;display: flex;justify-content: center;">
+                <div class="col-md-4 pr-1" style="margin: 0;padding: 0;">
+                    <div class="form-group" style="margin: 0;padding: 0;display: inline-flex;">
+                        <label></label>
+                        <p class="btn form-control" style="display: flex;justify-content: center;align-items: center;cursor: pointer;">Add location
+                        <i class="fa fa-map-marker" aria-hidden="true" style="font-size: 35px;margin: 0 0 5px 2px;"></i></p>
+                    </div>
+                </div>
+                 <div class="col-md-4 pr-1" style="margin: 0;padding: 0;">
+                    <div class="form-group" style="margin: 0;padding: 0;display: inline-flex;">
+                        <label></label>
+                        <p class="btn form-control" style="display: flex;justify-content: center;align-items: center;cursor: pointer;">Remove location
+                        <i class="fa fa-map-marker" aria-hidden="true" style="font-size: 35px;margin: 0 0 5px 2px;"></i></p>
+                    </div>
+                </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-12">

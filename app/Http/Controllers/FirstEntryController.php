@@ -31,7 +31,7 @@ class FirstEntryController extends Controller
     */
     public function firstEntry(Request $request)
     {
-        // $this->SuccessfulUserFirstEntry($request);
+        $this->SuccessfulUserFirstEntry($request);
 
     	$info = $this->validateRequest($request);
 
