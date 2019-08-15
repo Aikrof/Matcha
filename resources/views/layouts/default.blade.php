@@ -192,7 +192,7 @@
     <script src="js/core/bootstrap.min.js" type="text/javascript"></script>
     <!-- TEMPL SWEET ALERT -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-    <!-- SENDER -->
+    <!-- HELPER -->
     <script type="text/javascript" src="js/helper.js"></script>
     <!-- DEFAULT -->
     <script type="text/javascript" src="js/default.js"></script>

@@ -1,7 +1,7 @@
 entry = {
     icon: function(){
         return ('\
-            <div class="form-group f_icon_con">\
+            <div class="f_icon_con">\
                 <label>Add icon:</label>\
                 <div class="custom-file">\
                     <label>\
@@ -15,20 +15,20 @@ entry = {
 
     sexualOrient: function(){
         return ('\
-                <div class="dropdown open f_sexual">\
+                <form class="dropdown open f_sexual">\
                 <label>Sexual orientations:</label>\
                 <p class="btn btn-secondary dropdown-toggle orient_dropdown-item" data-toggle="dropdown">Sexual orientations</p>\
                 <input type="hidden" name="orientation">'
                 + ((new orient).getOrientation()) +
-                '</div>\
+                '</form>\
         ');
     },
     age: function(){
         return ('\
-            <div class="form-group f_age_cont">\
+            <form class="form-group f_age_cont f_age">\
                 <label>Age:</label>\
                 <input type="text" class="form-control" maxlength="2" placeholder="Age" name="age">\
-            </div>\
+            </form>\
         ');
     },
 
@@ -36,7 +36,7 @@ entry = {
         return ('\
             <div class="form-group">\
                 <label>Birthday:</label>\
-                <div class="f_birthday">\
+                <form class="f_birthday">\
                     <input type="text" name="day" class="form-control" maxlength="2" placeholder="Day">\
                     <div class="dropdown open">\
                         <p class="btn dropdown-toggle f_birthday_buttn" data-toggle="dropdown"><span class="month_dropdown-item">Month</span></p>\
@@ -44,45 +44,45 @@ entry = {
                         + (new month()).getMonth() + 
                     '</div>\
                     <input type="text" name="year" class="form-control" maxlength="4" placeholder="Year">\
-                </div>\
+                </form>\
             </div>\
         ');
     },
 
     interests: function(){
         return ('\
-            <div class="form-group f_interests_cont">\
+            <form class="form-group f_interests_cont f_interests">\
                 <label>List of interests</label>\
                 <div class="form-group">\
                         <label>Interests</label>\
                         <div style="display: flex;">\
-                            <input class="form-control" placeholder="Add your interests with tag #" id="tagHelper">\
+                            <input name="interests" class="form-control" placeholder="Add your interests with tag #" id="tagHelper">\
                             <p class="btn" style="margin-left: 10px">Add</p>\
                         </div>\
                     </div>\
-            </div>\
+            </form>\
         ');
     },
 
     about: function(){
         return ('\
-            <div class="form-group f_about_cont">\
+            <form class="form-group f_about_cont f_about">\
                 <label for="comment">About:</label>\
                 <textarea name="about" placeholder="Add some info about yourself" class="form-control"></textarea>\
-            </div>\
+            </form>\
         ')
     },
 
     location: function(){
         return ('\
-            <div class="form-group f_location">\
+            <form class="form-group f_location">\
                 <i class="fa fa-map-marker"></i>\
                 <p class="add_local">Add your location</p>\
                 <input type="hidden" name="latitude">\
                 <input type="hidden" name="longitude">\
                 <input type="hidden" name="country">\
                 <input type="hidden" name="city">\
-            </div>\
+            </form>\
         ')
     }
 }
@@ -121,7 +121,7 @@ var month = function(){
 
         for (let month of this.year){
             val += '<label>\
-                    <span class="dropdown-item f_dropdown-item-month">' + month + '</span>\
+                    <span class="dropdown-item f_dropdown-item-month" onclick="bdMonth">' + month + '</span>\
                 </label>';
         }
 
@@ -133,62 +133,99 @@ var month = function(){
     }
 }
 
-Swal.fire({
-    type: 'question',
+// Swal.fire({
+//     type: 'question',
+//     title: 'Add info about yourself',
+//     html: '<form id="firstEntry">' +
+//             entry.icon() + entry.age() + entry.birthday() +
+//             entry.sexualOrient() + entry.interests() +
+//             entry.about() + entry.location() +
+//             '</form>',
+//     showCloseButton: true,
+// }).then((result) =>{
+//     if (result)
+//         (new FirstEntrySend($('#firstEntry'))).send();
+// });
+
+Swal.mixin({
     title: 'Add info about yourself',
-    html: '<form id="firstEntry">' +
-            entry.icon() + entry.age() + entry.birthday() +
-            entry.sexualOrient() + entry.interests() +
-            entry.about() + entry.location() +
-            '</form>',
-    showCloseButton: true,
-}).then((result) =>{
-    if (result)
-        (new FirstEntrySend($('#firstEntry'))).send();
+    showCancelButton: true,
+    confirmButtonText: 'Next &rarr;',
+    reverseButtons: true,
+    progressSteps: ['Ic', 'Ag', 'Bi', 'Or', 'In' , 'Ab' , 'Lo']
+}).queue([
+    {
+        html: entry.icon(),
+    },
+
+    {
+        html: entry.age(),
+        preConfirm: function(){
+            firstEntrySender.send($('.f_age'));
+        }
+    },
+
+    {
+        html: entry.birthday(),
+        preConfirm: function(value){
+            firstEntrySender.send($('.f_birthday'));
+        }
+    },
+
+    {
+        html: entry.sexualOrient(),
+        preConfirm: function(value){
+           firstEntrySender.send($('.f_sexual'));
+        }
+    },
+
+    {
+        html: entry.interests(),
+        preConfirm: function(value){
+            firstEntrySender.send($('.f_interests'));
+        }
+    },
+    
+    {
+        html: entry.about(),
+        preConfirm: function(value){
+           firstEntrySender.send($('.f_about'));
+        }
+    },
+
+    {
+        html: entry.location(),
+        preConfirm: function(value){
+            firstEntrySender.send($('.f_location'));
+        }
+    },
+
+]).then((result) => {
+    console.log(result);
 });
 
-function FirstEntrySend($form){
 
-    var formProcessing = function(){
-        var $data = {};
+firstEntrySender = {
 
-        $form.find ('input, textarea').each(function(){
-            if (this.name)
-                $data[this.name] = $(this).val();
-        });
+    send: function($form){
+        var $obj = (function(){
+            var $data = {};
 
-        $data['birthday'] = {
-            'day' : $data['day'],
-            'month' : $data['month'],
-            'year' : $data['year'],
-        }
-        $data['location'] = {
-            'latitude' : $data['latitude'],
-            'longitude' : $data['longitude'],
-            'country' : $data['country'],
-            'city' : $data['city'],
-        };
-        delete $data['day'];
-        delete $data['month'];
-        delete $data['year'];
-        delete $data['latitude'];
-        delete $data['longitude'];
-        delete $data['country'];
-        delete $data['city'];
+            $form.find ('input, textarea').each(function(){
+                if (this.name)
+                    $data[this.name] = $(this).val();
+            });
 
-        return $data; 
+            return ($data);
+        }());
+        console.log($obj);
+        // sender.form('/firstEntry', $obj, function(request){
+        //     console.log(request);
+        // });
     }
-
-    this.send = function(){
-        var obj = formProcessing();
-        console.log(obj);
-        sender.form('/firstEntry', obj, function(request){
-            console.log(request);
-        });
-    }
-
-
 }
+
+
 
 $('#tagHelper').bind('input', function(){
     $tag = $(this).val().split('#');
@@ -204,6 +241,9 @@ $('#tagHelper').bind('input', function(){
     }
 });
 
+/*
+| Change icon
+*/
 $('#f_icon').change(function(icon){
     let $url = '/saveUserIcon';
 
@@ -213,7 +253,15 @@ $('#f_icon').change(function(icon){
     });   
 });
 
-$('.f_dropdown-item-month').click(function(){
+/*
+| Change Birth month
+*/
+
+function bdMonth(){
+    console.log(123);
+};
+$('.f_dropdown-item-month').click(function(e){
+    console.log(e);
     $('input[name="month"]').val(this.innerText);
     $('.month_dropdown-item')[0].innerHTML = this.innerText;
 });

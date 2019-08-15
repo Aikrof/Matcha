@@ -129,7 +129,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-2 pr-1">
+                <div class="col-md-6 pr-1">
                     <div class="form-group">
                         <label>Location</label>
                         <p class="btn form-control user_location">Add Location</p>
@@ -138,13 +138,19 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-12">
                     <div class="form-group">
-                        <label>Interests</label>
+                        <label>Add Interests</label>
                         <div style="display: flex;">
                             <input class="form-control" placeholder="Add your interests with tag #">
                             <p class="btn" style="margin-left: 10px;cursor: pointer;">Add</p>
                         </div>
+                        <p class="form-control dropdown-toggle nav-link flexible" data-toggle="dropdown" style="width: 50%;">
+                            <span>Remove Interests</span>
+                        </p>
+                         <ul class="dropdown-menu">
+                            
+                        </ul>
                     </div>
                 </div>
             </div>
