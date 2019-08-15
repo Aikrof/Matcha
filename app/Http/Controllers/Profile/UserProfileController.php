@@ -7,6 +7,7 @@ use Auth;
 use App\User;
 use App\Info;
 use App\Location;
+use App\Interests;
 use App\Birthday;
 use App\Helper\profileInfoHelper as ProfileHelper;
 use Illuminate\Http\Request;
@@ -57,7 +58,7 @@ class UserProfileController extends Controller
         else
             $file_path = public_path('img/icons/spy.png');
 
-        if ($this->checkBirthday($data['birthday']))
+        if (!empty($data['birthday']) && $this->checkBirthday($data['birthday']))
             $data['birthday'] = null;
 
         $contents = file_get_contents($file_path);

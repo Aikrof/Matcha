@@ -13,7 +13,7 @@
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.*/
  
 /*      light colors         */
-
+@import url(https://fonts.googleapis.com/css?family=Pattaya|Work+Sans:400,200,300);
 @keyframes spin {
     from {
         transform: rotate(0deg);
@@ -187,32 +187,67 @@ h1 .subtitle {
 }
 
 /*** FIRST ENTRY STYLESHEETS ***/
-#firstEntry{
+#swal2-title{
+    font-family: 'Pattaya', sans-serif;
+    font-size: 43px;
+    color: #e74c3c;
+}
+.swal2-actions,
+.swal2-progress-steps,
+.swal2-progress-step,
+.swal2-progress-steps,
+.swal2-progress-step-line{
+    z-index: 0!important;
+}
+.fle_xeble_col{
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
-#firstEntry .form-group{
-    margin: 0;
-    margin-bottom: 15px;
+
+.fle_xeble{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+.h-180{
+    height: 180px;
+}
+.h-20{
+    height: 40px;
+}
+
+.helperRel{
+    position: relative;
+}
+.helperAbs{
+    display: flex;
+    background-color: #ffffff;
+    position: absolute;
+    top: -10px;
+    z-index: 10;
+}
+
 .f_icon_con{
-    height: 163px;
+    height: 180px;
     display: flex;
     flex-direction: column;
+}
+.pattaya_style{
+    font-size: 26px;
+    font-family: 'Pattaya', sans-serif;
+    color:  #330000;
 }
 .f_icon_con img{
     cursor: pointer;
     width: 134px;
     height: 134px;
-    border: 5px solid #777777;
+    border: 5px solid #545454;
     border-radius: 50%;
 }
 #f_icon{
     display: none;
-}
-.f_icon_con div label p{
-
 }
 .f_sexual{
     display: flex;
@@ -225,7 +260,6 @@ h1 .subtitle {
 }
 .f_age_cont .form-control{
     border: 2px solid #777777;
-    width: 25%;
 }
 .f_birthday{
     display: flex;
@@ -294,9 +328,14 @@ h1 .subtitle {
 .f_location{
     cursor: pointer;
     display: flex;
-    align-items: flex-end;
+    /*align-items: flex-end;*/
     margin-bottom: 0;
 }
+.f_location .fa{
+    font-size: 2.3em;
+}
+
+
 .f_location p{
     margin: 0;
     margin-left: 10px;
