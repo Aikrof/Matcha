@@ -18,55 +18,107 @@ class ProfileInfoHelper
 
     public static function validateRequest($data, $user_id)
     {
+        $key = key($data);
+
         $validation = Validator::make($data, [
             'first_name' => ['string', 'max:20', 'alpha'],
             'last_name' => ['string', 'max:20', 'alpha'],
-            'age' => ['max:2'],
+            'age' => ['between:10,60', 'numeric'],
         ]);
 
         if ($validation->fails())
-        {
-            echo"<pre>"; 
-            var_dump(123);
-            exit;
-            exit;
-        }
+            return (null);
 
-        if (isset($data['birthday']) && !self::validateBirthday($data, $user_id))
-            exit;
-        else if (isset($data['interests']))
-            self::validateInterests($data['interests']);
+        if ($key === 'age' && !self::validateAge($data['age'], $user_id))
+            return (null);
+        else if ($key === 'birthday' && !self::validateBirthday($data, $user_id))
+            return (null);
+        else if ($key === 'orientation')
+            return (self::validateOrientation($data));
+        else if ($key === 'interests' && !self::validateInterests($data['interests'], $user_id))
+            return (null);
+        else if ($key === 'location' && !self::validateLocation($data))
+            return (null);
+
+        return ($data[$key]);
     }
 
-    public static function validateBirthday($data, $user_id)
-    {   
-        $birthday = $data['birthday'];
-
-       if (!empty($birthday['month']) &&
-            (is_numeric($birthday['day']) && ($birthday['day'] > 0 && $birthday['day'] <= 31)) &&
-            is_numeric($birthday['year']))
-        {
-            $select = DB::select('SELECT `age` FROM `infos` WHERE `id` = ' . $user_id);
-            $age = $select[0]->age;
-            
-            if (!empty($age))
-            {
-                $year = $birthday['year'] + $age;
-                $birthday = ($year === (int)date('Y')) ? $birthday : null;
-                if (empty($birthday))
-                    return (false);
-            }
-            else
-            {
-                $birthday = date('Y') - $birthday['year'] >= 65 ? null : $birthday;
-            }
-        }
-        else
-            return (false);
-    }
-
-    public static function validateInterests($interests)
+    protected static function validateAge($age, $user_id)
     {
+        $year = self::selectData('year', 'birthdays', $user_id);
 
+        if (empty($year[0]) || empty($year[0]->year))
+            return (true);
+        else
+            $year = $year[0]->year;
+
+        return ((int)$year + (int)$age === (int)date('Y'));
+    }
+
+    protected static function validateBirthday($data, $user_id)
+    {
+        $month = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December',
+        ];
+        if (!in_array($data['birthday']['month'], $month))
+            return (false);
+
+        $birthday['birthday'] = implode('.', $data['birthday']);
+        
+        $validate = Validator::make($birthday, [
+            'birthday' => ['date'],
+        ]);
+
+        if ($validate->fails())
+            return (false);
+
+        $age = self::selectData('age', 'infos', $user_id)[0]->age;
+
+        if (!empty($age) && $age !== 0)
+        {
+            return ((int)$data['birthday']['year'] + (int)$age === (int)date('Y'));
+        }
+
+        return (true);
+    }
+
+    protected static function validateOrientation($data)
+    {
+        $orientChoice = [
+            "Heterosexual", "Bisexual", "Homosexual"
+        ];
+
+        if (empty(array_intersect($data, $orientChoice)))
+            return ('Bisexual');
+        
+        return ($data['orientation']);
+    }
+
+    protected static function validateInterests(&$interests, $user_id)
+    {
+        if (empty($interests))
+            return (false);
+        
+        $interests = array_unique($interests);
+        $select = self::selectData('tags', 'interests', $user_id);
+
+        if (!empty($select))
+            $interests = array_diff($interests, explode(',', $select[0]->tags));
+        
+        return (true);
+    }
+
+    protected static function validateLocation($data)
+    {
+        
+        return (!in_array(null, $data['location']));
+    } 
+
+    private static function selectData($field, $table, $user_id)
+    {
+        return (
+            DB::select('SELECT `' . $field . '` FROM `' . $table . '` WHERE `id` = ' . $user_id)
+        );
     }
 }

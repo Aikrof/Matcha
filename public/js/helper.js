@@ -58,11 +58,11 @@ function ImgWorker($inp)
 {
     this.file = $inp.prop('files')[0];
 
-    this.imgSend = function($url, $puResultInto, $putErrorInto){
+    this.imgSend = function($url, $putResultInto, $putErrorInto){
         
         sender.file($url, this.file, function(request){
-            if (request.src && $puResultInto !== undefined)
-                $puResultInto.attr('src', request.src);
+            if (request.src && $putResultInto !== undefined)
+                $putResultInto.attr('src', request.src);
             else if (request.error && $putErrorInto)
                 console.log(request.error);
         });   

@@ -129,7 +129,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6 pr-1">
+                <div class="col-md-3 pr-1">
                     <div class="form-group">
                         <label>Location</label>
                         <p class="btn form-control user_location">Add Location</p>

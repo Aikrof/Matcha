@@ -16,7 +16,7 @@ class CreateInterestsTable extends Migration
         Schema::create('interests', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigInteger('id');
-            $table->string('tag', 100);
+            $table->text('tags')->nullable()->default(NULL);
         });
     }
 

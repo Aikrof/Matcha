@@ -186,6 +186,16 @@ h1 .subtitle {
     color: #d80247;
 }
 
+
+.cursor{
+    cursor: pointer;
+}
+.c-e74{
+    color: #e74c3c;
+}
+.c-330{
+    color: #330000;
+}
 /*** FIRST ENTRY STYLESHEETS ***/
 #swal2-title{
     font-family: 'Pattaya', sans-serif;
@@ -211,6 +221,9 @@ h1 .subtitle {
     justify-content: center;
     align-items: center;
 }
+.h-350{
+    height: 350px;
+}
 .h-180{
     height: 180px;
 }
@@ -223,10 +236,36 @@ h1 .subtitle {
 }
 .helperAbs{
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     background-color: #ffffff;
     position: absolute;
     top: -10px;
     z-index: 10;
+    /*padding: 0 4px 0 15px;*/
+    padding: 0;
+    border-radius: .3rem;
+    overflow: hidden;
+    max-width: 280px;
+}
+.resultTags{
+    height: 20px;
+    cursor: pointer;
+    padding: 0 18px;
+    margin-bottom: 3px;
+    font-size: 17px;
+}
+.resultTags:hover{
+    font-size: 18px;
+    color: #330000;
+}
+.no-indent{
+    margin: 0;
+    padding: 0;
+}
+.help_small{
+    display: inline-flex;
+    margin: 0;
 }
 
 .f_icon_con{
@@ -237,7 +276,11 @@ h1 .subtitle {
 .pattaya_style{
     font-size: 26px;
     font-family: 'Pattaya', sans-serif;
-    color:  #330000;
+    /*color:  #330000;*/
+}
+.f-size-32{
+    font-size: 32px;
+    font-weight: bold;
 }
 .f_icon_con img{
     cursor: pointer;
@@ -334,7 +377,9 @@ h1 .subtitle {
 .f_location .fa{
     font-size: 2.3em;
 }
-
+.get_local{
+    display: none;
+}
 
 .f_location p{
     margin: 0;
@@ -414,6 +459,7 @@ h1 .subtitle {
     border: 2px solid #888888;
     color: #888888;
 }
+
 /*** /USER PAGE STYLESHEETS ***/
 .text-muted {
     color: #9A9A9A;

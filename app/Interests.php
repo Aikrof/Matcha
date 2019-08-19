@@ -28,6 +28,6 @@ class Interests extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'tag'
+        'id', 'tags'
     ];
 }

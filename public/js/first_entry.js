@@ -1,10 +1,11 @@
+/*** First Entry questions***/
 entry = {
     icon: function(){
         return ('\
 <div class="row fle_xeble">\
 <div class="col-md-6 pr-1">\
     <div class="f_icon_con border_custom">\
-        <label class="pattaya_style">Add icon:</label>\
+        <label class="pattaya_style c-330">Add icon:</label>\
         <div class="custom-file">\
             <label>\
                 <input type="file" id="f_icon">\
@@ -21,8 +22,8 @@ entry = {
         return ('\
 <div class="row h-180">\
 <div class="col-md-12 pr-1 fle_xeble">\
-    <form class="dropdown open f_sexual">\
-        <label class="pattaya_style">Sexual orientations:</label>\
+    <form class="dropdown open f_sexual" onsubmit="return false">\
+        <label class="pattaya_style c-330">Sexual orientations:</label>\
         <p class="btn btn-secondary dropdown-toggle orient_dropdown-item" data-toggle="dropdown">Sexual orientations</p>\
         <input type="hidden" name="orientation">'
         + ((new orient).getOrientation()) +
@@ -35,8 +36,8 @@ entry = {
         return ('\
 <div class="row h-180">\
 <div class="col-md-12 pr-1 fle_xeble">\
-    <form class="form-group f_age_cont f_age" onsubmit="return false first_container">\
-        <label class="pattaya_style">Age:</label>\
+    <form class="form-group f_age_cont f_age" onsubmit="return false">\
+        <label class="pattaya_style c-330">Age:</label>\
         <input type="text" class="form-control" maxlength="2" placeholder="Age" name="age" autocomplete="off">\
     </form>\
 </div>\
@@ -49,8 +50,8 @@ entry = {
 <div class="row h-180">\
 <div class="col-md-12 pr-1 fle_xeble">\
     <div class="form-group">\
-        <label class="pattaya_style">Birthday:</label>\
-        <form class="f_birthday">\
+        <label class="pattaya_style c-330">Birthday:</label>\
+        <form class="f_birthday" onsubmit="return false">\
             <input type="text" name="day" class="form-control" maxlength="2" placeholder="Day" autocomplete="off">\
             <div class="dropdown open m_nth">\
                 <p class="btn dropdown-toggle f_birthday_buttn" data-toggle="dropdown"><span class="month_dropdown-item">Month</span></p>\
@@ -68,20 +69,25 @@ entry = {
     interests: function(){
         return ('\
 <div class="row pr-1 fle_xeble_col">\
-<label class="pattaya_style">List of interests:</label>\
+<label class="pattaya_style c-330">List of interests:</label>\
 <div class="row col-md-4 pr-1">\
-    <p class="form-control dropdown-toggle nav-link flexible" data-toggle="dropdown">\
+    <p class="form-control dropdown-toggle nav-link cursor no-indent" data-toggle="dropdown">\
         <span>Your Tags</span>\
     </p>\
     <input type="hidden" class="form-control">\
-    <ul class="dropdown-menu orient_choose"></ul>\
+    <ul class="dropdown-menu your_tags"></ul>\
 </div>\
-<form class="row col-md-8 pr-1">\
-    <input type="interests" class="form-control" placeholder="Add your interests with tag #" name="interests" autocomplete="off" oninput="tagHelper(this.value)" id="interestsHelp">\
+<p class="help_small"><small>Add your interests with tag #</small></p>\
+<p class="help_small"><small>To save / write new tag just press #</small></p>\
+<form class="row col-md-8 pr-1" onsubmit="return false">\
+    <input type="interests" class="form-control"\
+        name="interests" autocomplete="off"\
+        oninput="tagHelper(this.value)"\
+        id="interestsHelp" value="#">\
 </form>\
 </div>\
 <div class="row pr-1 h-20 fle_xeble_col helperRel">\
-    <div class="col-md-6 helperAbs"></div>\
+    <div class="col-md-4 helperAbs" style="display: none;"></div>\
 </div>\
         ');
     },
@@ -91,7 +97,7 @@ entry = {
 <div class="row h-180">\
 <div class="col-md-12 pr-1 fle_xeble">\
     <form class="form-group f_about_cont f_about" onsubmit="return false">\
-        <label class="pattaya_style">About:</label>\
+        <label class="pattaya_style c-330">About:</label>\
         <textarea name="about" placeholder="Add some info about yourself" class="form-control"></textarea>\
     </form>\
 </div>\
@@ -103,21 +109,28 @@ entry = {
         return ('\
 <div class="row h-180">\
 <div class="col-md-12 pr-1 fle_xeble">\
-<form class="form-group" onsubmit="return false">\
-    <label class="f_location">\
+<div class="form-group">\
+    <label class="f_location" onclick="getUserLocation()">\
         <i class="fa fa-map-marker"></i>\
-        <p class="pattaya_style">Add your location:</p>\
-        <input type="hidden" name="latitude">\
-        <input type="hidden" name="longitude">\
-        <input type="hidden" name="country">\
-        <input type="hidden" name="city">\
+        <p class="pattaya_style c-330">Add your location:</p>\
+        <form class="get_f_local" onsubmit="return false">\
+            <input type="hidden" name="latitude">\
+            <input type="hidden" name="longitude">\
+            <input type="hidden" name="country">\
+            <input type="hidden" name="city">\
+        </form>\
     </label>\
-</form>\
+    <div class="location_result" style="display:none">\
+        <span class="country f-size-32 c-330"></span>\
+        <span class="city f-size-32 c-330"></span>\
+    </div>\
+</div>\
 </div>\
 </div>\
         ')
     }
 }
+/*** /First Entry questions***/
 
 var orient = function(){
     this.div = '<div class="dropdown-menu f_orient" aria-labelledby="dropdownMenuLink" style="z-index: 4000;">';
@@ -165,29 +178,25 @@ var month = function(){
     }
 }
 
-// Swal.fire({
-//     type: 'question',
-//     title: '<h1 class="f_info">Add info about yourself</h1>',
-//     html: '<form id="firstEntry">' +
-//             entry.icon() + entry.age() + entry.birthday() +
-//             entry.sexualOrient() + entry.interests() +
-//             entry.about() + entry.location() +
-//             '</form>',
-//     showCloseButton: true,
-// }).then((result) =>{
-//     if (result)
-//         (new FirstEntrySend($('#firstEntry'))).send();
-// });
 
+/*** Modal window***/
 Swal.mixin({
     title: 'Add info about yourself',
     showCancelButton: true,
-    confirmButtonText: 'Next &rarr;',
+    confirmButtonText: 'Add and Next &rarr;',
     reverseButtons: true,
     progressSteps: ['Ic', 'Ag', 'Bi', 'Or', 'In' , 'Ab' , 'Lo']
 }).queue([
     {
         html: entry.icon(),
+        preConfirm: function(){
+            let $url = '/saveUserIcon';
+
+            let $file = new ImgWorker($('#f_icon'));
+            $file.imgSend($url, $('#f_img_icon'), function(request){
+                console.log(request);
+            });
+        }
     },
 
     {
@@ -214,7 +223,13 @@ Swal.mixin({
     {
         html: entry.interests(),
         preConfirm: function(value){
-            firstEntrySender.send($('.f_interests'));
+            if ($('#interestsHelp').val() !== '#')
+            {
+                $('#interestsHelp').val(
+                    $('#interestsHelp').val().split('#').join(''));
+                addTag($('#interestsHelp').val());
+            }
+            firstEntrySender.sendInterests($('a[name="tag"]'));
         }
     },
     
@@ -228,50 +243,67 @@ Swal.mixin({
     {
         html: entry.location(),
         preConfirm: function(value){
-            firstEntrySender.send($('.f_location'));
+            firstEntrySender.send($('.get_f_local'));
         }
     },
 
 ]).then((result) => {
     console.log(result);
 });
+/*** /Modal window***/
 
+
+/*** Send Request ***/
 firstEntrySender = {
 
     send: function($form){
-        var $obj = (function(){
+        let $data = {};
+        let $obj = (function(){
             var $data = {};
 
             $form.find ('input, textarea').each(function(){
+
                 if (this.name)
                     $data[this.name] = $(this).val();
             });
 
             return ($data);
         }());
-        console.log($obj);
-        // sender.form('/firstEntry', $obj, function(request){
-        //     console.log(request);
-        // });
+
+        if ($form[0] && $form[0] === $('.f_birthday')[0])
+            $data.birthday = $obj;
+        else if ($form[0] && $form[0] === $('.get_f_local')[0])
+            $data.location = $obj;
+        else
+            $data = $obj;
+
+        sender.form('/firstEntry', $data, function(request){
+            console.log(request);
+        });
+    },
+
+    sendInterests: function($tags){
+        let $obj = {
+            'interests' : (function(){
+                var $data = [];
+
+                for (let $tag of $tags){
+                    $data.push($tag.innerHTML.replace('#', ""));
+                }
+
+                return ($data);
+            }())
+        };
+
+        sender.form('/firstEntry', $obj, function(request){
+            console.log(request);
+        });
     }
 }
+/*** /Send Request ***/
 
 
-
-// $('#tagHelper').bind('input', function(){
-//     $tag = $(this).val().split('#');
-
-//     $tag[0] = null;
-//     $tag = $tag[$tag.length - 1];
-    
-//     if ($tag && $tag.length > 2)
-//     {
-//         sender.form('/searchTag', {'tag' : $tag}, function(request){
-//             console.log(request);
-//         });
-//     }
-// });
-
+/*** Tag helper section ***/
 function tagHelper($value){
     $hash = $value.split('#');
     $hash[0] = null;
@@ -280,32 +312,91 @@ function tagHelper($value){
     
     if ($hash.length - 1 > 1)
     {
-        let inp = document.getElementById('interestsHelp');
-        inp.value = '#' + $tag;
+        if ($('.resultTags') !== undefined)
+            $('.resultTags').remove();
+
+        addTag($hash[1]);
+        $('#interestsHelp').val('#');
     }
     
     if ($tag && $tag.length > 2)
     {
         sender.form('/searchTag', {'tag' : $tag}, function(request){
-            console.log(request);
+            if ($('.resultTags') !== undefined)
+                    $('.resultTags').remove();
+
+            if (request.similar.length)
+            {
+                $('.helperAbs').show();
+                for (let value of request.similar){
+                    $('.helperAbs').append('\
+                        <p class="resultTags" onclick="changeTag(this.innerText)">'
+                        + value.tag + '</p>')
+                }
+            }
+            else
+                $('.helperAbs').hide();
         });
     }
 }
 
 /*
-| Change icon
+* Change tag
+*/
+function changeTag(tag){
+    addTag(tag);
+    $('#interestsHelp').val('');
+
+    $('.resultTags').remove();
+    $('.helperAbs').hide();
+    $('#interestsHelp').val('#');
+}
+
+
+/*
+* Add new tag in to your tags select
+*/
+function addTag(tag)
+{
+    if (is_similar() && tag !== '')
+    {
+        $('.your_tags')
+            .append('\
+                <a class="dropdown-item cursor" name="tag">#'
+                + tag +
+                '</a>'
+        );
+    }
+
+    function is_similar()
+    {
+        let my_tags = [];
+
+        for (let spl of $('a[name=tag]')){
+            my_tags.push(spl.innerHTML);
+        }
+
+        return ((my_tags.indexOf("#" + tag) == -1));
+    }
+}
+
+/*** /Tag helper section ***/
+
+/*
+* Add icon
 */
 $('#f_icon').change(function(){
-    let $url = '/saveUserIcon';
-
-    let $file = new ImgWorker($(this));
-    $file.imgSend($url, $('#f_img_icon'), function(request){
-        console.log(request);
-    });   
+    
+    var reader = new FileReader();
+    
+    reader.onload = function (e) {
+        $('#f_img_icon').attr('src', e.target.result);
+    };
+    reader.readAsDataURL($(this).prop('files')[0]);
 });
 
 /*
-| Changes Birth month in select block
+* Changes Birth month in select block
 */
 function birthMonthCh(event){
     $('input[name="month"]').val(event.target.innerText);
@@ -314,14 +405,17 @@ function birthMonthCh(event){
 
 
 /*
-| Changes  orientation in select block
+* Changes  orientation in select block
 */
 function orientCh(event){
     $('input[name="orientation"]').val(event.target.innerText);
     $('.orient_dropdown-item')[0].innerHTML = event.target.innerText;
 };
 
-$('.f_location').click(function(){
+/*
+* Get user location
+*/
+function getUserLocation(){
     navigator.geolocation.getCurrentPosition(function(position){
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
@@ -330,8 +424,10 @@ $('.f_location').click(function(){
         'latitude' : latitude,
         'longitude' : longitude
     };
+
     $('input[name="latitude"]').val(latitude);
     $('input[name="longitude"]').val(longitude);
+
     // var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+ latitude +','+ longitude +'&sensor=false&key=AIzaSyAFlQz9H-L0209Sq94idC1aY9wKOhiH0gs';
     var url = 'http://api.geonames.org/findNearbyPlaceNameJSON?lat='+latitude+'&lng='+longitude+'&username=localdev'
     // var url =  'https://restcountries.eu/rest/v2/all';
@@ -342,9 +438,27 @@ $('.f_location').click(function(){
                 var country = geonames.countryName;
                 var city = geonames.adminName1.split(' ')[0];
 
+                $('.country').text(country + ',');
+                $('.city').text(city);
+                $('.location_result').show();
+                $('.f_location').hide();
+
                 $('input[name="country"]').val(country);
                 $('input[name="city"]').val(city);
             }
         });
     });
+};
+
+
+$(window).click(function(){
+  if ($('.helperAbs') !== undefined &&
+      $('.helperAbs').attr('style') !== 'display: none;' &&
+      $(this) !== $('.helperAbs'))
+        $('.helperAbs').hide();
 });
+
+// $(window).keydown(function(){
+//     console.log(123);
+// });
+

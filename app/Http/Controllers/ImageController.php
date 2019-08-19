@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Info;
+use App\Helper\ProfileAddRatingHelper as Rating;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -92,6 +93,10 @@ class ImageController extends Controller
         $name = $name[count($name) - 1];
         
         $info = Info::find($id);
+        
+        if ($info->icon === 'spy.png')
+            Rating::addToRating($id, 1);
+
         $info->icon = $name;
         $info->save();
 

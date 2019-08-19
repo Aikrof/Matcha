@@ -21,9 +21,8 @@ class CreateInfosTable extends Migration
             $table->string('icon');
             $table->string('gender', 10);
             $table->string('orientation', 15)->default('Bisexual');
-            $table->integer('age')->default(0);
-            $table->string('birthday', 50)->nullable()->default(NULL);
-            $table->string('about', 1000)->nullable()->default(NULL);
+            $table->integer('age')->nullable()->default(0);
+            $table->text('about')->nullable()->default(NULL);
             $table->timestamps();
         });
     }
