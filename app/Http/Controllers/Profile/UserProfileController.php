@@ -9,7 +9,7 @@ use App\Info;
 use App\Location;
 use App\Interests;
 use App\Birthday;
-use App\Helper\profileInfoHelper as ProfileHelper;
+use App\Helper\ProfileInfoHelper as ProfileHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -49,6 +49,7 @@ class UserProfileController extends Controller
     	$data = [
     		'user' => User::find($id),
     		'info' => Info::find($id),
+            'interests' => Interests::find($id),
     		'location' => Location::find($id),
             'birthday' => Birthday::find($id),
     	];
@@ -83,23 +84,21 @@ class UserProfileController extends Controller
 
     public function updateProfile(Request $request)
     {
-        ProfileHelper::validateRequest($request->all(), $request->user()->id);
-        
-        $arr_key = key($request->all());
-        if ($arr_key === 'day' || $arr_key === 'month' || $arr_key === 'year')
-            $table = Birthday::find($request->user()->id);
-        else
-            $table = Info::find($request->user()->id);
+        $key = key($request->all());
+        echo"<pre>"; 
+        var_dump($request->all());
+        exit;
+        $data[$key] = ProfileHelper::validateRequest($request->all(), $request->user()->id);
 
-        foreach ($request->all() as $key => $value){
-           $table->$key = $value;
-        }
+        // if ($key === 'day' || $key === 'month' || $key === 'year')
+        //     $table = Birthday::find($request->user()->id);
+        // else
+        //     $table = Info::find($request->user()->id);
 
-        $table->save();
+        // foreach ($request->all() as $key => $value){
+        //    $table->$key = $value;
+        // }
 
-        // $user = User::where('login', 'denis_mina132')->first();
-        // echo "<pre>";
-        // var_dump($user['id']);
-        // exit;
+        // $table->save();
     }
 }

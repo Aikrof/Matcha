@@ -57,11 +57,7 @@ class ProfileInfoHelper
 
     protected static function validateBirthday($data, $user_id)
     {
-        $month = [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December',
-        ];
-        if (!in_array($data['birthday']['month'], $month))
+        if (!self::validateMonth($data['birthday']))
             return (false);
 
         $birthday['birthday'] = implode('.', $data['birthday']);
@@ -79,6 +75,19 @@ class ProfileInfoHelper
         {
             return ((int)$data['birthday']['year'] + (int)$age === (int)date('Y'));
         }
+
+        return (true);
+    }
+
+    protected static function validateMonth($data)
+    {
+        $month = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December',
+        ];
+
+        if (!in_array($data['month'], $month))
+            return (false);
 
         return (true);
     }

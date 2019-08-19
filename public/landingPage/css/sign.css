@@ -61,7 +61,7 @@
   margin: 0 0 40px;
 }
 
-label {
+label{
   position: absolute;
   -webkit-transform: translateY(6px);
           transform: translateY(6px);
@@ -71,6 +71,20 @@ label {
   -webkit-backface-visibility: hidden;
   pointer-events: none;
   font-size: 22px;
+}
+.checkbox_cont > label{
+   pointer-events: auto;
+}
+.checkbox_cont > label > div{
+  position: relative;
+  width: 180px;
+  height: 40px;
+}
+.checkbox_cont > label > div > p{
+  position: absolute;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 23px;
+  top: -4px;
 }
 label .req {
   margin: 2px;

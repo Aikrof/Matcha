@@ -249,9 +249,9 @@ Swal.mixin({
 
 ]).then((result) => {
     console.log(result);
+    sender.form('/SuccessfulUserFirstEntry', null);
 });
 /*** /Modal window***/
-
 
 /*** Send Request ***/
 firstEntrySender = {

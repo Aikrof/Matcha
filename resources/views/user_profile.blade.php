@@ -37,13 +37,13 @@
                 <div class="col-md-6 pr-1">
                     <div class="form-group">
                         <label>First Name</label>
-                        <input type="text" class="form-control edit edit_inp" name="first_name" placeholder="First Name" value="{{$data['info']['first_name']}}">
+                        <input type="text" class="form-control edit edit_inp" name="first_name" autocomplete="off" placeholder="First Name" value="{{$data['info']['first_name']}}">
                     </div>
                 </div>
                 <div class="col-md-6 pr-1">
                     <div class="form-group">
                         <label>Last Name</label>
-                        <input type="text" class="form-control edit_inp" name="last_name" placeholder="Last Name" value="{{$data['info']['last_name']}}">
+                        <input type="text" class="form-control edit_inp" name="last_name" autocomplete="off" placeholder="Last Name" value="{{$data['info']['last_name']}}">
                 	</div>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                 <div class="col-md-4 pr-1">
                     <div class="form-group">
                         <label>Age</label>
-                        <input type="text" class="form-control edit_inp" name="age" placeholder="Age" value="{{($data['info']['age'] === 0) ? '' : $data['info']['age']}}">
+                        <input type="text" class="form-control edit_inp" name="age" autocomplete="off" placeholder="Age" value="{{($data['info']['age'] === 0) ? '' : $data['info']['age']}}">
                     </div>
                 </div>
             </div>
@@ -79,7 +79,7 @@
                 <div class="col-md-4 pr-1">
                     <div class="form-group">
                         <label>Birth Day</label>
-                        <input type="text" maxlength="2" class="form-control edit_inp" name="day" placeholder="Day" value="{{($data['birthday']['day'] === 0) ? '' : $data['birthday']['day']}}">
+                        <input type="text" maxlength="2" class="form-control edit_inp" name="day" autocomplete="off" placeholder="Day" value="{{($data['birthday']['day'] === 0) ? '' : $data['birthday']['day']}}">
                     </div>
                 </div>
                 <div class="col-md-4 pr-1">
@@ -108,7 +108,7 @@
                 <div class="col-md-4 pr-1">
                     <div class="form-group">
                         <label>Birth Year</label>
-                        <input type="text" maxlength="4" class="form-control edit_inp" name="year" placeholder="year" value="{{($data['birthday']['year'] === 0) ? '' : $data['birthday']['year']}}">
+                        <input type="text" maxlength="4" class="form-control edit_inp" name="year" autocomplete="off" placeholder="year" value="{{($data['birthday']['year'] === 0) ? '' : $data['birthday']['year']}}">
                     </div>
                 </div>
 
@@ -142,7 +142,7 @@
                     <div class="form-group">
                         <label>Add Interests</label>
                         <div style="display: flex;">
-                            <input class="form-control" placeholder="Add your interests with tag #">
+                            <input class="form-control" autocomplete="off" placeholder="Add your interests with tag #">
                             <p class="btn" style="margin-left: 10px;cursor: pointer;">Add</p>
                         </div>
                         <p class="form-control dropdown-toggle nav-link flexible" data-toggle="dropdown" style="width: 50%;">

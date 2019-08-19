@@ -83,6 +83,11 @@
             </label>
             <input type="password" name="password" autocomplete="off"/>
           </div>
+          <div class="checkbox_cont sig">
+              <input type="checkbox" id="checkbox_remember" data="1" name="remember" value="true" checked>
+            <label for="checkbox_remember" id="leb_check"><div><p>Remember me</p></div></label>
+          </div>
+
 
           <div class="forg_cont">
             <p class="forgot"><a>Forgot Password?</a></p>

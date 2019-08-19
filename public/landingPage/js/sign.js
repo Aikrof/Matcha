@@ -90,11 +90,29 @@ $('.form').on('submit', function(event){
         obj[input.name] = input.value;
     }
 
+    if (obj.remember !== undefined &&
+        obj.remember === "")
+        obj.remember = 1;
+
     sender.form('/' + event.target.id, obj, function(request){
         processRequest(request, obj, event.target.id);
     });
 
     return false;
+});
+
+$('#leb_check').click(function(){
+    let $checkbox = $('#checkbox_remember');
+    if ($checkbox.attr('data') === '1')
+    {
+        $checkbox.attr('data', '2');
+        $checkbox.val(0);
+    }
+    else
+    {
+        $checkbox.attr('data', '1');
+        $checkbox.val(1);
+    }
 });
 
 function processRequest(request, obj, formId)

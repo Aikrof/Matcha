@@ -32,8 +32,6 @@ class FirstEntryController extends Controller
     */
     public function firstEntry(Request $request)
     {
-        // $this->SuccessfulUserFirstEntry($request);
-
         $data[key($request->all())] = ProfileHelper::validateRequest($request->all(), $request->user()->id);
 
         $this->userAddInfo($request, $data);
@@ -49,8 +47,8 @@ class FirstEntryController extends Controller
     *
     * @param  \Illuminate\Http\Request  $request
     * @return void
-    */
-    private function SuccessfulUserFirstEntry(Request $request)
+    // */
+    public function SuccessfulUserFirstEntry(Request $request)
     {
         DB::update('update `users` set first_entry = false WHERE `id` = ?', [$request->user()['id']]);
     }
