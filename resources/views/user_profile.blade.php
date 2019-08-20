@@ -139,22 +139,24 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Add Interests</label>
-                        <div style="display: flex;">
-                            <input class="form-control" autocomplete="off" placeholder="Add your interests with tag #">
-                            <p class="btn" style="margin-left: 10px;cursor: pointer;">Add</p>
-                        </div>
-                        <p class="form-control dropdown-toggle nav-link flexible" data-toggle="dropdown" style="width: 50%;">
-                            <span>Remove Interests</span>
-                        </p>
-                         <ul class="dropdown-menu">
-                            @if ($data['interests'])
-                                @foreach ($data['interests'] as $tag)
-                                    <a class="dropdown-item">{{$tag}}</a>
-                                @endforeach
-                            @endif
-                        </ul>
+                    <label>Add Interests</label>
+                    <p class="help_small_user"><small>Add your interests with tag # or click add</small></p>
+                    <p class="help_small_user"><small>To save / write new tag just press #</small></p>
+                    <div style="display: flex;">
+                            <input class="form-control" id="interestsHelp" autocomplete="off" placeholder="Add your interests with tag #" oninput="tagHelper(this.value)" value="#">
+                            <p class="btn btn_inter" style="margin-left: 10px;cursor: pointer;">Add</p>
+                    </div>
+                    <div class="row pr-1 helperRel">
+                        <div class="helperProfInt" style="display: none;"></div>
+                    </div>
+                    <label>Remove Interests</label>
+                    <p class="help_small_user"><small>To delete tag just click to tag</small></p>
+                    <div class="col-md-12 form-group interest_cont">
+                        @if ($data['interests'] && !empty($data['interests'][0]))
+                            @foreach ($data['interests'] as $tag)
+                                <p class="tag_se">#{{$tag}}</p>
+                             @endforeach
+                        @endif
                     </div>
                 </div>
             </div>

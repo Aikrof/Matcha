@@ -242,7 +242,6 @@ h1 .subtitle {
     position: absolute;
     top: -10px;
     z-index: 10;
-    /*padding: 0 4px 0 15px;*/
     padding: 0;
     border-radius: .3rem;
     overflow: hidden;
@@ -460,6 +459,37 @@ h1 .subtitle {
     color: #888888;
 }
 
+.interest_cont{
+    background-color: #ffff;
+    border: 1px solid #E3E3E3;
+    border-radius: 4px;
+    height: 150px;
+}
+.help_small_user{
+    display: flex;
+    margin: 0;
+    color: #9A9A9A;
+}
+.tag_se{
+    display: inline-flex;
+    font-size: 17px;
+    margin: 0;
+    margin: 0 15px 15px 0;
+    color:  #330000;
+}
+.tag_se:hover{
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: line-through;
+    color: red;
+}
+.helperProfInt{
+    position: absolute;
+    background-color: #E3E3E3;
+    width: calc(100% - 64.47px - 10px - 16px - 12px);
+    left: 15px;
+    top: -19px;
+}
 /*** /USER PAGE STYLESHEETS ***/
 .text-muted {
     color: #9A9A9A;

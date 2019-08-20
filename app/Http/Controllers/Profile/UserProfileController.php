@@ -9,6 +9,7 @@ use App\Info;
 use App\Location;
 use App\Interests;
 use App\Birthday;
+use App\Tags;
 use App\Helper\ProfileInfoHelper as ProfileHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -55,7 +56,7 @@ class UserProfileController extends Controller
     	];
 
         if (!empty($data['interests']))
-            $data['interests'] = explode(',', $data['interests']->tags);
+            $data['interests'] = array_reverse(explode(',', $data['interests']->tags));
 
         if ($data['info']['icon'] !== 'spy.png')
             $file_path = storage_path('app/profiles/' . Auth::user()['login'] . '/icon/' . $data['info']['icon']);
@@ -103,5 +104,35 @@ class UserProfileController extends Controller
         // }
 
         // $table->save();
+    }
+
+    public function saveTag(Request $request)
+    {
+        echo"<pre>"; 
+        var_dump($request->tag);
+        exit;
+    }
+
+    public function removeTag(Request $request)
+    {
+        $interests = Interests::find($request->user()->id);
+
+        if (empty($interests->tags))
+            exit;
+
+        $search =  Tags::where('tag', $request->tag)->first();
+        $search->count--;
+        if (!$search->count)
+            $search->delete();
+        else
+            $search->save();
+
+        $tags = explode(',', $interests->tags);
+        $remove_element = array_search($request->tag, $tags);
+        unset($tags[$remove_element]);
+        $interests->tags = implode(',', $tags);
+        
+        $interests->save();
+        exit;
     }
 }

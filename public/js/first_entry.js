@@ -345,7 +345,7 @@ function tagHelper($value){
 */
 function changeTag(tag){
     addTag(tag);
-    $('#interestsHelp').val('');
+    // $('#interestsHelp').val('');
 
     $('.resultTags').remove();
     $('.helperAbs').hide();

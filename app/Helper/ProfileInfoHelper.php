@@ -113,14 +113,22 @@ class ProfileInfoHelper
         $select = self::selectData('tags', 'interests', $user_id);
 
         if (!empty($select))
-            $interests = array_diff($interests, explode(',', $select[0]->tags));
+        {
+            $tags = explode(',', $select[0]->tags);
+            foreach ($interests as $key => $value){
+                if (in_array(strtoupper($value), $tags) ||
+                    in_array(strtolower($value), $tags))
+                    unset($interests[$key]);
+            }
+
+            return ($interests);
+        }
         
         return (true);
     }
 
     protected static function validateLocation($data)
     {
-        
         return (!in_array(null, $data['location']));
     } 
 
