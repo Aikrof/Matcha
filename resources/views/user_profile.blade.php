@@ -149,7 +149,11 @@
                             <span>Remove Interests</span>
                         </p>
                          <ul class="dropdown-menu">
-                            
+                            @if ($data['interests'])
+                                @foreach ($data['interests'] as $tag)
+                                    <a class="dropdown-item">{{$tag}}</a>
+                                @endforeach
+                            @endif
                         </ul>
                     </div>
                 </div>

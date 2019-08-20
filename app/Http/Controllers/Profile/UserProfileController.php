@@ -54,6 +54,9 @@ class UserProfileController extends Controller
             'birthday' => Birthday::find($id),
     	];
 
+        if (!empty($data['interests']))
+            $data['interests'] = explode(',', $data['interests']->tags);
+
         if ($data['info']['icon'] !== 'spy.png')
             $file_path = storage_path('app/profiles/' . Auth::user()['login'] . '/icon/' . $data['info']['icon']);
         else
