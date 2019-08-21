@@ -117,31 +117,31 @@
             	<div class="col-md-6 pr-1">
                 	<div class="form-group">
                     	<label>City</label>
-                    	<input type="text" class="form-control"disabled="" value="{{$data['location']['user_access'] === 1 ? $data['location']['city'] : ''}}">
+                    	<input type="text" class="form-control city_local"disabled="" value="{{$data['location']['user_access'] === 1 ? $data['location']['city'] : ''}}">
                 	</div>
             	</div>
                 <div class="col-md-6 pr-1">
                 	<div class="form-group">
                     	<label>Country</label>
-                    	<input type="text" class="form-control" disabled="" value="{{$data['location']['user_access'] === 1 ? $data['location']['country'] : ''}}">
+                    	<input type="text" class="form-control country_local" disabled="" value="{{$data['location']['user_access'] === 1 ? $data['location']['country'] : ''}}">
                 	</div>
             	</div>
             </div>
 
             <div class="row">
-                <div class="col-md-3 pr-1">
-                    <div class="form-group">
+                <div class="col-md-12 pr-1">
                         <label>Location</label>
-                        <p class="btn form-control user_location">Add Location</p>
-                        <p class="btn form-control user_location">Remove Location</p>
+                    <div class="form-group user_location_cont">
+                        <p class="btn form-control user_location_add">Add Location</p>
+                        <p class="btn form-control user_location_remove">Remove Location</p>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <label>Add Interests</label>
-                    <p class="help_small_user"><small>Add your interests with tag # or click add</small></p>
-                    <p class="help_small_user"><small>To save / write new tag just press #</small></p>
+                    <p class="help_small_user"><small>*Add your interests with tag #</small></p>
+                    <p class="help_small_user"><small>*To save / write new tag just press # or press add</small></p>
                     <div style="display: flex;">
                             <input class="form-control" id="interestsHelp" autocomplete="off" placeholder="Add your interests with tag #" oninput="tagHelper(this.value)" value="#">
                             <p class="btn btn_inter" style="margin-left: 10px;cursor: pointer;">Add</p>
@@ -164,8 +164,14 @@
                 <div class="col-md-12">
                     <div class="form-group about">
                         <label>About Me</label>
-                        <textarea rows="4" cols="80" class="form-control" placeholder="Here can be your description">{{$data['info']['about']}}</textarea>
+                        <p class="help_small_user"><small>*To save just click on an empty area or press button 'Add Changes'</small></p>
+                        <textarea rows="4" cols="80" class="form-control edit_inp" name="about" placeholder="Here can be your description">{{$data['info']['about']}}</textarea>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group fle_xeble_col">
+                    <p class="btn btn_inter cursor flex_end">Add Changes</p>
                 </div>
             </div>
         </form>

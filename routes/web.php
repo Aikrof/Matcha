@@ -13,16 +13,20 @@
 Route::group(['middleware' => ['auth', 'verified']], function(){
 	Route::get('/', 'MainController@index');
 
+	
 	Route::post('/firstEntry', 'FirstEntryController@firstEntry');
 	Route::post('/SuccessfulUserFirstEntry', 'FirstEntryController@SuccessfulUserFirstEntry');
 	Route::post('/saveUserIcon', 'ImageController@userIcon');
 	Route::post('/searchTag', 'TagsHelperController@tagWriter');
 
+	
 	Route::get('/{login}', [
 		'uses' => 'Profile\ProfileController@getUserProfile'])->where(['login' => '^[A-Z].([a-z0-9-_])+$']);
+
 	Route::post('/profileUpdate', 'Profile\UserProfileController@updateProfile');
 	Route::post('/user/saveNewTag', 'Profile\UserProfileController@saveTag');
 	Route::post('/user/removeTag', 'Profile\UserProfileController@removeTag');
+	Route::post('/profile/removeLocation', 'Profile\UserProfileController@removeLocation');
 });
 
 Route::group(['as' => 'landing','prefix' => 'landing', 'namespace' => 'Auth'], function(){

@@ -93,6 +93,20 @@ function tagHelper($value){
     }
 }
 
+$('.user_location_add').click(function(){
+	getUserLocation(function(location){
+		$('.city_local').val(location.city);
+		$('.country_local').val(location.country);
+
+		sender.form('/profileUpdate', {'location' : location});
+	});
+});
+$('.user_location_remove').click(function(){
+	$('.city_local').val("");
+	$('.country_local').val("");
+
+	sender.form('/profile/removeLocation');
+});
 function changeTag(tag){
     sendTag(tag);
 
@@ -105,9 +119,10 @@ function sendTag(tag)
 {
     if (tag !== '' && tag !== '#')
     {
-    	 $('.interest_cont').prepend(
+    	$('.interest_cont').prepend(
     	 	'<p class="tag_se">#' + tag + '</p>');
-    	sender.form('/user/saveNewTag', {'tag' : tag}, function(request){
+    	let arr = [tag];
+    	sender.form('/profileUpdate', {'interests' : arr}, function(request){
 			console.log(request);
         });
     }

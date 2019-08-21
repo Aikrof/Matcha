@@ -110,7 +110,7 @@ entry = {
 <div class="row h-180">\
 <div class="col-md-12 pr-1 fle_xeble">\
 <div class="form-group">\
-    <label class="f_location" onclick="getUserLocation()">\
+    <label class="f_location" onclick="takeCoords()">\
         <i class="fa fa-map-marker"></i>\
         <p class="pattaya_style c-330">Add your location:</p>\
         <form class="get_f_local" onsubmit="return false">\
@@ -412,44 +412,6 @@ function orientCh(event){
     $('.orient_dropdown-item')[0].innerHTML = event.target.innerText;
 };
 
-/*
-* Get user location
-*/
-function getUserLocation(){
-    navigator.geolocation.getCurrentPosition(function(position){
-    var latitude = position.coords.latitude;
-    var longitude = position.coords.longitude;
-
-    var location = {
-        'latitude' : latitude,
-        'longitude' : longitude
-    };
-
-    $('input[name="latitude"]').val(latitude);
-    $('input[name="longitude"]').val(longitude);
-
-    // var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+ latitude +','+ longitude +'&sensor=false&key=AIzaSyAFlQz9H-L0209Sq94idC1aY9wKOhiH0gs';
-    var url = 'http://api.geonames.org/findNearbyPlaceNameJSON?lat='+latitude+'&lng='+longitude+'&username=localdev'
-    // var url =  'https://restcountries.eu/rest/v2/all';
-        $.getJSON(url, function(data, textStatus){
-            var geonames = data.geonames[0];
-            if (geonames)
-            {
-                var country = geonames.countryName;
-                var city = geonames.adminName1.split(' ')[0];
-
-                $('.country').text(country + ',');
-                $('.city').text(city);
-                $('.location_result').show();
-                $('.f_location').hide();
-
-                $('input[name="country"]').val(country);
-                $('input[name="city"]').val(city);
-            }
-        });
-    });
-};
-
 
 $(window).click(function(){
   if ($('.helperAbs') !== undefined &&
@@ -457,6 +419,22 @@ $(window).click(function(){
       $(this) !== $('.helperAbs'))
         $('.helperAbs').hide();
 });
+
+/** Take User Coords **/
+function takeCoords(){
+    getUserLocation(function(location){
+        $('input[name="latitude"]').val(location.latitude);
+        $('input[name="longitude"]').val(location.longitude);
+
+        $('.country').text(location.country + ',');
+        $('.city').text(location.city);
+        $('.location_result').show();
+        $('.f_location').hide();
+
+        $('input[name="country"]').val(location.country);
+        $('input[name="city"]').val(location.city);
+    });
+}
 
 // $(window).keydown(function(){
 //     console.log(123);

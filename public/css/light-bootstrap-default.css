@@ -215,7 +215,9 @@ h1 .subtitle {
     justify-content: center;
     align-items: center;
 }
-
+.flex_end{
+    align-self: flex-end;
+}
 .fle_xeble{
     display: flex;
     justify-content: center;
@@ -458,6 +460,14 @@ h1 .subtitle {
     border: 2px solid #888888;
     color: #888888;
 }
+.user_location_add{
+    margin-right: 40px;
+}
+.user_location_add,
+.user_location_remove{
+    cursor: pointer;
+    width: 40%;
+}
 
 .interest_cont{
     background-color: #ffff;
@@ -489,6 +499,17 @@ h1 .subtitle {
     width: calc(100% - 64.47px - 10px - 16px - 12px);
     left: 15px;
     top: -19px;
+}
+
+@media (max-width: 450px){
+    .user_location_cont{
+        display: flex;
+        flex-direction: column;
+    }
+    .user_location_add,
+    .user_location_remove{
+        width: 100%;
+    }
 }
 /*** /USER PAGE STYLESHEETS ***/
 .text-muted {

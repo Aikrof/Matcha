@@ -88,12 +88,25 @@ class UserProfileController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $key = key($request->all());
-        echo"<pre>"; 
+        echo "<pre>";
         var_dump($request->all());
         exit;
+        $key = key($request->all());
+        
         $data[$key] = ProfileHelper::validateRequest($request->all(), $request->user()->id);
 
+        if (empty($data[$key]))
+            exit;
+
+        if ($key === 'birthday')
+        {
+            $select = Info::find($request->user()->id);
+            
+        }
+        else if ($key === 'location')
+        {
+
+        }
         // if ($key === 'day' || $key === 'month' || $key === 'year')
         //     $table = Birthday::find($request->user()->id);
         // else
@@ -133,6 +146,18 @@ class UserProfileController extends Controller
         $interests->tags = implode(',', $tags);
         
         $interests->save();
+        exit;
+    }
+
+    public function removeLocation(Request $request)
+    {
+        $location = Location::find($request->user()->id);
+
+        if (!$location->user_access)
+            exit;
+
+        $location->user_access = 0;
+        $location->save();
         exit;
     }
 }
