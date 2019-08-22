@@ -41,13 +41,36 @@ $('.edit_inp').change(function(){
 	editProfile($name, $val);
 });
 
+$('.remove_birthday').click(function(){
+	$('input[name="day"]').val("");
+	$('input[name="year"]').val("");
+	$('.birthday_buttn').text("Month");
+
+	sender.form('/profile/removeBirthday', null);
+});
+
 $('.tag_se').click(function(){
 	$value = $(this).text().replace('#', '');
 
 	$(this).remove();
-	sender.form('/user/removeTag', {'tag' : $value});
+	sender.form('/profile/removeTag', {'tag' : $value});
 });
 
+/*
+* Add icon
+*/
+$('#profile_avatar').change(function(){
+    
+    var reader = new FileReader();
+    
+    reader.onload = function (e) {
+        $('.avatar').attr('src', e.target.result);
+    };
+    reader.readAsDataURL($(this).prop('files')[0]);
+
+    let $file = new ImgWorker($(this));
+    $file.imgSend('/saveUserIcon', $('.avatar'));    
+});
 
 $('.btn_inter').click(function(){
 	$hash = $('#interestsHelp').val().split('#');
@@ -98,7 +121,7 @@ $('.user_location_add').click(function(){
 		$('.city_local').val(location.city);
 		$('.country_local').val(location.country);
 
-		sender.form('/profileUpdate', {'location' : location});
+		sender.form('/profile/profileUpdate', {'location' : location});
 	});
 });
 $('.user_location_remove').click(function(){
@@ -122,7 +145,7 @@ function sendTag(tag)
     	$('.interest_cont').prepend(
     	 	'<p class="tag_se">#' + tag + '</p>');
     	let arr = [tag];
-    	sender.form('/profileUpdate', {'interests' : arr}, function(request){
+    	sender.form('/profile/profileUpdate', {'interests' : arr}, function(request){
 			console.log(request);
         });
     }
@@ -141,6 +164,5 @@ function checkElseBirthParam(){
 function editProfile($name, $value)
 {
 	let $obj = {[$name] : $value};
-	sender.form('/profileUpdate', $obj);
+	sender.form('/profile/profileUpdate', $obj);
 }
-

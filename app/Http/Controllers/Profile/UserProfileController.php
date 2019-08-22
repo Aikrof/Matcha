@@ -88,42 +88,50 @@ class UserProfileController extends Controller
 
     public function updateProfile(Request $request)
     {
-        echo "<pre>";
-        var_dump($request->all());
-        exit;
         $key = key($request->all());
-        
-        $data[$key] = ProfileHelper::validateRequest($request->all(), $request->user()->id);
+        $user_id = $request->user()->id;
 
-        if (empty($data[$key]))
-            exit;
+        $data[$key] = ProfileHelper::validateRequest($request->all(), $user_id);
 
         if ($key === 'birthday')
         {
-            $select = Info::find($request->user()->id);
+            exit($this->updateBirthday($data, $user_id));
+            $user = Birthday::find($request->user()->id);
             
         }
         else if ($key === 'location')
         {
+            exit($this->updateLocation($data, $user_id));
+            $user = Location::find($request->user()->id);
+        }
+        else if ($key === 'interests')
+        {
+            exit($this->updateInterests($data, $user_id));
+            $user = Interests::find($request->user()->id);
+            $tag = Tags::firstOrNew(['tag' => $data['interests'][0]]);
+            $tag->count++;
+            $tag->save();
 
         }
-        // if ($key === 'day' || $key === 'month' || $key === 'year')
-        //     $table = Birthday::find($request->user()->id);
-        // else
-        //     $table = Info::find($request->user()->id);
+        else
+        {
+            exit($this->updateInfo($data, $key, $user_id));
+            $user = Info::find($request->user()->id);
+            $user->$key = $data[$key];
+        }
 
-        // foreach ($request->all() as $key => $value){
-        //    $table->$key = $value;
-        // }
-
-        // $table->save();
+        $user->save();
     }
 
-    public function saveTag(Request $request)
+    public function removeBirthday(Request $request)
     {
-        echo"<pre>"; 
-        var_dump($request->tag);
-        exit;
+        $birthday = Birthday::find($request->user()->id);
+
+        $birthday->day = null;
+        $birthday->month = null;
+        $birthday->year = null;
+
+        $birthday->save();
     }
 
     public function removeTag(Request $request)
@@ -159,5 +167,59 @@ class UserProfileController extends Controller
         $location->user_access = 0;
         $location->save();
         exit;
+    }
+
+
+    protected function updateBirthday(array $data, int $user_id)
+    {
+        if (empty($data['birthday']))
+            exit;
+        
+        $birthday = Birthday::find($user_id);
+        
+        foreach ($data['birthday'] as $key => $value){
+            $birthday->$key = $value;
+        }
+
+        $birthday->save();
+    }
+
+    protected function updateLocation(array $data, int $user_id)
+    {
+        $location = Location::find($user_id);
+
+        foreach ($data['location'] as $key => $value){
+            $location->$key = $value;
+        }
+        $location->user_access = 1;
+        
+        $location->save();
+    }
+
+    protected function updateInterests(array $data, int $user_id)
+    {
+        $newTag = $data['interests'][0];
+
+        $interests = Interests::find($user_id);
+        $tag = Tags::firstOrNew(['tag' => $newTag]);
+        
+        $interests_tags = explode(',', $interests->tags);
+        array_push($interests_tags, $newTag);
+        $interests->tags = implode(',', $interests_tags);
+        
+        $interests->save();
+
+        $tag->count++;
+        $tag->save();
+
+    }
+
+    protected function updateInfo(array $data, string $key, int $user_id)
+    {
+        $info = Info::find($user_id);
+
+        $info->$key = $data[$key];
+
+        $info->save();
     }
 }

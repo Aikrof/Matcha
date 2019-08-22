@@ -463,10 +463,12 @@ h1 .subtitle {
 .user_location_add{
     margin-right: 40px;
 }
+.remove_birthday,
 .user_location_add,
 .user_location_remove{
     cursor: pointer;
     width: 40%;
+    color: red;
 }
 
 .interest_cont{
@@ -500,12 +502,56 @@ h1 .subtitle {
     left: 15px;
     top: -19px;
 }
+.add-img-cont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.as{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    border: 2px solid #E3E3E3;
+    border-radius: 4px;
+}
+.ai{
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    border: 3px dotted #E3E3E3;
+    border-radius: 4px;
+}
+.ai > p{
+    text-align: center;
+}
+.ai:hover{
+    border-color: black;
+}
+.ai:hover > p{
+    font-weight: bold;
+}
 
+#profile_avatar{
+    display: none;
+}
+
+.pr_img_21{
+    cursor: pointer;
+    width: 100%;
+    border: 2px solid #E3E3E3;
+    border-radius: 4px;
+}
 @media (max-width: 450px){
     .user_location_cont{
         display: flex;
         flex-direction: column;
     }
+    .remove_birthday,
     .user_location_add,
     .user_location_remove{
         width: 100%;

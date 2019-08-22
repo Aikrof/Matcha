@@ -69,6 +69,10 @@ class ProfileInfoHelper
         if ($validate->fails())
             return (false);
 
+        $day = (int)date('Y') - (int)$data['birthday']['year'];
+        if ($day <= 10 || $day >= 60)
+            return (false);
+
         $age = self::selectData('age', 'infos', $user_id)[0]->age;
 
         if (!empty($age) && $age !== 0)

@@ -92,6 +92,13 @@ class ImageController extends Controller
         $name = explode('/', $created_path);
         $name = $name[count($name) - 1];
         
+        /**
+        * Intervention
+        **/
+        // $intervention = Img::make($created_path);
+        // $intervention->resize(124, 124);
+        // $intervention->save($created_path);
+
         $info = Info::find($id);
         
         if ($info->icon === 'spy.png')

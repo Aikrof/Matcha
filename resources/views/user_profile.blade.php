@@ -9,10 +9,42 @@
 <!-- CONTENT -->
 @section('content')
 
-{{'user profile'}}
 <div class="container-fluid">
 <div class="row">
-<div class="col-md-8">
+
+<!-- Profile IMG Area -->
+<div class="col-md-8 profile_img">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Gallery</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Add image to your gallery</label>
+                        <div class="as">
+                            <div class="ai">
+                                <p>Add Image</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row fle_xeble">
+                <div class="col-md-8">
+                    <img class="form-group pr_img_21" src="img/sidebar/sidebar-8.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Profile IMG Area -->
+
+<!-- Profile Edit Area -->
+<div class="col-md-8 profile_edit" style="display: none;">
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">Edit Profile</h4>
@@ -111,7 +143,13 @@
                         <input type="text" maxlength="4" class="form-control edit_inp" name="year" autocomplete="off" placeholder="year" value="{{($data['birthday']['year'] === 0) ? '' : $data['birthday']['year']}}">
                     </div>
                 </div>
-
+            </div>
+             <div class="row">
+                <div class="col-md-12 pr-1">
+                    <div class="form-group user_location_cont">
+                        <p class="btn form-control remove_birthday">Remove Birthday</p>
+                    </div>
+                </div>
             </div>
             <div class="row">
             	<div class="col-md-6 pr-1">
@@ -178,6 +216,9 @@
     	</div>
     </div>
 </div>
+<!-- /Profile Edit Area -->
+
+<!-- User Info Area -->
 <div class="col-md-4">
     <div class="card card-user">
         <div class="card-image">
@@ -186,17 +227,44 @@
         <div class="card-body">
             <div class="author">
                 <a href="#">
-                	<img class="avatar border-gray" src="{{$data['info']['icon']}}" alt="...">
-                	<h5 class="title">{{$data['info']['first_name'] . " " . $data['info']['last_name']}}</h5>
+                    <label>
+                	   <img class="avatar border-gray cursor" src="{{$data['info']['icon']}}" alt="...">
+                        <input type="file" id="profile_avatar">
+                	</label>
+                    <h5 class="title">{{$data['info']['first_name'] . " " . $data['info']['last_name']}}</h5>
                 </a>
                 <p class="description">{{$data['user']['login']}}</p>
             </div>
             <p class="description text-center">
+                <span>Age: </span>{{$data['info']['age']}}
+            </p>
+            <p class="description text-center">
+                <span>Birthday: </span>{{
+                $data['birthday']['day'] . "." . $data['birthday']['month'] . "." . $data['birthday']['year']
+            }}
+            </p>
+            <p class="description text-center">
+                <span>Location: </span>
+                @if ($data['location']['user_access'])
+                    {{$data['location']['country'] . "," . $data['location']['city']}}
+                @endif
+            </p>
+            <p class="description text-center">
+                <span>Interests: </span>
+                  @if ($data['interests'] && !empty($data['interests'][0]))
+                    @foreach ($data['interests'] as $tag)
+                        {{'#' . $tag . " "}}
+                    @endforeach
+                    @endif
+            </p>
+            <p class="description text-center">
+                <span>About: </span>
                 {{$data['info']['about']}}
             </p>
        	</div>
     </div>
 </div>
+<!-- /User Info Area -->
 </div>
 </div>
 
