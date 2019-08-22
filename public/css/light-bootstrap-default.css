@@ -186,7 +186,9 @@ h1 .subtitle {
     color: #d80247;
 }
 
-
+.none{
+    display: none;
+}
 .cursor{
     cursor: pointer;
 }
@@ -516,7 +518,7 @@ h1 .subtitle {
     border: 2px solid #E3E3E3;
     border-radius: 4px;
 }
-.ai{
+.pt_img{
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -526,13 +528,13 @@ h1 .subtitle {
     border: 3px dotted #E3E3E3;
     border-radius: 4px;
 }
-.ai > p{
+.pt_img > p{
     text-align: center;
 }
-.ai:hover{
+.pt_img:hover{
     border-color: black;
 }
-.ai:hover > p{
+.pt_img:hover > p{
     font-weight: bold;
 }
 

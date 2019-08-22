@@ -61,15 +61,45 @@ $('.tag_se').click(function(){
 */
 $('#profile_avatar').change(function(){
     
-    var reader = new FileReader();
+    // var reader = new FileReader();
     
-    reader.onload = function (e) {
-        $('.avatar').attr('src', e.target.result);
+    // reader.onload = function (e){
+    //     $('.avatar').attr('src', e.target.result);
+    // };
+    // reader.readAsDataURL($(this).prop('files')[0]);
+
+    let $file = new ImgWorker($(this));
+    $file.iconSend('/saveUserIcon', $('.avatar'), $(this).attr('name'));    
+});
+/**
+* Add user img
+**/
+$('#inp_img').change(function(){
+    var reader = new FileReader();
+
+    reader.onload = function (read){
+        $('.user_img_area').prepend(
+        	'<div class="row fle_xeble taget_img">\
+        		<div class="col-md-8">\
+                    <img class="form-group pr_img_21" src="">\
+                </div>\
+        	</div>'
+        );
     };
     reader.readAsDataURL($(this).prop('files')[0]);
 
     let $file = new ImgWorker($(this));
-    $file.imgSend('/saveUserIcon', $('.avatar'));    
+    $file.imgSend('/saveUserImg', $(this).attr('name'), function(src){
+    	$('.user_img_area').prepend(
+        	'<div class="row fle_xeble taget_img">\
+        		<div class="col-md-8">\
+                    <img class="form-group pr_img_21" src=' + src +'>\
+                </div>\
+        	</div>'
+        );
+    }, function(error){
+    	console.log(error);
+    });
 });
 
 $('.btn_inter').click(function(){

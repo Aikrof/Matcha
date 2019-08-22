@@ -16,7 +16,10 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
 	
 	Route::post('/firstEntry', 'FirstEntryController@firstEntry');
 	Route::post('/SuccessfulUserFirstEntry', 'FirstEntryController@SuccessfulUserFirstEntry');
+	
 	Route::post('/saveUserIcon', 'ImageController@userIcon');
+	Route::post('/saveUserImg', 'ImageController@userImg');	
+
 	Route::post('/searchTag', 'TagsHelperController@tagWriter');
 
 	
@@ -37,9 +40,3 @@ Auth::routes(['verify' => true]);
 Route::post('/resend', 'Auth\VerificationController@resend');
 Route::post('/reset', 'Auth\ResetPasswordController@reset');
 Route::post('/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
-
-// Route::post('/register', 'Auth\RegisterController@register');
-// Route::post('/login', 'Auth\LoginController@login');
-// Route::post('password/reset', 'Auth\ResetPasswordController@reset');
-// Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-// Route::post('logout', 'Auth\LoginController@logout')->name('logout');

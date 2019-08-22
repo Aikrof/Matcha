@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Info;
+use App\Img;
 use App\Helper\ProfileAddRatingHelper as Rating;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -34,6 +35,21 @@ class ImageController extends Controller
     	
         $file_path = $this->saveIcon($request->file('icon'), $request->user()['login'], $request->user()['id']);
         
+        $contents = file_get_contents($file_path);
+        $mime_type = $file->getMimeType();
+        $base = "data:image/" . $mime_type . ";base64," . base64_encode($contents);
+
+        exit(json_encode(['src' => $base]));
+    }
+
+    public function userImg(Request $request)
+    {
+        $file = ($request->only('img'))['img'];
+
+        $this->validateImg($file);
+
+        $file_path = $this->saveImg($request->file('img'), $request->user()['login'], $request->user()['id']);
+
         $contents = file_get_contents($file_path);
         $mime_type = $file->getMimeType();
         $base = "data:image/" . $mime_type . ";base64," . base64_encode($contents);
@@ -77,6 +93,21 @@ class ImageController extends Controller
     }
 
     /**
+     * Delete old image icon if it exists
+     *
+     * @param  String user login  $request
+     * @param  String user img  $request
+     * @return void
+     */
+    private function deleteOldImg(String $login, String $img)
+    {
+        $path_to_file = storage_path('app/profiles/' . $login . '/' . $img);
+
+        if (file_exists($path_to_file))
+            unlink($path_to_file);
+    }
+
+    /**
      * Save icon to storage/app/profiles/'user login'/icon
      * add new icon in to database
      *
@@ -106,6 +137,50 @@ class ImageController extends Controller
 
         $info->icon = $name;
         $info->save();
+
+        return (storage_path('app/' . $created_path));
+    }
+
+    private function saveImg($file, $login, $id)
+    {
+        $created_path = $file->store('profiles/' . $login);
+
+        $name = explode('/', $created_path);
+        $name = $name[count($name) - 1];
+
+        /**
+        * Intervention
+        **/
+        // $intervention = Img::make($created_path);
+        // $intervention->resize(124, 124);
+        // $intervention->save($created_path);
+
+        $user_imgs = Img::find($id);
+        
+        if (empty($user_imgs))
+        {
+            Img::create([
+                'id' => $id,
+                'img' => $name
+            ]);
+
+        }
+        else
+        {
+            $imgs = explode(',', $user_imgs->img);
+
+            if (count($imgs) === 4)
+            {
+                $this->deleteOldImg($login, $imgs[0]);
+                $imgs[0] = $name;
+            }
+            else
+                array_push($imgs, $name);
+            
+            $user_imgs->img = implode(',', $imgs);
+
+            $user_imgs->save();
+        }
 
         return (storage_path('app/' . $created_path));
     }

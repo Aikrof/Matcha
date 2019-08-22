@@ -25,11 +25,11 @@ sender = {
         });
     },
 
-    file: function(url, $file, call){
+    file: function(url, $file, $appendName,call){
         var callback = call || function() {};
 
         let formData = new FormData;
-        formData.append('icon', $file);
+        formData.append($appendName, $file);
 
         $.ajax({
             url: url,
@@ -58,14 +58,38 @@ function ImgWorker($inp)
 {
     this.file = $inp.prop('files')[0];
 
-    this.imgSend = function($url, $putResultInto, $putErrorInto){
-        
-        sender.file($url, this.file, function(request){
+    this.iconSend = function($url, $putResultInto, $appendName, $putErrorInto){
+        if (!checkSize(this.file))
+            return;
+
+        var $errorCall = $putErrorInto || function() {};
+
+        sender.file($url, this.file, $appendName,function(request){
             if (request.src && $putResultInto !== undefined)
                 $putResultInto.attr('src', request.src);
             else if (request.error && $putErrorInto)
-                console.log(request.error);
+                $errorCall(request.error);
         });   
+    }
+
+    this.imgSend = function($url, $appendName, $putResultInto, $putErrorInto){
+
+        if (!checkSize(this.file))
+            return;
+
+        var $resultCall = $putResultInto || function() {};
+        var $errorCall = $putErrorInto || function() {};
+
+        sender.file($url, this.file, $appendName, function(request){
+            if (request.src)
+                $resultCall(request.src);
+            else if (request.error)
+                $errorCall(request.error)
+        });
+    }
+
+    var checkSize = function(file){
+        return (file.size <= 10000000);
     }
 }
 

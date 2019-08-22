@@ -25,18 +25,26 @@
                     <div class="form-group">
                         <label>Add image to your gallery</label>
                         <div class="as">
-                            <div class="ai">
-                                <p>Add Image</p>
-                            </div>
+                            <label>
+                                <input type="file" name="img" class="none" id="inp_img">
+                                <div class="pt_img">
+                                    <p>Add Image</p>
+                                </div>
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="row fle_xeble">
-                <div class="col-md-8">
-                    <img class="form-group pr_img_21" src="img/sidebar/sidebar-8.jpg">
+            <div class="row user_img_area">
+                @if (!empty($data['img']))
+                @foreach ($data['img'] as $src)
+                <div class="row fle_xeble taget_img">
+                    <div class="col-md-8">
+                        <img class="form-group pr_img_21" src="{{$src}}">
+                    </div>
                 </div>
+                @endforeach
+                @endif
             </div>
         </div>
     </div>
@@ -229,7 +237,7 @@
                 <a href="#">
                     <label>
                 	   <img class="avatar border-gray cursor" src="{{$data['info']['icon']}}" alt="...">
-                        <input type="file" id="profile_avatar">
+                        <input type="file" id="profile_avatar" name="icon">
                 	</label>
                     <h5 class="title">{{$data['info']['first_name'] . " " . $data['info']['last_name']}}</h5>
                 </a>

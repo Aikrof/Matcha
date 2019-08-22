@@ -8,7 +8,7 @@ entry = {
         <label class="pattaya_style c-330">Add icon:</label>\
         <div class="custom-file">\
             <label>\
-                <input type="file" id="f_icon">\
+                <input type="file" id="f_icon" name="icon">\
                 <img id="f_img_icon" src="img/icons/spy.png">\
             </label>\
         </div>\
@@ -193,7 +193,7 @@ Swal.mixin({
             let $url = '/saveUserIcon';
 
             let $file = new ImgWorker($('#f_icon'));
-            $file.imgSend($url, $('#f_img_icon'), function(request){
+            $file.iconSend($url, $('#f_img_icon'), $('#f_icon').attr('name'), function(request){
                 console.log(request);
             });
         }
