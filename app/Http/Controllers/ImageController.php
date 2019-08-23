@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Image;
 use App\Info;
 use App\Img;
 use App\Helper\ProfileAddRatingHelper as Rating;
@@ -151,9 +152,9 @@ class ImageController extends Controller
         /**
         * Intervention
         **/
-        // $intervention = Img::make($created_path);
-        // $intervention->resize(124, 124);
-        // $intervention->save($created_path);
+        $intervention = Image::make($created_path);
+        $intervention->resize(124, 124);
+        $intervention->save($created_path);
 
         $user_imgs = Img::find($id);
         
@@ -171,14 +172,13 @@ class ImageController extends Controller
 
             if (count($imgs) === 4)
             {
-                $this->deleteOldImg($login, $imgs[0]);
-                $imgs[0] = $name;
+                $this->deleteOldImg($login, $imgs[count($imgs) - 1]);
+                unset($imgs[count($imgs) - 1]);
             }
-            else
-                array_push($imgs, $name);
+            
+            array_unshift($imgs, $name);
             
             $user_imgs->img = implode(',', $imgs);
-
             $user_imgs->save();
         }
 

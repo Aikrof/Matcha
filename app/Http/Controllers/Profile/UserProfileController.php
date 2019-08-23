@@ -10,6 +10,7 @@ use App\Location;
 use App\Interests;
 use App\Birthday;
 use App\Tags;
+use App\Img;
 use App\Helper\ProfileInfoHelper as ProfileHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -53,6 +54,7 @@ class UserProfileController extends Controller
             'interests' => Interests::find($id),
     		'location' => Location::find($id),
             'birthday' => Birthday::find($id),
+            'img' => $this->getBaseImg($id),
     	];
 
         if (!empty($data['interests']))
@@ -71,6 +73,28 @@ class UserProfileController extends Controller
         $base = "data:image/" . $mime_type . ";base64," . base64_encode($contents);
         $data['info']['icon'] = $base;
     	
+        return ($data);
+    }
+
+    private function getBaseImg(int $id)
+    {
+        $user_imgs = Img::find($id);
+        
+        if (empty($user_imgs))
+            return (null);
+
+        $file_path = storage_path('app/profiles/' . Auth::user()['login'] . '/');
+        $img = explode(',', $user_imgs->img);
+        $data = [];
+
+        foreach ($img as $value){
+            $img_path = $file_path . $value;
+
+            $contents = file_get_contents($img_path);
+            $mime_type = File::mimeType($img_path);
+
+            array_push($data, "data:image/" . $mime_type . ";base64," . base64_encode($contents));
+        }
         return ($data);
     }
 

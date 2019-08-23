@@ -60,36 +60,24 @@ $('.tag_se').click(function(){
 * Add icon
 */
 $('#profile_avatar').change(function(){
-    
-    // var reader = new FileReader();
-    
-    // reader.onload = function (e){
-    //     $('.avatar').attr('src', e.target.result);
-    // };
-    // reader.readAsDataURL($(this).prop('files')[0]);
 
     let $file = new ImgWorker($(this));
     $file.iconSend('/saveUserIcon', $('.avatar'), $(this).attr('name'));    
 });
+
 /**
 * Add user img
 **/
 $('#inp_img').change(function(){
-    var reader = new FileReader();
-
-    reader.onload = function (read){
-        $('.user_img_area').prepend(
-        	'<div class="row fle_xeble taget_img">\
-        		<div class="col-md-8">\
-                    <img class="form-group pr_img_21" src="">\
-                </div>\
-        	</div>'
-        );
-    };
-    reader.readAsDataURL($(this).prop('files')[0]);
 
     let $file = new ImgWorker($(this));
+    
+    $(this).val("");
+    
     $file.imgSend('/saveUserImg', $(this).attr('name'), function(src){
+        if ($('.pr_img_21').length == 4)
+            $('.taget_img').last().remove();
+
     	$('.user_img_area').prepend(
         	'<div class="row fle_xeble taget_img">\
         		<div class="col-md-8">\
