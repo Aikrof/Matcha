@@ -20,15 +20,14 @@
         </div>
         <div class="card-body">
             <div class="row">
-
                 <div class="col-md-8">
                     <div class="form-group">
                         <label>Add image to your gallery</label>
                         <div class="as">
                             <label>
                                 <input type="file" name="img" class="none" id="inp_img">
-                                <div class="pt_img">
-                                    <p>Add Image</p>
+                                <div class="form-group user_location_cont">
+                                    <p class="btn form-control">Add</p>
                                 </div>
                             </label>
                         </div>
@@ -39,8 +38,11 @@
                 @if (!empty($data['img']))
                 @foreach ($data['img'] as $src)
                 <div class="row fle_xeble taget_img">
-                    <div class="col-md-8">
+                    <div class="col-md-11 pos_rel img_cont">
                         <img class="form-group pr_img_21" src="{{$src}}">
+                        <i class="fa fa-heart posr_abs hov_img_fa i_none col-white like"></i>
+                        <small class="like like_count posr_abs none">12</small>
+                        <i class="fa fa-comments posr_abs hov_comments_fa comments col-white i_none"></i>
                     </div>
                 </div>
                 @endforeach

@@ -45,11 +45,11 @@ class ImageController extends Controller
 
     public function userImg(Request $request)
     {
-        $file = ($request->only('img'))['img'];
+        $file = $request->file('img');
 
         $this->validateImg($file);
 
-        $file_path = $this->saveImg($request->file('img'), $request->user()['login'], $request->user()['id']);
+        $file_path = $this->saveImg($file, $request->user()['login'], $request->user()['id']);
 
         $contents = file_get_contents($file_path);
         $mime_type = $file->getMimeType();
@@ -127,9 +127,7 @@ class ImageController extends Controller
         /**
         * Intervention
         **/
-        // $intervention = Img::make($created_path);
-        // $intervention->resize(124, 124);
-        // $intervention->save($created_path);
+        Image::make($file)->resize(124, 124)->save(storage_path('app/' . $created_path));
 
         $info = Info::find($id);
         
@@ -145,16 +143,14 @@ class ImageController extends Controller
     private function saveImg($file, $login, $id)
     {
         $created_path = $file->store('profiles/' . $login);
-
+        
         $name = explode('/', $created_path);
         $name = $name[count($name) - 1];
 
         /**
         * Intervention
         **/
-        $intervention = Image::make($created_path);
-        $intervention->resize(124, 124);
-        $intervention->save($created_path);
+        Image::make($file)->resize(2560, 1600)->save(storage_path('app/' . $created_path));
 
         $user_imgs = Img::find($id);
         

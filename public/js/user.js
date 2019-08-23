@@ -65,6 +65,8 @@ $('#profile_avatar').change(function(){
     $file.iconSend('/saveUserIcon', $('.avatar'), $(this).attr('name'));    
 });
 
+/*** USER IMG ***/
+
 /**
 * Add user img
 **/
@@ -80,7 +82,7 @@ $('#inp_img').change(function(){
 
     	$('.user_img_area').prepend(
         	'<div class="row fle_xeble taget_img">\
-        		<div class="col-md-8">\
+        		<div class="col-md-11">\
                     <img class="form-group pr_img_21" src=' + src +'>\
                 </div>\
         	</div>'
@@ -89,6 +91,63 @@ $('#inp_img').change(function(){
     	console.log(error);
     });
 });
+
+/*
+* Add img likes and comments
+*/
+$('.img_cont').mouseenter(function(){
+    $(this).children('.fa').removeClass("i_none");
+    $(this).children('.like_count').removeClass("none");
+});
+
+/*
+* Remove img likes and comments
+*/
+$('.img_cont').mouseleave(function(){
+    $(this).children('.fa').addClass("i_none");
+    $(this).children('.like_count').addClass("none");
+});
+
+/*
+* Show who like img
+*/
+$('.like').click(function(){
+    console.log('like');
+});
+
+/*
+* Show comments
+*/
+$('.comments').click(function(){
+    console.log('comments');
+});
+
+/*
+* Show resize img
+*/
+$('.img_cont').click(function(){
+    Swal.fire({
+        html: '\
+         <div class="full_scr_cont">\
+            <img class="full_scr_img" src='
+            +  $(this).children('.pr_img_21').attr('src') + 
+            '>\
+            <div class="full_src_lay">\
+                <div class="full_src_comments">\
+                </div>\
+                <div class="full_src_addComments">\
+                    <textarea rows="4" cols="80" class="form-control add_comment" name="comment" placeholder="Type your comment"></textarea>\
+                    <p class="btn add_comment_btn">Add</p>\
+                </div>\
+            </div>\
+        </div>',
+        customClass: 'swal-wide',
+        showCloseButton: true,
+        showConfirmButton: false,
+    })
+});
+
+/*** /USER IMG ***/
 
 $('.btn_inter').click(function(){
 	$hash = $('#interestsHelp').val().split('#');
@@ -184,3 +243,4 @@ function editProfile($name, $value)
 	let $obj = {[$name] : $value};
 	sender.form('/profile/profileUpdate', $obj);
 }
+
