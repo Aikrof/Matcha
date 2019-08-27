@@ -35,12 +35,8 @@ class ImageController extends Controller
         $this->deleteOldIcon($request->user()['login']);
     	
         $file_path = $this->saveIcon($request->file('icon'), $request->user()['login'], $request->user()['id']);
-        
-        $contents = file_get_contents($file_path);
-        $mime_type = $file->getMimeType();
-        $base = "data:image/" . $mime_type . ";base64," . base64_encode($contents);
 
-        exit(json_encode(['src' => $base]));
+        exit(json_encode(['src' => $file_path]));
     }
 
     public function userImg(Request $request)
@@ -51,11 +47,10 @@ class ImageController extends Controller
 
         $file_path = $this->saveImg($file, $request->user()['login'], $request->user()['id']);
 
-        $contents = file_get_contents($file_path);
-        $mime_type = $file->getMimeType();
-        $base = "data:image/" . $mime_type . ";base64," . base64_encode($contents);
-
-        exit(json_encode(['src' => $base]));
+        exit(json_encode(['src' => [
+            'img_src' => $file_path,
+            'id' => base64_encode($request->user()->id)]
+        ]));
     }
 
     //https://laravel.com/docs/5.8/filesystem
@@ -86,7 +81,7 @@ class ImageController extends Controller
      */
     private function deleteOldIcon(String $login)
     {
-        $path_to_dir = storage_path('app/profiles/' . $login . '/icon');
+        $path_to_dir = storage_path('app/public/' . $login . '/icon');
         $glob = glob($path_to_dir . '/*');
         $is_empty = count(glob($path_to_dir . '/*')) ? false : true;
         if (!$is_empty)
@@ -102,7 +97,7 @@ class ImageController extends Controller
      */
     private function deleteOldImg(String $login, String $img)
     {
-        $path_to_file = storage_path('app/profiles/' . $login . '/' . $img);
+        $path_to_file = storage_path('app/public/' . $login . '/' . $img);
 
         if (file_exists($path_to_file))
             unlink($path_to_file);
@@ -119,7 +114,7 @@ class ImageController extends Controller
      */
     private function saveIcon($file, $login, $id)
     {
-        $created_path = $file->store('profiles/' . $login . '/icon');
+        $created_path = $file->store('public/' . $login . '/icon');
         
         $name = explode('/', $created_path);
         $name = $name[count($name) - 1];
@@ -132,18 +127,18 @@ class ImageController extends Controller
         $info = Info::find($id);
         
         if ($info->icon === 'spy.png')
-            Rating::addToRating($id, 1);
+            Rating::addToRating($id, 'icon');
 
         $info->icon = $name;
         $info->save();
 
-        return (storage_path('app/' . $created_path));
+        return ('/storage/' . $login . '/icon/' . $name);
     }
 
     private function saveImg($file, $login, $id)
     {
-        $created_path = $file->store('profiles/' . $login);
-        
+        $created_path = $file->store('public/' . $login);
+
         $name = explode('/', $created_path);
         $name = $name[count($name) - 1];
 
@@ -178,6 +173,6 @@ class ImageController extends Controller
             $user_imgs->save();
         }
 
-        return (storage_path('app/' . $created_path));
+        return ('/storage/' . $login . '/' . $name);
     }
 }

@@ -11,6 +11,7 @@ use App\Interests;
 use App\Birthday;
 use App\Tags;
 use App\Img;
+use App\Likes;
 use App\Helper\ProfileInfoHelper as ProfileHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -54,47 +55,47 @@ class UserProfileController extends Controller
             'interests' => Interests::find($id),
     		'location' => Location::find($id),
             'birthday' => Birthday::find($id),
-            'img' => $this->getBaseImg($id),
+            'content' => $this->getImg($id),
     	];
 
         if (!empty($data['interests']))
             $data['interests'] = array_reverse(explode(',', $data['interests']->tags));
 
         if ($data['info']['icon'] !== 'spy.png')
-            $file_path = storage_path('app/profiles/' . Auth::user()['login'] . '/icon/' . $data['info']['icon']);
+            $data['info']['icon'] = '/storage/' . Auth::user()['login'] . '/icon/' . $data['info']['icon'];
         else
-            $file_path = public_path('img/icons/spy.png');
+            $data['info']['icon'] = '/img/icons/spy.png';
 
         if (!empty($data['birthday']) && $this->checkBirthday($data['birthday']))
             $data['birthday'] = null;
-
-        $contents = file_get_contents($file_path);
-        $mime_type = File::mimeType($file_path);
-        $base = "data:image/" . $mime_type . ";base64," . base64_encode($contents);
-        $data['info']['icon'] = $base;
     	
         return ($data);
     }
 
-    private function getBaseImg(int $id)
+    private function getImg(int $id)
     {
         $user_imgs = Img::find($id);
         
         if (empty($user_imgs))
             return (null);
 
-        $file_path = storage_path('app/profiles/' . Auth::user()['login'] . '/');
         $img = explode(',', $user_imgs->img);
         $data = [];
 
         foreach ($img as $value){
-            $img_path = $file_path . $value;
+            $img_path = '/storage/' . Auth::user()['login'] . '/' . $value;
 
-            $contents = file_get_contents($img_path);
-            $mime_type = File::mimeType($img_path);
+            $likes = Likes::find($value);
 
-            array_push($data, "data:image/" . $mime_type . ";base64," . base64_encode($contents));
+            $count = (empty($likes)) ? 0 : $likes->count;
+
+            array_push($data, [
+                'img' => $img_path,
+                'count' => $count,
+                'id' => base64_encode(Auth::user()['id'])
+            ]);
         }
+
         return ($data);
     }
 

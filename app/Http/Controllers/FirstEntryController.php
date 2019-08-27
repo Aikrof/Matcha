@@ -76,7 +76,7 @@ class FirstEntryController extends Controller
         $user_info->save();
 
         if (!empty($info[$key]))
-            Rating::addToRating($request->user()['id'], 0.5);
+            Rating::addToRating($request->user()['id'], $key);
     }
 
     /**
@@ -100,7 +100,7 @@ class FirstEntryController extends Controller
         ]);
 
         if (!empty($info['birthday']))
-            Rating::addToRating($request->user()['id'], 0.5);
+            Rating::addToRating($request->user()['id'], 'birthday');
     }
 
     /**
@@ -135,7 +135,7 @@ class FirstEntryController extends Controller
         }
 
         if (!empty($info['interests']))
-            Rating::addToRating($request->user()['id'], 0.5);
+            Rating::addToRating($request->user()['id'], 'interests');
     }
 
     /**
@@ -168,7 +168,7 @@ class FirstEntryController extends Controller
         ]);
 
         if (!empty($info['location']) && $user_access)
-            Rating::addToRating($request->user()['id'], 0.5);
+            Rating::addToRating($request->user()['id'], 'location');
     }
 
     /**

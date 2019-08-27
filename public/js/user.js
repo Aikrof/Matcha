@@ -76,17 +76,17 @@ $('#inp_img').change(function(){
     
     $(this).val("");
     
-    $file.imgSend('/saveUserImg', $(this).attr('name'), function(src){
+    $file.imgSend('/saveUserImg', $(this).attr('name'), function(request){
+        
         if ($('.pr_img_21').length == 4)
             $('.taget_img').last().remove();
 
     	$('.user_img_area').prepend(
         	'<div class="row fle_xeble taget_img">\
-        		<div class="col-md-11">\
-                    <img class="form-group pr_img_21" src=' + src +'>\
+                <div class="col-md-11">\
+                    <img class="form-group pr_img_21" src='+ request.img_src +' data='+ request.id +'>\
                 </div>\
-        	</div>'
-        );
+            </div>');
     }, function(error){
     	console.log(error);
     });
@@ -96,41 +96,128 @@ $('#inp_img').change(function(){
 * Add img likes and comments
 */
 $('.img_cont').mouseenter(function(){
-    $(this).children('.fa').removeClass("i_none");
-    $(this).children('.like_count').removeClass("none");
+    $(this).children('.user_func').show();
 });
 
 /*
 * Remove img likes and comments
 */
 $('.img_cont').mouseleave(function(){
-    $(this).children('.fa').addClass("i_none");
-    $(this).children('.like_count').addClass("none");
+    $(this).children('.user_func').hide();
 });
 
 /*
-* Show who like img
+* Show who likes and add like
 */
 $('.like').click(function(){
-    console.log('like');
+    let $likes_area = $(this).parent().parent().children('.box_likes_hidden').removeClass("none");
+    let $targetArrea = $(this).parents('.img_cont').children('.box_likes_hidden').children('.like_box').children('.users_like');
+
+    let $img = getImg($likes_area.parent().children('.pr_img_21').attr('src'));
+
+    $targetArrea.empty();
+
+    sender.form('/user/getLikes', {'img': $img}, function(request){
+        if (request.data)
+            console.log(request.data);
+        else if (request.empty)
+        {
+            $targetArrea.append('\
+                <div class="empty_comment">\
+                    <p>'+ request.empty +'</p>\
+                </div>\
+            ');
+        }
+    })
 });
+
 
 /*
 * Show comments
 */
-$('.comments').click(function(){
-    console.log('comments');
+$('.hov_comments_fa').click(function(e){
+    let $area = $(this).parent().parent().children('.box_commnets_hidden').removeClass("none");
+    let $targetArrea = $(this).parents('.img_cont').children('.box_commnets_hidden').children('.comment_box').children('.users_coments');
+
+    let $img = getImg($area.parent().children('.pr_img_21').attr('src'));
+
+    $targetArrea.empty();
+
+    sender.form('/user/getComments', {'commentImg' : $img}, function(request){
+        if (request.data)
+        {
+            for (let $data of request.data){
+                addCommentsToArea($targetArrea, $data);
+            }
+        }
+        else if (request.empty)
+        {
+            $targetArrea.append('\
+                <div class="empty_comment">\
+                    <p>'+ request.empty +'</p>\
+                </div>\
+                ');
+        }
+
+    });
+});
+
+/*
+* Close comments and likes
+*/
+$('.comment_close').click(function(){
+    $(this).parent().parent().addClass("none");
+});
+
+/*
+* Send new comment
+*/
+$('.snd_new_comment').click(function(){
+    let $text = $(this).parent().children('textarea');
+    let $targetArrea = $(this).parents('.comment_box').children('.users_coments');
+
+    $obj = {
+        'img' : getImg($(this).parents('.img_cont').children('.pr_img_21').attr('src')),
+        'comment' : $text.val(),
+        'id' : $(this).parents('.img_cont').children('.pr_img_21').attr('data')
+    };
+   
+    sender.form('/user/addComment', {'comment' : $obj}, function(request){
+        if (request.data)
+        {
+            if ($('.empty_comment') !== undefined)
+                $('.empty_comment').remove();
+            addCommentsToArea($targetArrea, request.data);
+        }
+    });
+
+    $text.val("");
+});
+
+/*
+* New like
+*/
+$('.snd_new_like').click(function(){
+
+    $obj = {
+        'img' : getImg($(this).parents('.img_cont').children('.pr_img_21').attr('src')),
+        'id' : $(this).parents('.img_cont').children('.pr_img_21').attr('data'),
+    };
+
+    sender.form('/user/addLike', {'like':$obj}, function(request){
+        console.log(request);
+    });
 });
 
 /*
 * Show resize img
 */
-$('.img_cont').click(function(){
+$('.pr_img_21').click(function(){
     Swal.fire({
         html: '\
          <div class="full_scr_cont">\
             <img class="full_scr_img" src='
-            +  $(this).children('.pr_img_21').attr('src') + 
+            +  $(this).attr('src') + 
             '>\
             <div class="full_src_lay">\
                 <div class="full_src_comments">\
@@ -238,9 +325,27 @@ function checkElseBirthParam(){
     return (count == 3);
 }
 
-function editProfile($name, $value)
-{
+function editProfile($name, $value){
 	let $obj = {[$name] : $value};
 	sender.form('/profile/profileUpdate', $obj);
 }
 
+var getImg = function($path){
+    $img = $path.split('/');
+    return ($img[$img.length - 1]);
+}
+
+function addCommentsToArea($targetArrea, $data){
+    $targetArrea.append('\
+        <div class="comment_area_cont form-group">\
+            <a href='+ $data.login +'>\
+                <img class="comment_area_img" src='+ $data.icon +'>\
+            </a>\
+            <div class="comment_area">\
+                <p class="comment_area_login pattaya_style">'+ $data.login +'</p>\
+                <div class="comment_area_comment">\
+                    <p>'+ $data.comment +'</p>\
+                </div>\
+            </div>\
+        </div>')
+}

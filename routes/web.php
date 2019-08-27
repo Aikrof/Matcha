@@ -30,6 +30,12 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
 	Route::post('/profile/removeBirthday', 'Profile\UserProfileController@removeBirthday');
 	Route::post('/profile/removeTag', 'Profile\UserProfileController@removeTag');
 	Route::post('/profile/removeLocation', 'Profile\UserProfileController@removeLocation');
+
+	Route::post('/user/addComment', 'CommentController@addComment');
+	Route::post('/user/getComments', 'CommentController@getComments');
+
+	Route::post('/user/getLikes', 'LikeController@getLikes');
+	Route::post('/user/addLike', 'LikeController@addLike');
 });
 
 Route::group(['as' => 'landing','prefix' => 'landing', 'namespace' => 'Auth'], function(){

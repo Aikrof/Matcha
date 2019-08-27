@@ -35,15 +35,55 @@
                 </div>
             </div>
             <div class="row user_img_area">
-                @if (!empty($data['img']))
-                @foreach ($data['img'] as $src)
-                <div class="row fle_xeble taget_img">
+                @if (!empty($data['content']))
+                @foreach ($data['content'] as $content)
+                <div class="row fle_xeble taget_img pos_rel">
                     <div class="col-md-11 pos_rel img_cont">
-                        <img class="form-group pr_img_21" src="{{$src}}">
-                        <i class="fa fa-heart posr_abs hov_img_fa i_none col-white like"></i>
-                        <small class="like like_count posr_abs none">12</small>
-                        <i class="fa fa-comments posr_abs hov_comments_fa comments col-white i_none"></i>
+                        <img class="form-group pr_img_21" src="{{$content['img']}}" data="{{$content['id']}}">
+                        <div class="user_func posr_abs hov_func" style="display: none">
+                            <div class="hov_comments_fa comments col-white"></div>
+                            <div class="hov_img_fa_red  see_img_likes col-white like pos_rel">
+                                <small class="like like_count posr_abs">
+                                @if ($content['count'] != 0)
+                                    {{$content['count']}}
+                                @endif
+                                </small>
+                            </div>
+                        </div>
+                        <div class="box_commnets_hidden posr_abs none">
+                            <div class="commment_exit_box">
+                                <div class="comment_close"></div>
+                            </div>
+                            <div class="row comment_box">
+                                <div class="col-md-12 users_coments">
+                                    <!-- возврат ajax с коментами -->
+                                </div>
+                                <div class="col-md-12 add_new_comment">
+                                    <label>Add your comment</label>
+                                    <div class=" textarea_comment_cont">
+                                        <textarea class="form-control new_comment" name="new_comment" placeholder="Add your comment"></textarea>
+                                        <p class="btn snd_new_comment">Add</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box_likes_hidden posr_abs none">
+                            <div class="commment_exit_box">
+                                <div class="comment_close"></div>
+                            </div>
+                            <div class="row like_box">
+                                <div class="col-md-12 users_like">
+                                    <!-- возврат ajax с лайками -->
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Add your like</label>
+                                   
+                                        <p class="btn snd_new_like form-control">Add like</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                            
                 </div>
                 @endforeach
                 @endif
