@@ -60,7 +60,7 @@ $('.remove_birthday').click(function(){
 	sender.form('/profile/removeBirthday', null);
 });
 
-$('.tag_se').click(function(){
+$('.interest_cont').on('click', 'p.tag_se', function(){
 	$value = $(this).text().replace('#', '');
 
 	$(this).remove();
@@ -92,12 +92,7 @@ $('#inp_img').change(function(){
         if ($('.pr_img_21').length == 4)
             $('.taget_img').last().remove();
 
-    	$('.user_img_area').prepend(
-        	'<div class="row fle_xeble taget_img">\
-                <div class="col-md-11">\
-                    <img class="form-group pr_img_21" src='+ request.img_src +' data='+ request.id +'>\
-                </div>\
-            </div>');
+    	$('.user_img_area').prepend(addNewImageContent(request));
     }, function(error){
     	console.log(error);
     });
@@ -106,21 +101,21 @@ $('#inp_img').change(function(){
 /*
 * Add img likes and comments
 */
-$('.img_cont').mouseenter(function(){
+$('.user_img_area').on('mouseenter', 'div.img_cont', function(){
     $(this).children('.user_func').show();
 });
 
 /*
 * Remove img likes and comments
 */
-$('.img_cont').mouseleave(function(){
+$('.user_img_area').on('mouseleave', 'div.img_cont', function(){
     $(this).children('.user_func').hide();
 });
 
 /*
 * Show who likes and add like
 */
-$('.like').click(function(){
+$('.user_img_area').on('click', '.like', function(){
     let $likes_area = $(this).parent().parent().children('.box_likes_hidden').removeClass("none");
     let $targetArrea = $(this).parents('.img_cont').children('.box_likes_hidden').children('.like_box').children('.users_like');
 
@@ -146,7 +141,7 @@ $('.like').click(function(){
 /*
 * Show comments
 */
-$('.hov_comments_fa').click(function(e){
+$('.user_img_area').on('click', '.hov_comments_fa', function(e){
     let $area = $(this).parent().parent().children('.box_commnets_hidden').removeClass("none");
     let $targetArrea = $(this).parents('.img_cont').children('.box_commnets_hidden').children('.comment_box').children('.users_coments');
 
@@ -176,7 +171,7 @@ $('.hov_comments_fa').click(function(e){
 /*
 * Close comments and likes
 */
-$('.comment_close').click(function(){
+$('.user_img_area').on('click', '.comment_close', function(){
     $(this).parent().parent().addClass("none");
 });
 
@@ -247,6 +242,7 @@ $('.pr_img_21').click(function(){
 
 /*** /USER IMG ***/
 
+
 $('.btn_inter').click(function(){
 	$hash = $('#interestsHelp').val().split('#');
     $hash[0] = null;
@@ -315,12 +311,20 @@ function changeTag(tag){
 
 function sendTag(tag)
 {
+    let $search = '#' + tag;
+    for (let $value of $('.tag_se')){
+        if ($value.innerHTML === $search)
+            return;
+    }
+
     if (tag !== '' && tag !== '#')
     {
     	$('.interest_cont').prepend(
     	 	'<p class="tag_se">#' + tag + '</p>');
-    	let arr = [tag];
-    	sender.form('/profile/profileUpdate', {'interests' : arr}, function(request){
+    	
+        let arr = [tag];
+    	
+        sender.form('/profile/profileUpdate', {'interests' : arr}, function(request){
 			console.log(request);
         });
     }
@@ -359,4 +363,47 @@ function addCommentsToArea($targetArrea, $data){
                 </div>\
             </div>\
         </div>')
+}
+
+function addNewImageContent(request)
+{
+    return ('\
+<div class="row fle_xeble taget_img pos_rel">\
+    <div class="col-md-11 pos_rel img_cont">\
+        <img class="form-group pr_img_21" src='+ request.img_src +' data='+ request.id +'>\
+        <div class="user_func posr_abs hov_func" style="display: none">\
+            <div class="hov_comments_fa comments col-white"></div>\
+                <div class="hov_img_fa_red  see_img_likes col-white like pos_rel">\
+                    <small class="like like_count posr_abs"></small>\
+                </div>\
+            </div>\
+            <div class="box_commnets_hidden posr_abs none">\
+                <div class="commment_exit_box">\
+                    <div class="comment_close"></div>\
+                </div>\
+                <div class="row comment_box">\
+                    <div class="col-md-12 users_coments"></div>\
+                    <div class="col-md-12 add_new_comment">\
+                        <label>Add your comment</label>\
+                        <div class=" textarea_comment_cont">\
+                            <textarea class="form-control new_comment" name="new_comment" placeholder="Add your comment"></textarea>\
+                            <p class="btn snd_new_comment">Add</p>\
+                        </div>\
+                    </div>\
+                </div>\
+            </div>\
+            <div class="box_likes_hidden posr_abs none">\
+                <div class="commment_exit_box">\
+                    <div class="comment_close"></div>\
+                </div>\
+                <div class="row like_box">\
+                    <div class="col-md-12 users_like"></div>\
+                <div class="col-md-12">\
+                    <label>Add your like</label>\
+                    <p class="btn snd_new_like form-control">Add like</p>\
+                </div>\
+            </div>\
+        </div>\
+    </div>\
+</div>');
 }

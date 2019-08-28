@@ -508,6 +508,7 @@ h1 .subtitle {
     font-size: 17px;
     margin: 0;
     margin: 0 15px 15px 0;
+    font-family: 'Pattaya', sans-serif;
     color:  #330000;
 }
 .tag_se:hover{
@@ -773,6 +774,13 @@ h1 .subtitle {
     .user_location_add,
     .user_location_remove{
         width: 100%;
+    }
+}
+
+@media (max-width: 1200px){
+    .a4{
+        display: flex;
+        flex-direction: column-reverse;
     }
 }
 

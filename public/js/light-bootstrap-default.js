@@ -37,6 +37,13 @@ $(document).ready(function() {
         lbd.initRightMenu();
     }
 
+    if ($(window).width() <= 1200 && $(window).width() >= 767)
+    {
+        $('.resizable-area').addClass('col-md-12').removeClass('col-md-8');
+        $('.resizable-info-area').addClass('col-md-12').removeClass('col-md-4');
+        $('.resizable-choice').addClass('col-md-9').removeClass('col-md-6');
+    }
+
     //  Activate the tooltips
     $('[rel="tooltip"]').tooltip();
 
@@ -65,6 +72,19 @@ $(window).resize(function() {
     }
     else if ($(window).width() >= 992){
         $('.sidebar').show();
+    }
+
+    if ($(window).width() <= 1200 && $(window).width() >= 767)
+    {
+        $('.resizable-area').addClass('col-md-12').removeClass('col-md-8');
+        $('.resizable-info-area').addClass('col-md-12').removeClass('col-md-4');
+        $('.resizable-choice').addClass('col-md-9').removeClass('col-md-6');
+    }
+    else if ($(window).width() > 1200)
+    {
+        $('.resizable-area').addClass('col-md-8').removeClass('col-md-12');
+        $('.resizable-info-area').addClass('col-md-4').removeClass('col-md-12');
+        $('.resizable-choice').addClass('col-md-6').removeClass('col-md-9');
     }
 });
 
@@ -118,10 +138,11 @@ lbd = {
             $(".sidebar-wrapper .dropdown .dropdown-menu > li > a").click(function(event) {
                 event.stopPropagation();
             });
-
+            
             mobile_menu_initialized = true;
+            
+            $('.sidebar').hide();
         } else {
-            // console.log('window with:' + $(window).width());
             if ($(window).width() > 991) {
                 // reset all the additions that we made for the sidebar wrapper only if the screen is bigger than 991px
                 $sidebar_wrapper.find('.navbar-form').remove();

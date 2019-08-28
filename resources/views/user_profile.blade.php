@@ -12,7 +12,7 @@
 <div class="container-fluid">
 
 <div class="row mr-20">
-    <div class="col-md-6">
+    <div class="col-md-6 resizable-choice">
         <ul class="tab-group">
             <li class="tab active"><a href="#Gallery">Gallery</a></li>
             <li class="tab"><a href="#Edit">Edit Profile</a></li>
@@ -23,7 +23,7 @@
 <div class="row a4" id="profile-content">
 
 <!-- Profile IMG Area -->
-<div class="col-md-8 profile_img profile_choice" id="gallery">
+<div class="col-md-8 profile_img profile_choice resizable-area" id="gallery">
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">Gallery</h4>
@@ -92,8 +92,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                            
+                    </div>      
                 </div>
                 @endforeach
                 @endif
@@ -104,7 +103,7 @@
 <!-- Profile IMG Area -->
 
 <!-- Profile Edit Area -->
-<div class="col-md-8 profile_edit profile_choice" style="display: none;" id="edit">
+<div class="col-md-8 profile_edit profile_choice resizable-area" style="display: none;" id="edit">
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">Edit Profile</h4>
@@ -279,7 +278,7 @@
 <!-- /Profile Edit Area -->
 
 <!-- User Info Area -->
-<div class="col-md-4">
+<div class="col-md-4 resizable-info-area">
     <div class="card card-user">
         <div class="card-image">
             <img src="{{'img/sidebar/' . $data['user']['backgroundImg']}}" alt="...">
