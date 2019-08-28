@@ -1,3 +1,14 @@
+$('.tab a').click(function(){
+    $(this).parent().addClass('active');
+    $(this).parent().siblings().removeClass('active');
+
+    $target = $(this).attr('href').toLowerCase();
+
+    $('#profile-content > .profile_choice').not($target).hide();
+    $($target).fadeIn(600);
+});
+
+
 birthday = {};
 
 $('.edit_select').click(function(){

@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers\Profile;
 
-use File;
 use Auth;
-use App\User;
 use App\Info;
 use App\Location;
 use App\Interests;
 use App\Birthday;
 use App\Tags;
-use App\Img;
-use App\Likes;
 use App\Helper\ProfileInfoHelper as ProfileHelper;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-
-class UserProfileController extends Controller
+use App\Http\Controllers\Profile\ProfileController;
+class UserProfileController extends ProfileController
 {
 	/*
     |--------------------------------------------------------------------------
@@ -28,88 +23,16 @@ class UserProfileController extends Controller
     */
 
     /**
-     * Show the user profile page.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * Show the user profile page.
+    *
+    * @return \Illuminate\Http\Response
+    */
     public function getProfile(Request $request)
     {
-    	// abort(404);
-    	$data = $this->createArrInfo();
+    	$data = $this->createArrInfo(Auth::user()['id'], Auth::user()['login']);
 
     	return (view('user_profile')->with('data', $data));
     }
-
-    /**
-     * Creating array with all user information
-     *
-     * @return array $data
-     */
-    private function createArrInfo()
-    {
-    	$id = Auth::user()['id'];
-
-    	$data = [
-    		'user' => User::find($id),
-    		'info' => Info::find($id),
-            'interests' => Interests::find($id),
-    		'location' => Location::find($id),
-            'birthday' => Birthday::find($id),
-            'content' => $this->getImg($id),
-    	];
-
-        if (!empty($data['interests']))
-            $data['interests'] = array_reverse(explode(',', $data['interests']->tags));
-
-        if ($data['info']['icon'] !== 'spy.png')
-            $data['info']['icon'] = '/storage/' . Auth::user()['login'] . '/icon/' . $data['info']['icon'];
-        else
-            $data['info']['icon'] = '/img/icons/spy.png';
-
-        if (!empty($data['birthday']) && $this->checkBirthday($data['birthday']))
-            $data['birthday'] = null;
-    	
-        return ($data);
-    }
-
-    private function getImg(int $id)
-    {
-        $user_imgs = Img::find($id);
-        
-        if (empty($user_imgs))
-            return (null);
-
-        $img = explode(',', $user_imgs->img);
-        $data = [];
-
-        foreach ($img as $value){
-            $img_path = '/storage/' . Auth::user()['login'] . '/' . $value;
-
-            $likes = Likes::find($value);
-
-            $count = (empty($likes)) ? 0 : $likes->count;
-
-            array_push($data, [
-                'img' => $img_path,
-                'count' => $count,
-                'id' => base64_encode(Auth::user()['id'])
-            ]);
-        }
-
-        return ($data);
-    }
-
-    private function checkBirthday($birthday)
-    {
-        return (
-            in_array(null,
-                ['day' => $birthday->day,
-                'month' => $birthday->month,
-                'year' => $birthday->year
-            ])
-        );
-    }
-
 
     public function updateProfile(Request $request)
     {
@@ -119,31 +42,13 @@ class UserProfileController extends Controller
         $data[$key] = ProfileHelper::validateRequest($request->all(), $user_id);
 
         if ($key === 'birthday')
-        {
             exit($this->updateBirthday($data, $user_id));
-            $user = Birthday::find($request->user()->id);
-            
-        }
         else if ($key === 'location')
-        {
             exit($this->updateLocation($data, $user_id));
-            $user = Location::find($request->user()->id);
-        }
         else if ($key === 'interests')
-        {
             exit($this->updateInterests($data, $user_id));
-            $user = Interests::find($request->user()->id);
-            $tag = Tags::firstOrNew(['tag' => $data['interests'][0]]);
-            $tag->count++;
-            $tag->save();
-
-        }
         else
-        {
             exit($this->updateInfo($data, $key, $user_id));
-            $user = Info::find($request->user()->id);
-            $user->$key = $data[$key];
-        }
 
         $user->save();
     }
@@ -200,8 +105,9 @@ class UserProfileController extends Controller
         if (empty($data['birthday']))
             exit;
         
-        $birthday = Birthday::find($user_id);
-        
+        $birthday = Birthday::firstOrNew(['id' => $user_id]);
+
+
         foreach ($data['birthday'] as $key => $value){
             $birthday->$key = $value;
         }
@@ -211,7 +117,8 @@ class UserProfileController extends Controller
 
     protected function updateLocation(array $data, int $user_id)
     {
-        $location = Location::find($user_id);
+
+        $location = Location::firstOrNew(['id' => $user_id]);
 
         foreach ($data['location'] as $key => $value){
             $location->$key = $value;
@@ -225,11 +132,16 @@ class UserProfileController extends Controller
     {
         $newTag = $data['interests'][0];
 
-        $interests = Interests::find($user_id);
+        $interests = Interests::firstOrNew(['id' => $user_id]);
         $tag = Tags::firstOrNew(['tag' => $newTag]);
         
         $interests_tags = explode(',', $interests->tags);
+        
+        if (empty($interests_tags[0]))
+            unset($interests_tags[0]);
+
         array_push($interests_tags, $newTag);
+        
         $interests->tags = implode(',', $interests_tags);
         
         $interests->save();

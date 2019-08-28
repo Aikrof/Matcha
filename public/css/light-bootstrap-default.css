@@ -394,7 +394,6 @@ h1 .subtitle {
 .f_location{
     cursor: pointer;
     display: flex;
-    /*align-items: flex-end;*/
     margin-bottom: 0;
 }
 .f_location .fa{
@@ -729,6 +728,41 @@ h1 .subtitle {
 .col-red{
     color: red;
 }
+.mr-20{
+    margin-bottom: 20px;
+}
+
+.tab-group {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 40px 0;
+}
+.tab-group > ul li {
+    padding-left: 0.5em;
+}
+.tab-group > li{
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+.tab-group .active a {
+    background: #e74c3c;
+    color: #ffffff;
+}
+.tab-group li a {
+    display: block;
+    text-decoration: none;
+    padding: 15px;
+    background: rgba(160, 179, 176, 0.25);
+    font-family: 'Pattaya', sans-serif;
+    color: #a0b3b0;
+    font-size: 20px;
+    float: left;
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+    transition: .5s ease;
+}
+
 
 @media (max-width: 450px){
     .user_location_cont{
@@ -739,6 +773,13 @@ h1 .subtitle {
     .user_location_add,
     .user_location_remove{
         width: 100%;
+    }
+}
+
+@media (max-width: 767px){
+    .a4{
+        display: flex;
+        flex-direction: column-reverse;
     }
 }
 /*** /USER PAGE STYLESHEETS ***/

@@ -10,10 +10,20 @@
 @section('content')
 
 <div class="container-fluid">
-<div class="row">
+
+<div class="row mr-20">
+    <div class="col-md-6">
+        <ul class="tab-group">
+            <li class="tab active"><a href="#Gallery">Gallery</a></li>
+            <li class="tab"><a href="#Edit">Edit Profile</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="row a4" id="profile-content">
 
 <!-- Profile IMG Area -->
-<div class="col-md-8 profile_img">
+<div class="col-md-8 profile_img profile_choice" id="gallery">
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">Gallery</h4>
@@ -94,7 +104,7 @@
 <!-- Profile IMG Area -->
 
 <!-- Profile Edit Area -->
-<div class="col-md-8 profile_edit" style="display: none;">
+<div class="col-md-8 profile_edit profile_choice" style="display: none;" id="edit">
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">Edit Profile</h4>

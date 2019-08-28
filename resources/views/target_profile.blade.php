@@ -1,0 +1,147 @@
+@extends('layouts.default')
+
+<!-- ACTIVE NAV-LINK -->
+@section('home')
+{{'active'}}
+@endsection
+<!-- /ACTIVE NAV-LINK -->
+
+<!-- CONTENT -->
+@section('content')
+
+<div class="container-fluid">
+
+<div class="row mr-20">
+    <div class="col-md-6">
+        <ul class="tab-group">
+            <li class="tab active"><a href="#Gallery">Gallery</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="row a4" id="profile-content">
+
+<!-- Profile IMG Area -->
+<div class="col-md-8 profile_img profile_choice" id="gallery">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Gallery</h4>
+        </div>
+        <div class="card-body">
+            <div class="row user_img_area">
+                @if (!empty($data['content']))
+                @foreach ($data['content'] as $content)
+                <div class="row fle_xeble taget_img pos_rel">
+                    <div class="col-md-11 pos_rel img_cont">
+                        <img class="form-group pr_img_21" src="{{$content['img']}}" data="{{$content['id']}}">
+                        <div class="user_func posr_abs hov_func" style="display: none">
+                            <div class="hov_comments_fa comments col-white"></div>
+                            <div class="hov_img_fa_red  see_img_likes col-white like pos_rel">
+                                <small class="like like_count posr_abs">
+                                @if ($content['count'] != 0)
+                                    {{$content['count']}}
+                                @endif
+                                </small>
+                            </div>
+                        </div>
+                        <div class="box_commnets_hidden posr_abs none">
+                            <div class="commment_exit_box">
+                                <div class="comment_close"></div>
+                            </div>
+                            <div class="row comment_box">
+                                <div class="col-md-12 users_coments">
+                                    <!-- возврат ajax с коментами -->
+                                </div>
+                                <div class="col-md-12 add_new_comment">
+                                    <label>Add your comment</label>
+                                    <div class=" textarea_comment_cont">
+                                        <textarea class="form-control new_comment" name="new_comment" placeholder="Add your comment"></textarea>
+                                        <p class="btn snd_new_comment">Add</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box_likes_hidden posr_abs none">
+                            <div class="commment_exit_box">
+                                <div class="comment_close"></div>
+                            </div>
+                            <div class="row like_box">
+                                <div class="col-md-12 users_like">
+                                    <!-- возврат ajax с лайками -->
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Add your like</label>
+                                   
+                                        <p class="btn snd_new_like form-control">Add like</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                            
+                </div>
+                @endforeach
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Profile IMG Area -->
+
+<!-- User Info Area -->
+<div class="col-md-4">
+    <div class="card card-user">
+        <div class="card-image">
+            <img src="{{'img/sidebar/' . $data['user']['backgroundImg']}}" alt="...">
+       	</div>
+        <div class="card-body">
+            <div class="author">
+                <a href="#">
+                    <label>
+                	   <img class="avatar border-gray cursor" src="{{$data['info']['icon']}}" alt="...">
+                        <input type="file" id="profile_avatar" name="icon">
+                	</label>
+                    <h5 class="title">{{$data['info']['first_name'] . " " . $data['info']['last_name']}}</h5>
+                </a>
+                <p class="description">{{$data['user']['login']}}</p>
+            </div>
+            <p class="description text-center">
+                <span>Age: </span>{{$data['info']['age']}}
+            </p>
+            <p class="description text-center">
+                <span>Birthday: </span>{{
+                $data['birthday']['day'] . "." . $data['birthday']['month'] . "." . $data['birthday']['year']
+            }}
+            </p>
+            <p class="description text-center">
+                <span>Location: </span>
+                @if ($data['location']['user_access'])
+                    {{$data['location']['country'] . "," . $data['location']['city']}}
+                @endif
+            </p>
+            <p class="description text-center">
+                <span>Interests: </span>
+                  @if ($data['interests'] && !empty($data['interests'][0]))
+                    @foreach ($data['interests'] as $tag)
+                        {{'#' . $tag . " "}}
+                    @endforeach
+                    @endif
+            </p>
+            <p class="description text-center">
+                <span>About: </span>
+                {{$data['info']['about']}}
+            </p>
+       	</div>
+    </div>
+</div>
+<!-- /User Info Area -->
+</div>
+</div>
+
+@endsection
+<!-- /CONTENT -->
+
+<!-- CONTENT SCRIPT -->
+@section('script')
+    <script type="text/javascript" src="js/user.js"></script>
+@endsection
+ <!-- /CONTENT SCRIPT -->
