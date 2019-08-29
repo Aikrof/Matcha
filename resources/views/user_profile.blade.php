@@ -30,7 +30,7 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label>Add image to your gallery</label>
                         <div class="as">
@@ -38,6 +38,18 @@
                                 <input type="file" name="img" class="none" id="inp_img">
                                 <div class="form-group user_location_cont">
                                     <p class="btn form-control">Add</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Remove image from your gallery</label>
+                        <div class="as">
+                            <label>
+                                <div class="form-group user_location_cont">
+                                    <p class="btn form-control remove_img">Remove</p>
                                 </div>
                             </label>
                         </div>

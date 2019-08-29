@@ -18,7 +18,8 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
 	Route::post('/SuccessfulUserFirstEntry', 'FirstEntryController@SuccessfulUserFirstEntry');
 	
 	Route::post('/saveUserIcon', 'ImageController@userIcon');
-	Route::post('/saveUserImg', 'ImageController@userImg');	
+	Route::post('/saveUserImg', 'ImageController@userImg');
+	Route::post('/user/getImgs', 'ImageController@getImgs');
 
 	Route::post('/searchTag', 'TagsHelperController@tagWriter');
 

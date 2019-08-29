@@ -231,6 +231,7 @@ $('.user_img_area').on('click', '.snd_new_like', function(){
     };
 
     sender.form('/user/addLike', {'like':$obj}, function(request){
+
         if (request.add)
         {
             addNewLikeToArea($targetArrea, request.add.icon, request.add.login);
@@ -240,7 +241,8 @@ $('.user_img_area').on('click', '.snd_new_like', function(){
             let $find = $targetArrea.find('p.likes_area_login');
 
             for (let $p of $find){
-                if ($p.innerHTML === request.remove.login)
+
+                if ($p.innerText.toLowerCase() === request.remove.login.toLowerCase())
                 {
                     $p.setAttribute('id', 'remove_like');
                     break;
@@ -279,26 +281,54 @@ $('.user_img_area').on('click', '.pr_img_21', function(){
 /*
 * Hover effect
 */
-$('.user_img_area').on('mouseenter','.likes_area_login, .likes_area_img', function(){
+$('.user_img_area').on('mouseenter','.h-u-login, .h-u-img', function(){
     
-    $(this).parent().children('.likes_area_login').css({"font-weight": "bold",
+    $(this).parents('.h-u-cont').find('.h-u-login').css({"font-weight": "bold",
     "color": "#E74C3C"});
-     $(this).parent().children('.likes_area_img').css({"border": "2px solid #E74C3C"});
+    $(this).parents('.h-u-cont').find('.h-u-img').css({"border": "2px solid #E74C3C"});
 });
-$('.user_img_area').on('mouseleave','.likes_area_login, .likes_area_img', function(){
+$('.user_img_area').on('mouseleave','.h-u-login, .h-u-img', function(){
     
-    $(this).parent().children('.likes_area_login').removeAttr('style');
-    $(this).parent().children('.likes_area_img').removeAttr('style');
+    $(this).parents('.h-u-cont').find('.h-u-login').removeAttr('style');
+    $(this).parents('.h-u-cont').find('.h-u-img').removeAttr('style');
 });
 
 /*
 * Redirect to another user page when click
 in 'comment' or 'like' area
 */
-$('.user_img_area').on('click','.likes_area_login, .likes_area_img', function(){
+$('.user_img_area').on('click','.h-u-login, .h-u-img', function(){
     
-   location.href = '/' + $(this).parent().children('.likes_area_login').text();
+   location.href = '/' + $(this).parents('.h-u-cont').find('.h-u-login').text();
 });
+
+$('.remove_img').click(function(){
+    sender.form('/user/getImgs', null, function(request){
+        console.log(request);
+
+        Swal.fire({
+            html: '<div class="row">\
+                <div class="col-md-12 del_cont">\
+                </div>\
+            </div>',
+            onBeforeOpen: () => {
+                const content = Swal.getContent()
+                const $ = content.querySelector.bind(content)
+
+                for (let src of request){
+                    img = document.createElement('img');
+                    img.className = 'rem_cont_img';
+                    img.setAttribute('src', src);
+
+                    $('.del_cont').appendChild(img);
+                }
+            },
+            showCloseButton: true,
+            showConfirmButton: false,
+        });
+    });
+});
+
 /*** /USER IMG ***/
 
 
@@ -411,10 +441,10 @@ var getImg = function($path){
 
 function addCommentsToArea($parent, $icon, $login, $comment){
     $parent.append('\
-        <div class="comment_area_cont form-group">\
-                <img class="comment_area_img" src='+ $icon +'>\
+        <div class="comment_area_cont form-group h-u-cont">\
+                <img class="comment_area_img h-u-img" src='+ $icon +'>\
             <div class="comment_area">\
-                <p class="comment_area_login pattaya_style">'+ $login +'</p>\
+                <p class="comment_area_login h-u-login">'+ $login +'</p>\
                 <div class="comment_area_comment">\
                     <p>'+ $comment +'</p>\
                 </div>\
@@ -427,9 +457,9 @@ function addNewLikeToArea($parent, $icon, $login){
         $parent.children('.empty_likes').remove('.empty_likes'); 
     
     $parent.append('\
-        <div class="likes_area form-group">\
-             <img class="likes_area_img" src='+ $icon +'>\
-            <p class="likes_area_login">'+ $login +'</p>\
+        <div class="likes_area form-group h-u-cont">\
+             <img class="likes_area_img h-u-img" src='+ $icon +'>\
+            <p class="likes_area_login h-u-login">'+ $login +'</p>\
         </div>\
     ');
 }

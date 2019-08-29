@@ -96,7 +96,6 @@
                 <a href="#">
                     <label>
                 	   <img class="avatar border-gray cursor" src="{{$data['info']['icon']}}" alt="...">
-                        <input type="file" id="profile_avatar" name="icon">
                 	</label>
                     <h5 class="title">{{$data['info']['first_name'] . " " . $data['info']['last_name']}}</h5>
                 </a>

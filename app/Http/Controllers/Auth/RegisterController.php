@@ -78,9 +78,9 @@ class RegisterController extends Controller
         ];
 
         $validation = Validator::make($data, [
-            'first_name' => ['required', 'string', 'max:20', 'alpha'],
-            'last_name' => ['required', 'string', 'max:20', 'alpha'],
-            'login' => ['required', 'string', 'alpha_dash', 'between:4,24', 'unique:users'],
+            'first_name' => ['required', 'string', 'max:20', 'alpha', 'regex:/^[A-Za-z][A-Za-z]*$/'],
+            'last_name' => ['required', 'string', 'max:20', 'alpha', 'regex:/^[A-Za-z][A-Za-z]*$/'],
+            'login' => ['required', 'string', 'alpha_dash', 'between:4,24', 'unique:users', 'regex:/^[A-Za-z].([A-Za-z0-9-_])+$/'],
             'email' => ['required', 'string', 'email', 'max:64', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'same:confirm', 'regex:/^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\s]).{8,}/'],
             'confirm' => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\s]).{8,}/'],

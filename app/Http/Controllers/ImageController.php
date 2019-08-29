@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Image;
 use App\Info;
 use App\Img;
+use App\Comments;
+use App\Likes;
 use App\Helper\ProfileAddRatingHelper as Rating;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -51,6 +53,31 @@ class ImageController extends Controller
             'img_src' => $file_path,
             'id' => base64_encode($request->user()->id)]
         ]));
+    }
+
+   /**
+    * Get all user images
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return array $data
+    */
+    protected function getImgs(Request $request)
+    {
+        $user_imgs = Img::find($request->user()->id);
+        
+        if (empty($user_imgs))
+            exit;
+
+        $img = explode(',', $user_imgs->img);
+        $data = [];
+
+        foreach ($img as $value){
+            $img_path = '/storage/' . $request->user()->login . '/' . $value;
+
+            array_push($data, $img_path);
+        }
+
+        exit(json_encode($data));
     }
 
     //https://laravel.com/docs/5.8/filesystem

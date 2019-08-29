@@ -31,7 +31,7 @@ class LikeController extends Controller
             $info = Info::find($value->id);
             $user = User::find($value->id);
 
-            $icon = $info->icon === 'spy.png' ? '/img/icons/spy/png' : '/storage/' . $user->login . '/icon/' . $info->icon;
+            $icon = $info->icon === 'spy.png' ? '/img/icons/spy.png' : '/storage/' . $user->login . '/icon/' . $info->icon;
 
             array_push($data, [
                 'icon' => $icon,
@@ -48,25 +48,25 @@ class LikeController extends Controller
 
     	if ($request->user()->id == $target_id)
     		exit;
-        
-        $info = Info::find($target_id);
-        $user = User::find($target_id);
 
-        if ($this->checkIfUserLike($request->like['img'], $target_id))
+        $info = Info::find($request->user()->id);
+        $user = User::find($request->user()->id);
+
+        if ($this->checkIfUserLike($request->like['img'], $request->user()->id))
         {
-            Likes::where('img', $request->like['img'])->where('id', $target_id)->delete();
+            Likes::where('img', $request->like['img'])->where('id', $request->user()->id)->delete();
 
             exit(json_encode(['remove' => ['login' => $user->login]]));
         }
         else
         {
             Likes::create([
-                'id' => $target_id,
+                'id' => $request->user()->id,
                 'img' => $request->like['img']
             ]);
 
             exit(json_encode(['add' => [
-                'icon' => $info->icon === 'spy.png' ? '/img/icons/spy/png' : '/storage/' . $user->login . '/icon/' . $info->icon,
+                'icon' => $info->icon === 'spy.png' ? '/img/icons/spy.png' : '/storage/' . $user->login . '/icon/' . $info->icon,
                 'login' => $user->login
             ]]));
         }
