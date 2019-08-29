@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
 	Route::post('/user/addComment', 'CommentController@addComment');
 	Route::post('/user/getComments', 'CommentController@getComments');
 
+	Route::post('/user/getCountLikes', 'LikeController@getCountLikes');
 	Route::post('/user/getLikes', 'LikeController@getLikes');
 	Route::post('/user/addLike', 'LikeController@addLike');
 });

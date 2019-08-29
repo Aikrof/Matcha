@@ -51,12 +51,10 @@
                     <div class="col-md-11 pos_rel img_cont">
                         <img class="form-group pr_img_21" src="{{$content['img']}}" data="{{$content['id']}}">
                         <div class="user_func posr_abs hov_func" style="display: none">
-                            <div class="hov_comments_fa comments col-white"></div>
-                            <div class="hov_img_fa_red  see_img_likes col-white like pos_rel">
+                            <div class="hov_comments_fa hov_fa comments col-white"></div>
+                            <div class="hov_img_fa_red hov_fa hov_img_fa see_img_likes col-white like pos_rel">
                                 <small class="like like_count posr_abs">
-                                @if ($content['count'] != 0)
-                                    {{$content['count']}}
-                                @endif
+                                    <!-- возв ajax с колл. лайков -->
                                 </small>
                             </div>
                         </div>
@@ -66,7 +64,7 @@
                             </div>
                             <div class="row comment_box">
                                 <div class="col-md-12 users_coments">
-                                    <!-- возврат ajax с коментами -->
+                                    <!-- возврат ajax с комментами -->
                                 </div>
                                 <div class="col-md-12 add_new_comment">
                                     <label>Add your comment</label>

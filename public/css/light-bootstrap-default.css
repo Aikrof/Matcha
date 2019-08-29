@@ -547,32 +547,31 @@ h1 .subtitle {
     bottom: 1.2rem;
     right: 1rem;
 }
-
-.hov_img_fa_red{
-    cursor: pointer;
-    background-image: url(/img/icons/like_red.svg);
-    background-size: 2.6vw;
-    width: 2.6vw;
-    height: 2.6vw;
+.hov_img_fa{
     margin-right: 10px;
     margin-left: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+.hov_img_fa_red{
+    background-image: url(/img/icons/like_red.svg);
+}
 .hov_comments_fa{
-    cursor: pointer;
     background-image: url(/img/icons/comments.svg);
+}
+.hov_fa{
+    cursor: pointer;
     background-size: 2.6vw;
     width: 2.6vw;
     height: 2.6vw;
 }
-
 .like_count{
     cursor: pointer;
     z-index: 10;
     font-size: 1.1vw;
-    color: black;
+    font-family: 'Pattaya', sans-serif;
+    color:  #330000;
 }
 .img_cont{
     width: 100%;
@@ -594,7 +593,7 @@ h1 .subtitle {
     right: 0;
     top: 0;
     margin-right: 15px;
-    width: 30%;
+    width: 45%;
     height: calc(100% - 16px);
     background-color: #ffff;
     z-index: 12;
@@ -611,9 +610,9 @@ h1 .subtitle {
     cursor: pointer;
     background-image: url('/img/icons/close-button.png');
     background-repeat: no-repeat;
-    background-size: 1.6rem;
-    width: 1.6rem;
-    height: 1.6rem;
+    background-size: 1.4vw;
+    width: 1.4vw;
+    height: 1.4vw;
 }
 .comment_box{
     margin-left: 1rem;
@@ -624,11 +623,12 @@ h1 .subtitle {
     height: 70%;
 }
 .like_box{
-    margin-left: 1rem;
+    margin-left: .4vw;
     height: 90%;
 }
 .users_like{
     height: 80%;
+    overflow-y: auto;
 }
 .add_new_comment{
     height: 30%;
@@ -651,16 +651,23 @@ h1 .subtitle {
 }
 .comment_area_cont{
     display: flex;
-    border: 1px solid #E3E3E3;
-    margin-bottom: 1rem;
-    max-height: 100px;
+    /*align-items: center;*/
+    margin-bottom: 1vw;
 }
 .comment_area_img{
-    width: 100px;
-    height: 100px;
-    border-color: #EEEEEE;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
+    cursor: pointer;
+    width: 11%;
+    height: 11%;
+    border-radius: 50%;
+    background-color: #ffffff;
+}
+.comment_area_login{
+    display: flex;
+    cursor: pointer;
+    margin: 0 0 0 10px;
+    font-size: 1.7vw;
+    font-family: 'Pattaya', sans-serif;
+    color:  #330000;
 }
 .comment_area{
     margin-left: 10px;
@@ -673,15 +680,16 @@ h1 .subtitle {
 }
 .comment_area_comment > p{
     margin: 0;
+    font-size: 1.2vw;
 }
-.empty_comment{
+.ecl{
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.empty_comment > p{
+.ecl > p{
     color: #9A9A9A;
     font-size: 20px;
     font-weight: bold; 
@@ -763,7 +771,25 @@ h1 .subtitle {
     cursor: pointer;
     transition: .5s ease;
 }
-
+.likes_area{
+    display: flex;
+    align-items: center;
+    margin-bottom: 1vw;
+}
+.likes_area_img{
+    cursor: pointer;
+    width: 19%;
+    height: 19%;
+    border-radius: 50%;
+    background-color: #ffffff;
+}
+.likes_area_login{
+    cursor: pointer;
+    margin: 0 0 0 10px;
+    font-size: 1.5vw;
+    font-family: 'Pattaya', sans-serif;
+    color:  #330000;
+}
 
 @media (max-width: 450px){
     .user_location_cont{
@@ -782,12 +808,20 @@ h1 .subtitle {
         display: flex;
         flex-direction: column-reverse;
     }
+    .hov_fa{
+        background-size: 3.8vw;
+        width: 3.8vw;
+        height: 3.8vw;
+    }
 }
 
 @media (max-width: 767px){
     .a4{
         display: flex;
         flex-direction: column-reverse;
+    }
+    .comment_close{
+        margin-right: 10px;
     }
 }
 /*** /USER PAGE STYLESHEETS ***/

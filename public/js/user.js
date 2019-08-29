@@ -99,14 +99,28 @@ $('#inp_img').change(function(){
 });
 
 /*
-* Add img likes and comments
+* Show img comments and likes and
+add img likes count 
 */
 $('.user_img_area').on('mouseenter', 'div.img_cont', function(){
+
     $(this).children('.user_func').show();
+    
+    $putResult = $(this).find('small.like_count');
+
+    $src = $(this).children('.pr_img_21').attr('src');
+    $img = $src.split('/');
+    $img = $img[$img.length - 1];
+
+    sender.form('/user/getCountLikes', {'img': $img}, function(request){
+        $putResult.text("");
+        if (request)
+            $putResult.text(request);
+    });
 });
 
 /*
-* Remove img likes and comments
+* Hide img likes and comments
 */
 $('.user_img_area').on('mouseleave', 'div.img_cont', function(){
     $(this).children('.user_func').hide();
@@ -115,7 +129,7 @@ $('.user_img_area').on('mouseleave', 'div.img_cont', function(){
 /*
 * Show who likes and add like
 */
-$('.user_img_area').on('click', '.like', function(){
+$('.user_img_area').on('click', '.see_img_likes', function(){
     let $likes_area = $(this).parent().parent().children('.box_likes_hidden').removeClass("none");
     let $targetArrea = $(this).parents('.img_cont').children('.box_likes_hidden').children('.like_box').children('.users_like');
 
@@ -124,12 +138,17 @@ $('.user_img_area').on('click', '.like', function(){
     $targetArrea.empty();
 
     sender.form('/user/getLikes', {'img': $img}, function(request){
+
         if (request.data)
-            console.log(request.data);
+        {
+            for (let user of request.data){
+                addNewLikeToArea($targetArrea, user.icon, user.login);
+            }
+        }
         else if (request.empty)
         {
             $targetArrea.append('\
-                <div class="empty_comment">\
+                <div class="empty_likes ecl">\
                     <p>'+ request.empty +'</p>\
                 </div>\
             ');
@@ -153,13 +172,13 @@ $('.user_img_area').on('click', '.hov_comments_fa', function(e){
         if (request.data)
         {
             for (let $data of request.data){
-                addCommentsToArea($targetArrea, $data);
+                addCommentsToArea($targetArrea, $data.icon, $data.login, $data.comment);
             }
         }
         else if (request.empty)
         {
             $targetArrea.append('\
-                <div class="empty_comment">\
+                <div class="empty_comment ecl">\
                     <p>'+ request.empty +'</p>\
                 </div>\
                 ');
@@ -178,7 +197,7 @@ $('.user_img_area').on('click', '.comment_close', function(){
 /*
 * Send new comment
 */
-$('.snd_new_comment').click(function(){
+$('.user_img_area').on('click', '.snd_new_comment', function(){
     let $text = $(this).parent().children('textarea');
     let $targetArrea = $(this).parents('.comment_box').children('.users_coments');
 
@@ -193,7 +212,7 @@ $('.snd_new_comment').click(function(){
         {
             if ($('.empty_comment') !== undefined)
                 $('.empty_comment').remove();
-            addCommentsToArea($targetArrea, request.data);
+            addCommentsToArea($targetArrea, request.data.icon, request.data.login, request.data.comment);
         }
     });
 
@@ -203,22 +222,39 @@ $('.snd_new_comment').click(function(){
 /*
 * New like
 */
-$('.snd_new_like').click(function(){
+$('.user_img_area').on('click', '.snd_new_like', function(){
+    let $targetArrea = $(this).parents('.img_cont').children('.box_likes_hidden').children('.like_box').children('.users_like');
 
-    $obj = {
+    let $obj = {
         'img' : getImg($(this).parents('.img_cont').children('.pr_img_21').attr('src')),
         'id' : $(this).parents('.img_cont').children('.pr_img_21').attr('data'),
     };
 
     sender.form('/user/addLike', {'like':$obj}, function(request){
-        console.log(request);
+        if (request.add)
+        {
+            addNewLikeToArea($targetArrea, request.add.icon, request.add.login);
+        }
+        else if (request.remove)
+        {
+            let $find = $targetArrea.find('p.likes_area_login');
+
+            for (let $p of $find){
+                if ($p.innerHTML === request.remove.login)
+                {
+                    $p.setAttribute('id', 'remove_like');
+                    break;
+                }
+            }
+            $('#remove_like').parents('.likes_area').remove();
+        }
     });
 });
 
 /*
 * Show resize img
 */
-$('.pr_img_21').click(function(){
+$('.user_img_area').on('click', '.pr_img_21', function(){
     Swal.fire({
         html: '\
          <div class="full_scr_cont">\
@@ -240,6 +276,29 @@ $('.pr_img_21').click(function(){
     })
 });
 
+/*
+* Hover effect
+*/
+$('.user_img_area').on('mouseenter','.likes_area_login, .likes_area_img', function(){
+    
+    $(this).parent().children('.likes_area_login').css({"font-weight": "bold",
+    "color": "#E74C3C"});
+     $(this).parent().children('.likes_area_img').css({"border": "2px solid #E74C3C"});
+});
+$('.user_img_area').on('mouseleave','.likes_area_login, .likes_area_img', function(){
+    
+    $(this).parent().children('.likes_area_login').removeAttr('style');
+    $(this).parent().children('.likes_area_img').removeAttr('style');
+});
+
+/*
+* Redirect to another user page when click
+in 'comment' or 'like' area
+*/
+$('.user_img_area').on('click','.likes_area_login, .likes_area_img', function(){
+    
+   location.href = '/' + $(this).parent().children('.likes_area_login').text();
+});
 /*** /USER IMG ***/
 
 
@@ -350,19 +409,29 @@ var getImg = function($path){
     return ($img[$img.length - 1]);
 }
 
-function addCommentsToArea($targetArrea, $data){
-    $targetArrea.append('\
+function addCommentsToArea($parent, $icon, $login, $comment){
+    $parent.append('\
         <div class="comment_area_cont form-group">\
-            <a href='+ $data.login +'>\
-                <img class="comment_area_img" src='+ $data.icon +'>\
-            </a>\
+                <img class="comment_area_img" src='+ $icon +'>\
             <div class="comment_area">\
-                <p class="comment_area_login pattaya_style">'+ $data.login +'</p>\
+                <p class="comment_area_login pattaya_style">'+ $login +'</p>\
                 <div class="comment_area_comment">\
-                    <p>'+ $data.comment +'</p>\
+                    <p>'+ $comment +'</p>\
                 </div>\
             </div>\
         </div>')
+}
+
+function addNewLikeToArea($parent, $icon, $login){
+    if ($parent.children('.empty_likes') !== undefined)
+        $parent.children('.empty_likes').remove('.empty_likes'); 
+    
+    $parent.append('\
+        <div class="likes_area form-group">\
+             <img class="likes_area_img" src='+ $icon +'>\
+            <p class="likes_area_login">'+ $login +'</p>\
+        </div>\
+    ');
 }
 
 function addNewImageContent(request)
@@ -372,8 +441,8 @@ function addNewImageContent(request)
     <div class="col-md-11 pos_rel img_cont">\
         <img class="form-group pr_img_21" src='+ request.img_src +' data='+ request.id +'>\
         <div class="user_func posr_abs hov_func" style="display: none">\
-            <div class="hov_comments_fa comments col-white"></div>\
-                <div class="hov_img_fa_red  see_img_likes col-white like pos_rel">\
+            <div class="hov_comments_fa hov_fa comments col-white"></div>\
+                <div class="hov_img_fa_red hov_fa hov_img_fa see_img_likes col-white like pos_rel">\
                     <small class="like like_count posr_abs"></small>\
                 </div>\
             </div>\

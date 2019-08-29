@@ -8,7 +8,6 @@ use App\Location;
 use App\Interests;
 use App\Birthday;
 use App\Img;
-use App\Likes;
 use App\Http\Controllers\Profile\UserProfileController;
 use App\Http\Controllers\Profile\TargetProfileController;
 use Illuminate\Http\Request;
@@ -97,13 +96,8 @@ class ProfileController extends Controller
         foreach ($img as $value){
             $img_path = '/storage/' . $login . '/' . $value;
 
-            $likes = Likes::find($value);
-
-            $count = (empty($likes)) ? 0 : $likes->count;
-
             array_push($data, [
                 'img' => $img_path,
-                'count' => $count,
                 'id' => base64_encode($id)
             ]);
         }
