@@ -304,31 +304,34 @@ $('.user_img_area').on('click','.h-u-login, .h-u-img', function(){
 
 $('.remove_img').click(function(){
     sender.form('/user/getImgs', null, function(request){
-        console.log(request);
 
         Swal.fire({
-            html: '<div class="row">\
-                <div class="col-md-12 del_cont">\
-                </div>\
-            </div>',
+            title: 'Select image what you want to delete',
+            html: '\
+                <div class="dell_cont">\
+                </div>',
             onBeforeOpen: () => {
                 const content = Swal.getContent()
                 const $ = content.querySelector.bind(content)
 
                 for (let src of request){
                     img = document.createElement('img');
-                    img.className = 'rem_cont_img';
+                    img.className = 'dell_img';
+                    img.setAttribute('title', 'Delete image?');
+                    img.onclick = function(){
+                        console.log(123);
+                    }
                     img.setAttribute('src', src);
 
-                    $('.del_cont').appendChild(img);
+                    $('.dell_cont').appendChild(img);
                 }
             },
+            customClass: 'swal-dell-wide',
             showCloseButton: true,
             showConfirmButton: false,
         });
     });
 });
-
 /*** /USER IMG ***/
 
 

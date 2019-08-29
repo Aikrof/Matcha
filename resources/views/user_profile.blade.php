@@ -45,11 +45,11 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Remove image from your gallery</label>
+                        <label>Delete image from your gallery</label>
                         <div class="as">
                             <label>
                                 <div class="form-group user_location_cont">
-                                    <p class="btn form-control remove_img">Remove</p>
+                                    <p class="btn form-control remove_img">Delete</p>
                                 </div>
                             </label>
                         </div>
