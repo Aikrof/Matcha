@@ -50,6 +50,9 @@ class FirstEntryController extends Controller
     // */
     public function SuccessfulUserFirstEntry(Request $request)
     {
+        if (!Location::find($request->user()->id))
+            $this->createLocation($request, ['location' => null]);
+        
         DB::update('update `users` set first_entry = false WHERE `id` = ?', [$request->user()['id']]);
     }
 

@@ -1,6 +1,6 @@
 @extends('layouts.default')
 
-@section('following')
+@section($section)
 {{'active'}}
 @endsection
 
@@ -8,8 +8,9 @@
 @section('content')
 
 @foreach($data as $val)
-{{$val['location']['country']}}
+{{$val['login']}}<br>
 @endforeach
 
+{{$paginate->render()}}
 @endsection
 <!-- /CONTENT -->

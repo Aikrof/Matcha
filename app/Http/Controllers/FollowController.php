@@ -13,13 +13,11 @@ class FollowController extends Controller
 {
     public function getFollowing(Request $request)
     {
-    	$title = [
-    		'title' => 'Matcha' . ' :: Following'
-    	];
+    	$title =  'Matcha' . ' :: Following';
 
     	$data = [];
 
-    	foreach (Follow::where('followers_id', $request->user()->id)->cursor() as $follow){
+    	foreach ($paginate = Follow::where('followers_id', $request->user()->id)->paginate(10) as $follow){
 
     		$user = User::find($follow->following_id);
     		$info = Info::find($follow->following_id);
@@ -28,15 +26,27 @@ class FollowController extends Controller
 
     		array_push($data, $userInfo);
 		}
-		
-		return (view('following')->with($title)->with('data', $data));
+
+		return (view('follow', ['title' => $title, 'section' => 'following','data' => $data, 'paginate' => $paginate]));
     }
 
     public function getFollowers(Request $request)
     {
-    	echo"<pre>"; 
-    	var_dump('folowers');
-    	exit;
+    	$title = 'Matcha' . ' :: Followers';
+
+        $data = [];
+
+        foreach ($paginate = Follow::where('following_id', $request->user()->id)->paginate(10) as $follow){
+
+            $user = User::find($follow->followers_id);
+            $info = Info::find($follow->followers_id);
+
+            $userInfo = $this->getUserInformation($follow->followers_id);
+
+            array_push($data, $userInfo);
+        }
+
+        return (view('follow', ['title' => $title, 'section' => 'followers','data' => $data, 'paginate' => $paginate]));
     }
 
     private function getUserInformation(int $user_id)
@@ -53,11 +63,11 @@ class FollowController extends Controller
     		'gender' => $info->gender,
     		'orientation' => $info->orientation,
     		'about' => $info->about,
-    		'interests' => explode(',', $interests->tags),
-    		'location' => $location->user_access == 1 ? [
-    			'country' => $location->country,
-    			'city' => $location->city
-    		] : null,
+    		'interests' => empty($interests) ? null : explode(',', $interests->tags),
+    		// 'location' => $location->user_access == 1 ? [
+    		// 	'country' => $location->country,
+    		// 	'city' => $location->city
+    		// ] : null,
     	]);
     }
 }

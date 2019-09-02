@@ -38,7 +38,7 @@ class TargetProfileController extends ProfileController
             'followers_id' => $request->user()->id,
             'following_id' => $id,
         ]);
-
+        
     	$data = $this->createArrInfo($id, $login);
     	return (view('target_profile')->with('data', $data));
     }
