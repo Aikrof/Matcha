@@ -28,7 +28,7 @@ class ProfileController extends Controller
     /**
     * Checking user 'login' and get user profile
     *
-    * @var target user $id
+    * @param  \Illuminate\Http\Request  $request
     * @var string user $login
     * @return array $data
     */
@@ -41,7 +41,7 @@ class ProfileController extends Controller
     	if (ucfirst(strtolower($request->user()['login'])) === $login)
     		return ((new UserProfileController())->getProfile($request)->with($title));
     	else
-    		return ((new TargetProfileController())->getProfile($login)->with($title));
+    		return ((new TargetProfileController())->getProfile($request, $login)->with($title));
     }
 
     /**
@@ -77,7 +77,7 @@ class ProfileController extends Controller
     }
 
     /**
-    * Get all user images
+    * Get all target user images
     *
     * @var target user $id
     * @var string user $login

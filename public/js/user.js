@@ -319,7 +319,26 @@ $('.remove_img').click(function(){
                     img.className = 'dell_img';
                     img.setAttribute('title', 'Delete image?');
                     img.onclick = function(){
-                        console.log(123);
+                        $src = this.getAttribute('src').split('/');
+                        
+                        sender.form('/user/dellImg', {'img' : $src[$src.length - 1]});
+                        
+                        $user_imgs = document.getElementsByClassName('pr_img_21');
+                        
+                        for (let img of $user_imgs){
+                            if (this.getAttribute('src') === img.getAttribute('src'))
+                            {
+                                document.getElementsByClassName('user_img_area')[0].
+                                removeChild(img.parentNode.parentNode);
+                                break;
+                            }
+                        }
+                        
+                        let parent = this.parentNode;
+                        parent.removeChild(this);
+                        
+                        if (parent.childNodes.length == 1)
+                            swal.close();
                     }
                     img.setAttribute('src', src);
 

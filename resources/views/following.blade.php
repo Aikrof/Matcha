@@ -7,7 +7,9 @@
 <!-- CONTENT -->
 @section('content')
 
-{{'following'}}
+@foreach($data as $val)
+{{$val['location']['country']}}
+@endforeach
 
 @endsection
 <!-- /CONTENT -->

@@ -23,11 +23,11 @@ class ImageController extends Controller
     */
 
     /**
-     * Take request with new user icon.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return base_64 icon path $base
-     */
+    * Takes request to add new user icon.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return json image src
+    */
     public function userIcon(Request $request)
     {
         $file = ($request->only('icon'))['icon'];
@@ -41,6 +41,12 @@ class ImageController extends Controller
         exit(json_encode(['src' => $file_path]));
     }
 
+    /**
+    * Takes request to add new user icon.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return json array with image src and user id
+    */
     public function userImg(Request $request)
     {
         $file = $request->file('img');
@@ -55,13 +61,49 @@ class ImageController extends Controller
         ]));
     }
 
+    /**
+    * Takes request with image to delete this user image.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return void
+    */
+    public function deleteImg(Request $request)
+    {
+        $img = Img::find($request->user()->id);
+
+        $user_imgs = explode(',', $img->img);
+        $index = array_search($request->img, $user_imgs);
+        
+        if ($index === false)
+            exit;
+
+        Comments::where('img', $user_imgs[$index])->delete();
+        Likes::where('img', $user_imgs[$index])->delete();
+        
+        $this->deleteOldImg($request->user()->login, $user_imgs[$index]);
+
+        if (count($user_imgs) == 1)
+        {
+            $img->delete();
+        }
+        else
+        {
+            unset($user_imgs[$index]);
+            $user_imgs = implode(',', $user_imgs);
+            $img->img = $user_imgs;
+            $img->save();
+        }
+
+        exit();
+    }
+
    /**
     * Get all user images
     *
     * @param  \Illuminate\Http\Request  $request
     * @return array $data
     */
-    protected function getImgs(Request $request)
+    public function getImgs(Request $request)
     {
         $user_imgs = Img::find($request->user()->id);
         
@@ -116,7 +158,7 @@ class ImageController extends Controller
     }
 
     /**
-     * Delete old image icon if it exists
+     * Delete old image if it exists
      *
      * @param  String user login  $request
      * @param  String user img  $request

@@ -13,6 +13,10 @@
 Route::group(['middleware' => ['auth', 'verified']], function(){
 	Route::get('/', 'MainController@index');
 
+	Route::get('/{login}', [
+		'uses' => 'Profile\ProfileController@getUserProfile'])->where(['login' => '^[A-Z].([a-z0-9-_])+$']);
+	Route::get('/following', 'FollowController@getFollowing');
+	Route::get('/followers', 'FollowController@getFollowers');
 	
 	Route::post('/firstEntry', 'FirstEntryController@firstEntry');
 	Route::post('/SuccessfulUserFirstEntry', 'FirstEntryController@SuccessfulUserFirstEntry');
@@ -20,12 +24,9 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
 	Route::post('/saveUserIcon', 'ImageController@userIcon');
 	Route::post('/saveUserImg', 'ImageController@userImg');
 	Route::post('/user/getImgs', 'ImageController@getImgs');
+	Route::post('/user/dellImg', 'ImageController@deleteImg');
 
 	Route::post('/searchTag', 'TagsHelperController@tagWriter');
-
-	
-	Route::get('/{login}', [
-		'uses' => 'Profile\ProfileController@getUserProfile'])->where(['login' => '^[A-Z].([a-z0-9-_])+$']);
 
 	Route::post('/profile/profileUpdate', 'Profile\UserProfileController@updateProfile');
 	Route::post('/profile/removeBirthday', 'Profile\UserProfileController@removeBirthday');
