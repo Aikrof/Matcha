@@ -60,13 +60,13 @@
                     </a>
                 </li>
                 <li class="@yield('following')">
-                    <a class="nav-link" href="/following">
+                    <a class="nav-link" href="/following?sorted=location&page=1">
                         <i class="fa fa-eye"></i>
                         <p>Following</p>
                     </a>
                 </li>
                 <li class="@yield('followers')">
-                    <a class="nav-link" href="/followers">
+                    <a class="nav-link" href="/followers?sorted=location&page=1">
                         <i class="fa fa-eye-slash"></i>
                         <p>Followers</p>
                     </a>

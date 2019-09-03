@@ -36,6 +36,8 @@ class FollowController extends Controller
 
         $data = [];
 
+        $additional_data = self::getAdditionDataRequest($request);
+
         foreach ($paginate = Follow::where('following_id', $request->user()->id)->paginate(10) as $follow){
 
             $user = User::find($follow->followers_id);
@@ -46,7 +48,7 @@ class FollowController extends Controller
             array_push($data, $userInfo);
         }
         
-        return (view('follow', ['title' => $title, 'section' => 'followers','data' => $data, 'paginate' => $paginate]));
+        return (view('follow', ['title' => $title, 'section' => 'followers','data' => $data, 'additional_data' => $additional_data, 'paginate' => $paginate]));
     }
 
     private function getUserInformation(int $user_id)
@@ -58,7 +60,9 @@ class FollowController extends Controller
 
     	return ([
     		'icon' => $info->icon === 'spy.png' ? '/img/icons/spy.png' : '/storage/' . $user->login . '/icon/' . $info->icon,
-    		'login' => $user->login,
+            'backgroundImg' => $user->backgroundImg,
+    		'login' => ucfirst(strtolower($user->login)),
+            'age' => $info->age,
     		'rating' => $user->rating,
     		'gender' => $info->gender,
     		'orientation' => $info->orientation,
@@ -69,5 +73,13 @@ class FollowController extends Controller
     			'city' => $location->city
     		] : null,
     	]);
+    }
+
+    private static function getAdditionDataRequest(Request $request)
+    {
+        return ([
+            'sorted' => $request->all()['sorted'],
+            'filtered' => empty($request->all()['filtered']) ? null :  $request->all()['filtered']
+        ]);
     }
 }
