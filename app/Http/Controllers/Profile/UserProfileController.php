@@ -9,6 +9,7 @@ use App\Interests;
 use App\Birthday;
 use App\Tags;
 use App\Helper\ProfileInfoHelper as ProfileHelper;
+use App\Helper\ProfileAddRatingHelper as ProfileRating;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Profile\ProfileController;
 class UserProfileController extends ProfileController
@@ -57,6 +58,9 @@ class UserProfileController extends ProfileController
     {
         $birthday = Birthday::find($request->user()->id);
 
+        if (!empty($birthday->day) && !empty($birthday->month) && !empty($birthday->year))
+             ProfileRating::removeFromRating($request->user()->id, 'birthday');
+
         $birthday->day = null;
         $birthday->month = null;
         $birthday->year = null;
@@ -71,8 +75,11 @@ class UserProfileController extends ProfileController
         if (empty($interests->tags))
             exit;
 
-        $search =  Tags::where('tag', $request->tag)->first();
+        ProfileRating::removeFromRating($request->user()->id, 'interests');
+
+        $search = Tags::where('tag', $request->tag)->first();
         $search->count--;
+
         if (!$search->count)
             $search->delete();
         else
@@ -89,10 +96,13 @@ class UserProfileController extends ProfileController
 
     public function removeLocation(Request $request)
     {
+
         $location = Location::find($request->user()->id);
 
         if (!$location->user_access)
             exit;
+
+        ProfileRating::removeFromRating($request->user()->id, 'location');
 
         $location->user_access = 0;
         $location->save();
@@ -105,6 +115,8 @@ class UserProfileController extends ProfileController
         if (empty($data['birthday']))
             exit;
         
+        ProfileRating::addToRating($user_id, 'birthday');
+
         $birthday = Birthday::firstOrNew(['id' => $user_id]);
 
 
@@ -117,6 +129,7 @@ class UserProfileController extends ProfileController
 
     protected function updateLocation(array $data, int $user_id)
     {
+        ProfileRating::addToRating($user_id, 'location');
 
         $location = Location::firstOrNew(['id' => $user_id]);
 
@@ -131,6 +144,8 @@ class UserProfileController extends ProfileController
     protected function updateInterests(array $data, int $user_id)
     {
         $newTag = $data['interests'][0];
+
+        ProfileRating::addToRating($user_id, 'interests');
 
         $interests = Interests::firstOrNew(['id' => $user_id]);
         $tag = Tags::firstOrNew(['tag' => $newTag]);
@@ -153,6 +168,11 @@ class UserProfileController extends ProfileController
 
     protected function updateInfo(array $data, string $key, int $user_id)
     {
+        if (($key === 'about' || $key === 'age') && empty($data[$key]))
+            ProfileRating::removeFromRating($user_id, $key);
+        else
+            ProfileRating::addToRating($user_id, $key);
+
         $info = Info::find($user_id);
 
         $info->$key = $data[$key];

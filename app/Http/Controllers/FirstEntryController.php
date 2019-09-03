@@ -47,11 +47,16 @@ class FirstEntryController extends Controller
     *
     * @param  \Illuminate\Http\Request  $request
     * @return void
-    // */
+    */
     public function SuccessfulUserFirstEntry(Request $request)
     {
-        if (!Location::find($request->user()->id))
-            $this->createLocation($request, ['location' => null]);
+        if (!$request->done)
+        {
+            if (!Location::find($request->user()->id))
+                $this->createLocation($request, ['location' => null]);
+        }
+        else
+            Rating::addToRating($request->user()['id'], 'first_entry');
         
         DB::update('update `users` set first_entry = false WHERE `id` = ?', [$request->user()['id']]);
     }
@@ -138,7 +143,9 @@ class FirstEntryController extends Controller
         }
 
         if (!empty($info['interests']))
-            Rating::addToRating($request->user()['id'], 'interests');
+            for ($i = 0; $i < count($info['interests']); $i++){
+                Rating::addToRating($request->user()['id'], 'interests');
+            }
     }
 
     /**

@@ -248,7 +248,14 @@ Swal.mixin({
     },
 
 ]).then((result) => {
-    sender.form('/SuccessfulUserFirstEntry', null);
+    let done;
+
+    if (result.dismiss)
+        done = false;
+    else
+        done = true;
+
+    sender.form('/SuccessfulUserFirstEntry', {'done' : done});
 });
 /*** /Modal window***/
 

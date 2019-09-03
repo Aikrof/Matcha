@@ -6,7 +6,7 @@ use DB;
 use App\Info;
 use App\User;
 use App\Comments;
-use App\Helper\ProfileAddRatingHelper as Rating;
+use App\Helper\ProfileAddRatingHelper as ProfileRating;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -15,6 +15,11 @@ class CommentController extends Controller
     {
     	if (empty($request->comment['comment']))
     		exit;
+
+        $target_id = base64_decode($request->comment['id']);
+
+        if ($request->user()->id != (int)$target_id)
+            ProfileRating::addToRating($target_id, 'comment');
 
     	Comments::create([
     		'id' => $request->user()->id,

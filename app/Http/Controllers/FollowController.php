@@ -45,7 +45,7 @@ class FollowController extends Controller
 
             array_push($data, $userInfo);
         }
-
+        
         return (view('follow', ['title' => $title, 'section' => 'followers','data' => $data, 'paginate' => $paginate]));
     }
 
@@ -64,10 +64,10 @@ class FollowController extends Controller
     		'orientation' => $info->orientation,
     		'about' => $info->about,
     		'interests' => empty($interests) ? null : explode(',', $interests->tags),
-    		// 'location' => $location->user_access == 1 ? [
-    		// 	'country' => $location->country,
-    		// 	'city' => $location->city
-    		// ] : null,
+    		'location' => $location->user_access == 1 ? [
+    			'country' => $location->country,
+    			'city' => $location->city
+    		] : null,
     	]);
     }
 }

@@ -471,7 +471,7 @@ function addCommentsToArea($parent, $icon, $login, $comment){
                     <p>'+ $comment +'</p>\
                 </div>\
             </div>\
-        </div>')
+        </div>');
 }
 
 function addNewLikeToArea($parent, $icon, $login){

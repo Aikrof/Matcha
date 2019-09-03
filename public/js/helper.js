@@ -89,6 +89,8 @@ function ImgWorker($inp)
     }
 
     var checkSize = function(file){
+        if (file === undefined)
+            return;
         return (file.size <= 10000000);
     }
 }

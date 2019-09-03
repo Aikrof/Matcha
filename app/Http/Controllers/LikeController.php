@@ -6,7 +6,7 @@ use App\Likes;
 use App\Info;
 use App\User;
 use App\Imgs;
-use App\Helper\ProfileAddRatingHelper as Rating;
+use App\Helper\ProfileAddRatingHelper as ProfileRating;
 use Illuminate\Http\Request;
 
 class LikeController extends Controller
@@ -54,12 +54,16 @@ class LikeController extends Controller
 
         if ($this->checkIfUserLike($request->like['img'], $request->user()->id))
         {
+            ProfileRating::removeFromRating($target_id, 'like');
+               
             Likes::where('img', $request->like['img'])->where('id', $request->user()->id)->delete();
 
             exit(json_encode(['remove' => ['login' => $user->login]]));
         }
         else
         {
+            ProfileRating::addToRating($target_id, 'like');
+
             Likes::create([
                 'id' => $request->user()->id,
                 'img' => $request->like['img']

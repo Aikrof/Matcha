@@ -95,11 +95,6 @@
                                 <div class="col-md-12 users_like">
                                     <!-- возврат ajax с лайками -->
                                 </div>
-                                <div class="col-md-12">
-                                    <label>Add your like</label>
-                                   
-                                        <p class="btn snd_new_like form-control">Add like</p>
-                                </div>
                             </div>
                         </div>
                     </div>      
