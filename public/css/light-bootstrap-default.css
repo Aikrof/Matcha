@@ -845,7 +845,46 @@ h1 .subtitle {
 /*** /USER PAGE STYLESHEETS ***/
 
 /*** FOLLOW PAGE STYLESHEETS ***/
-.mb-10{
+.img_for{
+    border-radius: 50%;
+    width: 124px;
+    height: 124px;
+}
+.login_for{
+    display: inline-flex;
+    cursor: pointer;
+    margin: 0 0 0 10px;
+    padding: 0;
+    font-size: 25px;
+    font-family: 'Pattaya', sans-serif;
+    color: #330000;
+}
+.first_last_for{
+    display: inline-flex;
+    cursor: pointer;
+    margin: 0 0 0 10px;
+    padding: 0;
+    font-size: 20px;
+    color: #330000;
+}
+.tag_for{
+    display: inline-flex;
+    font-size: 17px;
+    margin: 0;
+    margin: 0 15px 15px 0;
+    font-family: 'Pattaya', sans-serif;
+    color:  #330000;
+}
+.tag_for:hover{
+    cursor: pointer;
+    font-weight: bold;
+}
+.gap_for{
+    height: 30px;
+    background-color: rgba(203, 203, 210, 0.15);
+    border: 2px solid rgba(203, 203, 210, 0.15);
+}
+/*.mb-10{
     margin-bottom: 10px;
 }
 .info_follow_container{
@@ -853,8 +892,8 @@ h1 .subtitle {
 }
 .follow_user_icon{
     cursor: pointer;
-    width: 12vw;
-    height: 12vw;
+    width: 124px;
+    height: 124px;
     border-radius: 50%;
     background-color: #ffffff;
     margin-right: 10px;
@@ -874,7 +913,7 @@ h1 .subtitle {
     cursor: pointer;
     margin: 0 0 0 10px;
     padding: 0;
-    font-size: 2.5vw;
+    font-size: 25px;
     font-family: 'Pattaya', sans-serif;
     color: #330000;
 }
@@ -883,6 +922,11 @@ h1 .subtitle {
     font-family: 'Pattaya', sans-serif;
     color: #FFFFFF; 
 }
+.follow_label{
+    display: inline-flex;
+    margin: 0;
+    margin-right: 10px;
+}*/
 /*** /FOLLOW PAGE STYLESHEETS ***/
 .text-muted {
     color: #9A9A9A;

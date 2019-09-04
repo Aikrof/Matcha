@@ -43,58 +43,61 @@
 </div>
 
 <div class="row">
-<div class="col-md-12">
+<div class="col-md-10">
+<div class="card">
+<div class="card-body">
 @foreach($data as $user)
 
-<div class="row mb-10">
-	<div class="col-md-12 info_follow_container" style="display: flex; border: 1px solid #9A9A9A; border-radius: 4px;height: 80%;">
-	   <img class="follow_user_icon" src="{{$user['icon']}}" style="align-self: center;">
-        <div class="top_foll">
-            <div class="top_follow_info">
-                <p class="follow_user_login">{{$user['login']}}</p>
-                <label>Rating</label>
+<div class="row">
+    <div class="col-md-10 pr-1">
+        <div class="form-group" style="width: 100%;">
+            <div style="display: flex;width: 100%;">
+            <img class="img_for" src="{{$user['icon']}}">
+            <div style="display: flex;width: calc(90% - 124px);flex-direction: column;margin-left: 10px;">
+                <div style="display: flex;flex-direction: column;">
+                    <p class="login_for">{{$user['login']}}</p>
+                    <p class="first_last_for">({{$user['first_name'] . ' ' . $user['last_name']}})</p>
+                </div>
+                <label>Rating:</label>
                 <div class="progress" style="height: 3.5vh;background-color: #e74c3c;">
                     <div class="progress-bar bg-success" role="progressbar" aria-valuenow="70"
                     aria-valuemin="0" aria-valuemax="100" style="width:{{$user['rating'] . '%'}};height: 3.5vh;">
                         <p>{{$user['rating']}}</p>
                     </div>
                 </div>
+                @if (!empty($user['age']))
+                <div>
+                    <label>Age: </label>
+                    <span>{{$user['age']}}</span>
+                </div>
+                @endif
+                @if (!empty($user['location']))
+                <div>
+                    <label>Location: </label>
+                    <span>{{$user['location']['country'] . ', ' . $user['location']['city']}}</span>
+                </div>
+                @endif
             </div>
-           <div class="">
-                <label style="display: flex;">Age:
-                    <p style="margin: 0">{{$user['age']}}</p>
-                </label>
-                <label style="display: flex;">Gender:
-                    <p style="margin: 0">{{$user['gender']}}</p>
-                </label>
-                <label style="display: flex;">Orientation:
-                    <p style="margin: 0">{{$user['orientation']}}</p>
-                </label>
-           </div>
-       </div>
-        <div class="form-group" style="width: 40%;">
-            <!-- <label>Interests:</label> -->
-            <div class="col-md-12" style="border: 1px solid #9A9A9A; border-radius: 4px;height: 50%;">
-            @if ($user['interests'] && !empty($user['interests'][0]))
-                @foreach ($user['interests'] as $tag)
-                    <p class="tag_se">#{{$tag}}</p>
-                @endforeach
-            @endif
             </div>
-
-            <!-- <label>About:</label> -->
-            <div class="col-md-12" style="border: 1px solid #9A9A9A; border-radius: 4px;height: 50%;">
-            @if ($user['interests'] && !empty($user['interests'][0]))
-                @foreach ($user['interests'] as $tag)
-                    <p class="tag_se">#{{$tag}}</p>
-                @endforeach
-            @endif
+            <div>
+                <label>Interests: </label>
+                @if ($user['interests'] && !empty($user['interests'][0]))
+                    @foreach ($user['interests'] as $tag)
+                        <p class="tag_for">#{{$tag}}</p>
+                    @endforeach
+                @endif
+            </div>
+            <div>
+                <label>About:</label>
+                <span>{{$user['about']}}</span>
             </div>
         </div>
     </div>
 </div>
-
+<div class="row gap_for"></div>
 @endforeach
+</div>
+</div>
 </div>
 </div>
 

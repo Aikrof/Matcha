@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\User;
 use App\Info;
 use App\Follow;
@@ -17,6 +18,10 @@ class FollowController extends Controller
 
     	$data = [];
 
+        $additional_data = self::getAdditionDataRequest($request);
+
+        // $paginate = DB::table('follows')->select('following_id')->join('locations', 'locations.id', '=', 'follows.followers_id')->where('locations.city', 'Kyiv')->paginate(10);
+
     	foreach ($paginate = Follow::where('followers_id', $request->user()->id)->paginate(10) as $follow){
 
     		$user = User::find($follow->following_id);
@@ -27,7 +32,9 @@ class FollowController extends Controller
     		array_push($data, $userInfo);
 		}
 
-		return (view('follow', ['title' => $title, 'section' => 'following','data' => $data, 'paginate' => $paginate]));
+        // $data = self::sortAndFilter($data, $additional_data, $request->user()->id);
+
+		return (view('follow', ['title' => $title, 'section' => 'following','data' => $data, 'additional_data' => $additional_data, 'paginate' => $paginate]));
     }
 
     public function getFollowers(Request $request)
@@ -64,8 +71,8 @@ class FollowController extends Controller
     		'login' => ucfirst(strtolower($user->login)),
             'age' => $info->age,
     		'rating' => $user->rating,
-    		'gender' => $info->gender,
-    		'orientation' => $info->orientation,
+    		'first_name' => $info->first_name,
+    		'last_name' => $info->last_name,
     		'about' => $info->about,
     		'interests' => empty($interests) ? null : explode(',', $interests->tags),
     		'location' => $location->user_access == 1 ? [
@@ -82,4 +89,9 @@ class FollowController extends Controller
             'filtered' => empty($request->all()['filtered']) ? null :  $request->all()['filtered']
         ]);
     }
+
+    // private static function sortAndFilter($data, $additional_data, $id)
+    // {
+    //     usort()
+    // }
 }
