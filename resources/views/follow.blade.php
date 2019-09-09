@@ -188,7 +188,7 @@
 
 </div>
 
-{{$paginate->appends(['sort' => $additional_data['sorted'], 'filter' => 'age'])->render()}}
+{{$paginate->appends(['sort' => $additional_data['sort'], 'filter' => $additional_data['filter']])->render()}}
 <!-- {{$paginate->appends(['order' => 'ASC/DESC'])->links()}} -->
 @endsection
 <!-- /CONTENT -->

@@ -173,6 +173,9 @@ class UserProfileController extends ProfileController
         else
             ProfileRating::addToRating($user_id, $key);
 
+        if ($key === 'age' && empty($data[$key]))
+            $data[$key] = 0;
+
         $info = Info::find($user_id);
 
         $info->$key = $data[$key];

@@ -37,20 +37,44 @@ class FollowController extends Controller
     }
 
     public function getFollowers(Request $request)
-    {
-        if ($request->all())
-        {
-            echo"<pre>"; 
-            var_dump($request->all());
-            exit;
-        }
-    	$title = 'Matcha' . ' :: Followers';
+    {	
+        $additional_data = self::getAdditionDataRequest($request);
+
+        $title = 'Matcha' . ' :: Followers';
 
         $data = [];
 
-        $additional_data = self::getAdditionDataRequest($request);
+        $paginate = Follow::where('following_id', $request->user()->id)->orderby('followers_id', 'DESC');
 
-        foreach ($paginate = Follow::where('following_id', $request->user()->id)->orderby('followers_id', 'DESC')->paginate(2) as $follow){
+
+        // $paginate = DB::table('follows')->select('following_id')->join('locations', 'locations.id', '=', 'follows.followers_id')->where('locations.city', 'Kyiv')->paginate(10);
+
+
+        // $select = DB::table('follows')->join('locations', 'locations.id', '=', 'follows.followers_id')->join('infos', 'infos.id', '=', 'follows.followers_id')->join('users', 'users.id', '=', 'follows.followers_id')->select('follows.followers_id', 'locations.latitude', 'locations.longitude', 'infos.age', 'users.rating')->get();
+
+        $select = DB::table('follows')
+                ->select('follows.followers_id', 'infos.age')
+                ->join('locations', 'locations.id', '=', 'follows.followers_id')
+                ->join('infos', 'infos.id', '=', 'follows.followers_id')
+                ->join('users', 'users.id', '=', 'follows.followers_id')
+                ->join('interests', 'interests.id', '=', 'follows.followers_id')
+                ->whereBetween('infos.age', ['0', '60'])
+                ->whereBetween('users.rating', ['0', '100'])
+                ->where('interests.tags', 'like', '%asd,%')
+                ->get();
+        echo "<pre>";
+        var_dump($select);
+        exit;
+
+
+
+
+
+
+
+        $paginate = $paginate->paginate(10);
+
+        foreach ($paginate as $follow){
 
             $user = User::find($follow->followers_id);
             $info = Info::find($follow->followers_id);
@@ -60,11 +84,6 @@ class FollowController extends Controller
             array_push($data, $userInfo);
         }
         
-        if (isset($request->post))
-        {
-            
-
-        }
         return (view('follow', ['title' => $title, 'section' => 'followers','data' => $data, 'additional_data' => $additional_data, 'paginate' => $paginate]));
     }
 
@@ -92,11 +111,92 @@ class FollowController extends Controller
     	]);
     }
 
-    private static function getAdditionDataRequest(Request $request)
+    protected static function getAdditionDataRequest(Request $request)
     {
         return ([
-            'sorted' => empty($request->all()['sorted']) ? null : $request->all()['sorted'],
-            'filtered' => empty($request->all()['filtered']) ? null :  $request->all()['filtered']
+            'sort' => self::validateSortRequest($request->sort),
+            'filter' => self::validateFilterRequest($request->filter),
         ]);
+    }
+
+    protected static function validateSortRequest($sort)
+    {
+        return ([
+            'priority' => empty($sort['priority']) ? 'location' : $sort['priority'],
+            'interests' => empty($sort['interests']) ? null : $sort['interests'],
+            'sorted_by' =>  empty($sort['sorted_by']) ? 'ASC' : $sort['sorted_by'],
+        ]);
+    }
+
+    protected static function validateFilterRequest($filter)
+    {
+        return ([
+            'age' => self::getRequestAge($filter['age']),
+            'distance' => self::getRequestDistance($filter['location']),
+            'rating' => self::getRequestRating($filter['rating']),
+            'interests' => empty($filter['interests']) ? null : $filter['interests'],
+
+        ]);
+    }
+
+    protected static function getRequestAge($age)
+    {
+        $age = explode('-', $age);
+
+        if (empty($age) || ((!is_numeric($age[0]) ||
+            !is_numeric($age[1])) ||
+            (int)$age[0] > (int)$age[1]) ||
+            ((int)$age[0] < 10 || (int)$age[1] > 60))
+        {
+            return ([
+                'min' => '10',
+                'max' => '60',
+            ]);
+        }
+        else
+        {
+            return ([
+                'min' => $age[0],
+                'max' => $age[1],
+            ]);
+        }
+    }
+
+    protected static function getRequestDistance($distance)
+    {
+        $distance = explode('-', $distance);
+        
+        if (empty($distance) ||
+            ((!is_numeric($distance[0]) ||
+            !is_numeric($distance[1])) ||
+            (int)$distance[0] > (int)$distance[1]))
+        {
+            return ([
+                'min' => '0',
+                'max' => '1000',
+            ]);
+        }
+        else
+        {
+            return ([
+                'min' => $distance[0],
+                'max' => $distance[1],
+            ]);
+        }
+    }
+
+    protected static function getRequestRating($rating)
+    {
+        if (empty($rating) ||
+            (!is_numeric($rating) ||
+                $rating < 0 ||
+                $rating > 100))
+        {
+            return ('0');
+        }
+        else
+        {
+            return ($rating);
+        }
     }
 }

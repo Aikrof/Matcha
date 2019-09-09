@@ -52,12 +52,8 @@ $('.sort_by_cont > input[name="toggle"]').click(function(){
 $('.f_ok_btn').click(function(){
 
 	$sort = {
-		age: ($('.sort_age').val() === 'false') ? false : true,
-
-		location: ($('.sort_location').val() === 'false') ? false : true,
-
-		rating: ($('.sort_rating').val() === 'false') ? false : true, 
-
+		priority: getSortPriority(),
+		
 		interests: getInterests($('.sort_interests').text()),
 
 		sorted_by: getSortedBy($('input[name="sorted_by"]').val()),
@@ -224,6 +220,21 @@ function sendTag(tag)
     	$('.interest_cont').prepend(
     	 	'<p class="tag_se">#' + tag + '</p>');
     }
+}
+
+function getSortPriority(){
+	$priority = {
+		age: ($('.sort_age').val() === 'false') ? false : true,
+		location: ($('.sort_location').val() === 'false') ? false : true,
+		rating: ($('.sort_rating').val() === 'false') ? false : true, 
+	}
+
+	for (let i in $priority){
+		if ($priority[i])
+			return (i);
+	}
+
+	return (null);
 }
 
 function getInterests($interestsText){
