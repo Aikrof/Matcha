@@ -249,7 +249,7 @@
                             <p class="btn btn_inter" style="margin-left: 10px;cursor: pointer;">Add</p>
                     </div>
                     <div class="row pr-1 helperRel">
-                        <div class="helperProfInt" style="display: none;"></div>
+                        <div class="helperProfInt helperAbs" style="display: none;"></div>
                     </div>
                     <label>Remove Interests</label>
                     <p class="help_small_user"><small>To delete tag just click to tag</small></p>

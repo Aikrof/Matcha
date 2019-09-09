@@ -17,6 +17,7 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
 		'uses' => 'Profile\ProfileController@getUserProfile'])->where(['login' => '^[A-Z].([a-z0-9-_])+$']);
 	Route::get('/following', 'FollowController@getFollowing');
 	Route::get('/followers', 'FollowController@getFollowers');
+	Route::post('/followers', 'FollowController@getFollowers');
 	
 	Route::post('/firstEntry', 'FirstEntryController@firstEntry');
 	Route::post('/SuccessfulUserFirstEntry', 'FirstEntryController@SuccessfulUserFirstEntry');

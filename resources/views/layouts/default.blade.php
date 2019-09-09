@@ -30,7 +30,8 @@
     <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="css/search.css" rel="stylesheet">
-    
+    @yield('stylesheet')
+
 </head>
 
 
@@ -60,13 +61,13 @@
                     </a>
                 </li>
                 <li class="@yield('following')">
-                    <a class="nav-link" href="/following?sorted=location&page=1">
+                    <a class="nav-link" href="/following">
                         <i class="fa fa-eye"></i>
                         <p>Following</p>
                     </a>
                 </li>
                 <li class="@yield('followers')">
-                    <a class="nav-link" href="/followers?sorted=location&page=1">
+                    <a class="nav-link" href="/followers">
                         <i class="fa fa-eye-slash"></i>
                         <p>Followers</p>
                     </a>
@@ -207,6 +208,7 @@
         <script type="text/javascript" src="js/first_entry.js"></script>
         <!-- /FIRST ENTRY -->
     @endif
+
     @yield('script')
 </body>
 </html>

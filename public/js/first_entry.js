@@ -311,6 +311,7 @@ firstEntrySender = {
 
 /*** Tag helper section ***/
 function tagHelper($value){
+    $hide = 0;
     $hash = $value.split('#');
     $hash[0] = null;
 
@@ -322,6 +323,8 @@ function tagHelper($value){
             $('.resultTags').remove();
 
         addTag($hash[1]);
+        $('.helperAbs').hide();
+        $hide = 1;
         $('#interestsHelp').val('#');
     }
     
@@ -330,8 +333,9 @@ function tagHelper($value){
         sender.form('/searchTag', {'tag' : $tag}, function(request){
             if ($('.resultTags') !== undefined)
                     $('.resultTags').remove();
-
-            if (request.similar.length)
+            if ($hide)
+                $('.helperAbs').hide();
+            else if (request.similar.length)
             {
                 $('.helperAbs').show();
                 for (let value of request.similar){

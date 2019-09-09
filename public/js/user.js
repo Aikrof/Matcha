@@ -353,51 +353,6 @@ $('.remove_img').click(function(){
 });
 /*** /USER IMG ***/
 
-
-$('.btn_inter').click(function(){
-	$hash = $('#interestsHelp').val().split('#');
-    $hash[0] = null;
-    
-    if ($hash[1])
-    	changeTag($hash[1]);
-});
-
-function tagHelper($value){
-	$hash = $value.split('#');
-    $hash[0] = null;
-
-    $tag = $hash[$hash.length - 1];
-    
-    if ($hash.length - 1 > 1)
-    {
-        if ($('.resultTags') !== undefined)
-            $('.resultTags').remove();
-
-        sendTag($hash[1]);
-        $('#interestsHelp').val('#');
-    }
-    
-    if ($tag && $tag.length > 2)
-    {
-        sender.form('/searchTag', {'tag' : $tag}, function(request){
-            if ($('.resultTags') !== undefined)
-                    $('.resultTags').remove();
-
-            if (request.similar.length)
-            {
-                $('.helperProfInt').show();
-                for (let value of request.similar){
-                    $('.helperProfInt').append('\
-                        <p class="resultTags" onclick="changeTag(this.innerText)">'
-                        + value.tag + '</p>')
-                }
-            }
-            else
-                $('.helperProfInt').hide();
-        });
-    }
-}
-
 $('.user_location_add').click(function(){
 	getUserLocation(function(location){
 		$('.city_local').val(location.city);
@@ -412,14 +367,10 @@ $('.user_location_remove').click(function(){
 
 	sender.form('/profile/removeLocation');
 });
-function changeTag(tag){
-    sendTag(tag);
 
-	$('.resultTags').remove();
-  	$('.helperAbs').hide();
-   	$('#interestsHelp').val('#');
-}
-
+/*
+* Add new tag in to tags select
+*/
 function sendTag(tag)
 {
     let $search = '#' + tag;
@@ -440,6 +391,17 @@ function sendTag(tag)
         });
     }
 }
+
+/*
+* Hide tag helper
+*/
+$(window).on('click', function(event){
+    let $helper = $('.helperProfInt');
+    if ($helper !== undefined &&
+        $helper.attr('style') !== 'display: none;' &&
+        event.target !== $helper[0])
+        $helper.hide();
+});
 
 function checkElseBirthParam(){
 	var count = 0;

@@ -127,3 +127,83 @@ function getUserLocation(call){
         });
     });
 };
+
+function getRange(min = 0, max = 100, min_val = 0, max_val = 100){
+    return ('\
+    <div class="multi-range" data-lbound='+ min +' data-ubound='+ max +'>\
+        <div class="multi_range_1"></div>\
+        <hr>\
+        <input type="range" name="min" min='+ min +' max='+ max +' value='+ min_val +' oninput="setRangeVal(this);">\
+        <input type="range" name="max" min='+ min +' max='+ max +' value='+ max_val +' oninput="setRangeVal(this);">\
+        <div class="multi_range_2"></div>\
+    </div>\
+    ');
+}
+
+function setRangeVal(elem){
+    if (elem.getAttribute('name') === 'max')
+        elem.parentNode.dataset.ubound = elem.value;
+    else if (elem.getAttribute('name') === 'min')
+        elem.parentNode.dataset.lbound=elem.value;
+}
+
+/*** ADD NEW TAG AND SEE TAG HELPER ***/
+function tagHelper($value){
+    $hide = 0;
+    $hash = $value.split('#');
+    $hash[0] = null;
+
+    $tag = $hash[$hash.length - 1];
+    
+    if ($hash.length - 1 > 1)
+    {
+        if ($('.resultTags') !== undefined)
+            $('.resultTags').remove();
+
+        sendTag($hash[1]);
+        $('.helperAbs').hide();
+        $hide = 1;
+        $('#interestsHelp').val('#');
+    }
+    
+    $('.btn_inter').click(function(){
+        $hash = $('#interestsHelp').val().split('#');
+        $hash[0] = null;
+    
+        if ($hash[1])
+        {
+            $hide = 1;
+            changeTag($hash[1]);
+        }
+    });
+
+    if ($tag && $tag.length > 2)
+    {
+        sender.form('/searchTag', {'tag' : $tag}, function(request){
+            if ($('.resultTags') !== undefined)
+                    $('.resultTags').remove();
+            if ($hide)
+                $('.helperAbs').hide();
+            else if (request.similar.length)
+            {
+                $('.helperProfInt').show();
+                for (let value of request.similar){
+                    $('.helperProfInt').append('\
+                        <p class="resultTags" onclick="changeTag(this.innerText)">'
+                        + value.tag + '</p>')
+                }
+            }
+            else
+                $('.helperAbs').hide();
+        });
+    }
+}
+
+function changeTag(tag){
+    sendTag(tag);
+
+    $('.resultTags').remove();
+    $('.helperAbs').hide();
+    $('#interestsHelp').val('#');
+}
+/*** /ADD NEW TAG AND SEE TAG HELPER ***/

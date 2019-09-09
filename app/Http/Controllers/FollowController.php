@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
+use Redirect;
 use App\User;
 use App\Info;
 use App\Follow;
@@ -20,7 +21,7 @@ class FollowController extends Controller
 
         $additional_data = self::getAdditionDataRequest($request);
 
-        // $paginate = DB::table('follows')->select('following_id')->join('locations', 'locations.id', '=', 'follows.followers_id')->where('locations.city', 'Kyiv')->paginate(10);
+        $paginate = DB::table('follows')->select('following_id')->join('locations', 'locations.id', '=', 'follows.followers_id')->where('locations.city', 'Kyiv')->paginate(10);
 
     	foreach ($paginate = Follow::where('followers_id', $request->user()->id)->paginate(10) as $follow){
 
@@ -32,20 +33,24 @@ class FollowController extends Controller
     		array_push($data, $userInfo);
 		}
 
-        // $data = self::sortAndFilter($data, $additional_data, $request->user()->id);
-
 		return (view('follow', ['title' => $title, 'section' => 'following','data' => $data, 'additional_data' => $additional_data, 'paginate' => $paginate]));
     }
 
     public function getFollowers(Request $request)
     {
+        if ($request->all())
+        {
+            echo"<pre>"; 
+            var_dump($request->all());
+            exit;
+        }
     	$title = 'Matcha' . ' :: Followers';
 
         $data = [];
 
         $additional_data = self::getAdditionDataRequest($request);
 
-        foreach ($paginate = Follow::where('following_id', $request->user()->id)->paginate(10) as $follow){
+        foreach ($paginate = Follow::where('following_id', $request->user()->id)->orderby('followers_id', 'DESC')->paginate(2) as $follow){
 
             $user = User::find($follow->followers_id);
             $info = Info::find($follow->followers_id);
@@ -55,6 +60,11 @@ class FollowController extends Controller
             array_push($data, $userInfo);
         }
         
+        if (isset($request->post))
+        {
+            
+
+        }
         return (view('follow', ['title' => $title, 'section' => 'followers','data' => $data, 'additional_data' => $additional_data, 'paginate' => $paginate]));
     }
 
@@ -85,13 +95,8 @@ class FollowController extends Controller
     private static function getAdditionDataRequest(Request $request)
     {
         return ([
-            'sorted' => $request->all()['sorted'],
+            'sorted' => empty($request->all()['sorted']) ? null : $request->all()['sorted'],
             'filtered' => empty($request->all()['filtered']) ? null :  $request->all()['filtered']
         ]);
     }
-
-    // private static function sortAndFilter($data, $additional_data, $id)
-    // {
-    //     usort()
-    // }
 }
