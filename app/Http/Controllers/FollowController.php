@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use DB;
 use Redirect;
+use Auth;
 use App\User;
 use App\Info;
 use App\Follow;
 use App\Interests;
 use App\Location;
 use Illuminate\Http\Request;
+
+use Location\Line;
+    use Location\Coordinate;
+    use Location\Distance\Haversine;
 
 class FollowController extends Controller
 {
@@ -44,29 +49,37 @@ class FollowController extends Controller
 
         $data = [];
 
-        $paginate = Follow::where('following_id', $request->user()->id)->orderby('followers_id', 'DESC');
-
-
-        // $paginate = DB::table('follows')->select('following_id')->join('locations', 'locations.id', '=', 'follows.followers_id')->where('locations.city', 'Kyiv')->paginate(10);
-
-
-        // $select = DB::table('follows')->join('locations', 'locations.id', '=', 'follows.followers_id')->join('infos', 'infos.id', '=', 'follows.followers_id')->join('users', 'users.id', '=', 'follows.followers_id')->select('follows.followers_id', 'locations.latitude', 'locations.longitude', 'infos.age', 'users.rating')->get();
+        // $paginate = Follow::where('following_id', $request->user()->id)->orderby('followers_id', 'DESC');
 
         $select = DB::table('follows')
-                ->select('follows.followers_id', 'infos.age')
+                ->select('follows.followers_id', 'infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access')
                 ->join('locations', 'locations.id', '=', 'follows.followers_id')
                 ->join('infos', 'infos.id', '=', 'follows.followers_id')
                 ->join('users', 'users.id', '=', 'follows.followers_id')
                 ->join('interests', 'interests.id', '=', 'follows.followers_id')
-                ->whereBetween('infos.age', ['0', '60'])
-                ->whereBetween('users.rating', ['0', '100'])
-                ->where('interests.tags', 'like', '%asd,%')
+                ->whereBetween('infos.age', [$additional_data['filter']['age']['min'], $additional_data['filter']['age']['max']])
+                ->whereBetween('users.rating', [$additional_data['filter']['rating'], '100'])
                 ->get();
-        echo "<pre>";
-        var_dump($select);
-        exit;
 
+        $select->map(function ($select){
+            $user_location = Location::find(Auth::user()->id);
 
+            if ($select->user_access === 1)
+            {
+                $distance = new Line(
+                        new Coordinate($select->latitude, $select->longitude),
+                        new Coordinate($user_location->latitude, $user_location->longitude)
+                    );
+                    $distance = (int)$distance->getLength(new Haversine());
+            }
+            else
+            {
+                unset($select);
+            } 
+                // echo "<pre>";
+                // var_dump($select);
+        });
+exit;
 
 
 
@@ -131,17 +144,20 @@ class FollowController extends Controller
     protected static function validateFilterRequest($filter)
     {
         return ([
-            'age' => self::getRequestAge($filter['age']),
-            'distance' => self::getRequestDistance($filter['location']),
-            'rating' => self::getRequestRating($filter['rating']),
+            'age' => self::getRequestAge($filter),
+            'distance' => self::getRequestDistance($filter),
+            'rating' => self::getRequestRating($filter),
             'interests' => empty($filter['interests']) ? null : $filter['interests'],
 
         ]);
     }
 
-    protected static function getRequestAge($age)
+    protected static function getRequestAge($filter)
     {
-        $age = explode('-', $age);
+        if (empty($filter['age']))
+            $age = null;
+        else
+            $age = explode('-', $filter['age']);
 
         if (empty($age) || ((!is_numeric($age[0]) ||
             !is_numeric($age[1])) ||
@@ -149,7 +165,7 @@ class FollowController extends Controller
             ((int)$age[0] < 10 || (int)$age[1] > 60))
         {
             return ([
-                'min' => '10',
+                'min' => '0',
                 'max' => '60',
             ]);
         }
@@ -162,10 +178,13 @@ class FollowController extends Controller
         }
     }
 
-    protected static function getRequestDistance($distance)
+    protected static function getRequestDistance($filter)
     {
-        $distance = explode('-', $distance);
-        
+        if (empty($filter['distance']))
+            $distance = null;
+        else
+            $distance = explode('-', $filter['distance']);
+
         if (empty($distance) ||
             ((!is_numeric($distance[0]) ||
             !is_numeric($distance[1])) ||
@@ -185,18 +204,18 @@ class FollowController extends Controller
         }
     }
 
-    protected static function getRequestRating($rating)
+    protected static function getRequestRating($filter)
     {
-        if (empty($rating) ||
-            (!is_numeric($rating) ||
-                $rating < 0 ||
-                $rating > 100))
+        if (empty($filter['rating']) ||
+            (!is_numeric($filter['rating']) ||
+                $filter['rating'] < 0 ||
+                $filter['rating'] > 100))
         {
             return ('0');
         }
         else
         {
-            return ($rating);
+            return ($filter['rating']);
         }
     }
 }
