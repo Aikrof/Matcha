@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use DB;
-use Redirect;
-use Auth;
 use App\User;
 use App\Info;
 use App\Follow;
@@ -43,49 +41,48 @@ class FollowController extends Controller
 
     public function getFollowers(Request $request)
     {	
-        $additional_data = self::getAdditionDataRequest($request);
+        $request_data = self::getAdditionDataRequest($request);
 
         $title = 'Matcha' . ' :: Followers';
 
         $data = [];
 
-        // $paginate = Follow::where('following_id', $request->user()->id)->orderby('followers_id', 'DESC');
-
         $select = DB::table('follows')
+                ->where('following_id', $request->user()->id)
                 ->select('follows.followers_id', 'infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access')
                 ->join('locations', 'locations.id', '=', 'follows.followers_id')
                 ->join('infos', 'infos.id', '=', 'follows.followers_id')
                 ->join('users', 'users.id', '=', 'follows.followers_id')
                 ->join('interests', 'interests.id', '=', 'follows.followers_id')
-                ->whereBetween('infos.age', [$additional_data['filter']['age']['min'], $additional_data['filter']['age']['max']])
-                ->whereBetween('users.rating', [$additional_data['filter']['rating'], '100'])
+                ->whereBetween('infos.age', [$request_data['filter']['age']['min'], $request_data['filter']['age']['max']])
+                ->whereBetween('users.rating', [$request_data['filter']['rating'], '100'])
                 ->get();
 
-        $select->map(function ($select){
-            $user_location = Location::find(Auth::user()->id);
+        $user_location = Location::find($request->user()->id);
+        
+        foreach ($select as $key => $value){
 
-            if ($select->user_access === 1)
+           if (!empty($request_data['filter']['distance']))
             {
-                $distance = new Line(
-                        new Coordinate($select->latitude, $select->longitude),
-                        new Coordinate($user_location->latitude, $user_location->longitude)
+                if ($value->user_access === 1)
+                {
+                    $distance = new Line(
+                            new Coordinate($value->latitude, $value->longitude),
+                            new Coordinate($user_location->latitude, $user_location->longitude)
                     );
                     $distance = (int)$distance->getLength(new Haversine());
+                    echo"<pre>"; 
+                    var_dump($distance);
+                    exit;
+                }
+                else
+                {
+                    unset($select[$key]);
+                }
             }
-            else
-            {
-                unset($select);
-            } 
-                // echo "<pre>";
-                // var_dump($select);
-        });
-exit;
+        }
 
-
-
-
-
-        $paginate = $paginate->paginate(10);
+        $paginate = $select->paginate(10);
 
         foreach ($paginate as $follow){
 
@@ -97,7 +94,7 @@ exit;
             array_push($data, $userInfo);
         }
         
-        return (view('follow', ['title' => $title, 'section' => 'followers','data' => $data, 'additional_data' => $additional_data, 'paginate' => $paginate]));
+        return (view('follow', ['title' => $title, 'section' => 'followers','data' => $data, 'additional_data' => $request_data, 'paginate' => $paginate]));
     }
 
     private function getUserInformation(int $user_id)
@@ -190,10 +187,7 @@ exit;
             !is_numeric($distance[1])) ||
             (int)$distance[0] > (int)$distance[1]))
         {
-            return ([
-                'min' => '0',
-                'max' => '1000',
-            ]);
+            return (null);
         }
         else
         {

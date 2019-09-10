@@ -78,6 +78,10 @@ class FirstEntryController extends Controller
                 return;
 
         $user_info = Info::find($request->user()['id']);
+
+        if ($key === 'age' && empty($info[$key]))
+            $info[$key] = 0;
+
         $user_info->update([
             $key => $info[$key]
         ]);
