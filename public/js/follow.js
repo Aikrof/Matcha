@@ -85,7 +85,7 @@ $('.f_ok_btn').click(function(){
 	}
 
 	if ($str !== "?")
-		location.href = $local + $str;
+		location.href = $local + encodeURI($str);
 });
 
 

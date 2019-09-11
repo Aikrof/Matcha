@@ -188,7 +188,7 @@
 
 </div>
 
-{{$paginate->appends(['sort' => $additional_data['sort'], 'filter' => $additional_data['filter']])->render()}}
+{{$paginate->appends($additional_data)->render()}}
 <!-- {{$paginate->appends(['order' => 'ASC/DESC'])->links()}} -->
 @endsection
 <!-- /CONTENT -->

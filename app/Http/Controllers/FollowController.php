@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use DB;
+
 use App\User;
 use App\Info;
 use App\Follow;
 use App\Interests;
 use App\Location;
+
+use App\Helper\RangeHelper;
+use App\Helper\FilterSearchHelper as Filter;
+use App\Helper\SortSearchHelper as Sort;
 use Illuminate\Http\Request;
 
-use Location\Line;
-    use Location\Coordinate;
-    use Location\Distance\Haversine;
 
 class FollowController extends Controller
 {
@@ -41,22 +43,36 @@ class FollowController extends Controller
 
     public function getFollowers(Request $request)
     {	
-        $request_data = self::getAdditionDataRequest($request);
+        // $request_data = self::getAdditionDataRequest($request);
 
         $title = 'Matcha' . ' :: Followers';
 
         $data = [];
 
-        $select = DB::table('follows')
-                ->where('following_id', $request->user()->id)
-                ->select('follows.followers_id', 'infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access')
-                ->join('locations', 'locations.id', '=', 'follows.followers_id')
-                ->join('infos', 'infos.id', '=', 'follows.followers_id')
-                ->join('users', 'users.id', '=', 'follows.followers_id')
-                ->join('interests', 'interests.id', '=', 'follows.followers_id')
-                ->whereBetween('infos.age', [$request_data['filter']['age']['min'], $request_data['filter']['age']['max']])
-                ->whereBetween('users.rating', [$request_data['filter']['rating'], '100'])
-                ->get();
+        $select = Sort::sortData(
+                    Filter::filterData(
+                        self::addDistance(
+                            self::getFollowQuery(
+                                'following_id',
+                                $request->user()->id,
+                                'follows.followers_id'
+                            ),
+                            Location::find($request->user()->id)
+                        ),
+                        $request->filter
+                    ), $request->sort
+                );
+
+        // $select = DB::table('follows')
+        //         ->where('following_id', $request->user()->id)
+        //         ->select('follows.followers_id', 'infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access')
+        //         ->join('locations', 'locations.id', '=', 'follows.followers_id')
+        //         ->join('infos', 'infos.id', '=', 'follows.followers_id')
+        //         ->join('users', 'users.id', '=', 'follows.followers_id')
+        //         ->join('interests', 'interests.id', '=', 'follows.followers_id')
+        //         ->whereBetween('infos.age', [$request_data['filter']['age']['min'], $request_data['filter']['age']['max']])
+        //         ->whereBetween('users.rating', [$request_data['filter']['rating'], '100'])
+        //         ->get();
 
         $user_location = Location::find($request->user()->id);
         
@@ -94,7 +110,37 @@ class FollowController extends Controller
             array_push($data, $userInfo);
         }
         
-        return (view('follow', ['title' => $title, 'section' => 'followers','data' => $data, 'additional_data' => $request_data, 'paginate' => $paginate]));
+        return (view('follow', ['title' => $title, 'section' => 'followers','data' => $data, 'additional_data' => $request->all(), 'paginate' => $paginate]));
+    }
+
+    protected static function addDistance($query,$user_location)
+    {
+        $range = new RangeHelper();
+
+        foreach ($query as $value){
+            $value->range = $range->getDistance(
+                $value->latitude,
+                $value->longitude,
+                $user_location->latitude,
+                $user_location->longitude
+            );
+        }
+
+        return ($query);
+    }
+
+    protected static function getFollowQuery(String $search_id, $user_id, $take_id)
+    {
+        return (
+            DB::table('follows')
+                ->where($search_id, $user_id)
+                ->select($take_id, 'infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access')
+                ->join('locations', 'locations.id', '=', $take_id)
+                ->join('infos', 'infos.id', '=', $take_id)
+                ->join('users', 'users.id', '=', $take_id)
+                ->join('interests', 'interests.id', '=', $take_id)
+                ->get()
+        );
     }
 
     private function getUserInformation(int $user_id)
@@ -121,95 +167,95 @@ class FollowController extends Controller
     	]);
     }
 
-    protected static function getAdditionDataRequest(Request $request)
-    {
-        return ([
-            'sort' => self::validateSortRequest($request->sort),
-            'filter' => self::validateFilterRequest($request->filter),
-        ]);
-    }
+    // protected static function getAdditionDataRequest(Request $request)
+    // {
+    //     return ([
+    //         'sort' => self::validateSortRequest($request->sort),
+    //         'filter' => self::validateFilterRequest($request->filter),
+    //     ]);
+    // }
 
-    protected static function validateSortRequest($sort)
-    {
-        return ([
-            'priority' => empty($sort['priority']) ? 'location' : $sort['priority'],
-            'interests' => empty($sort['interests']) ? null : $sort['interests'],
-            'sorted_by' =>  empty($sort['sorted_by']) ? 'ASC' : $sort['sorted_by'],
-        ]);
-    }
+    // protected static function validateSortRequest($sort)
+    // {
+    //     return ([
+    //         'priority' => empty($sort['priority']) ? 'location' : $sort['priority'],
+    //         'interests' => empty($sort['interests']) ? null : $sort['interests'],
+    //         'sorted_by' =>  empty($sort['sorted_by']) ? 'ASC' : $sort['sorted_by'],
+    //     ]);
+    // }
 
-    protected static function validateFilterRequest($filter)
-    {
-        return ([
-            'age' => self::getRequestAge($filter),
-            'distance' => self::getRequestDistance($filter),
-            'rating' => self::getRequestRating($filter),
-            'interests' => empty($filter['interests']) ? null : $filter['interests'],
+    // protected static function validateFilterRequest($filter)
+    // {
+    //     return ([
+    //         'age' => self::getRequestAge($filter),
+    //         'distance' => self::getRequestDistance($filter),
+    //         'rating' => self::getRequestRating($filter),
+    //         'interests' => empty($filter['interests']) ? null : $filter['interests'],
 
-        ]);
-    }
+    //     ]);
+    // }
 
-    protected static function getRequestAge($filter)
-    {
-        if (empty($filter['age']))
-            $age = null;
-        else
-            $age = explode('-', $filter['age']);
+    // protected static function getRequestAge($filter)
+    // {
+    //     if (empty($filter['age']))
+    //         $age = null;
+    //     else
+    //         $age = explode('-', $filter['age']);
 
-        if (empty($age) || ((!is_numeric($age[0]) ||
-            !is_numeric($age[1])) ||
-            (int)$age[0] > (int)$age[1]) ||
-            ((int)$age[0] < 10 || (int)$age[1] > 60))
-        {
-            return ([
-                'min' => '0',
-                'max' => '60',
-            ]);
-        }
-        else
-        {
-            return ([
-                'min' => $age[0],
-                'max' => $age[1],
-            ]);
-        }
-    }
+    //     if (empty($age) || ((!is_numeric($age[0]) ||
+    //         !is_numeric($age[1])) ||
+    //         (int)$age[0] > (int)$age[1]) ||
+    //         ((int)$age[0] < 10 || (int)$age[1] > 60))
+    //     {
+    //         return ([
+    //             'min' => '0',
+    //             'max' => '60',
+    //         ]);
+    //     }
+    //     else
+    //     {
+    //         return ([
+    //             'min' => $age[0],
+    //             'max' => $age[1],
+    //         ]);
+    //     }
+    // }
 
-    protected static function getRequestDistance($filter)
-    {
-        if (empty($filter['distance']))
-            $distance = null;
-        else
-            $distance = explode('-', $filter['distance']);
+    // protected static function getRequestDistance($filter)
+    // {
+    //     if (empty($filter['distance']))
+    //         $distance = null;
+    //     else
+    //         $distance = explode('-', $filter['distance']);
 
-        if (empty($distance) ||
-            ((!is_numeric($distance[0]) ||
-            !is_numeric($distance[1])) ||
-            (int)$distance[0] > (int)$distance[1]))
-        {
-            return (null);
-        }
-        else
-        {
-            return ([
-                'min' => $distance[0],
-                'max' => $distance[1],
-            ]);
-        }
-    }
+    //     if (empty($distance) ||
+    //         ((!is_numeric($distance[0]) ||
+    //         !is_numeric($distance[1])) ||
+    //         (int)$distance[0] > (int)$distance[1]))
+    //     {
+    //         return (null);
+    //     }
+    //     else
+    //     {
+    //         return ([
+    //             'min' => $distance[0],
+    //             'max' => $distance[1],
+    //         ]);
+    //     }
+    // }
 
-    protected static function getRequestRating($filter)
-    {
-        if (empty($filter['rating']) ||
-            (!is_numeric($filter['rating']) ||
-                $filter['rating'] < 0 ||
-                $filter['rating'] > 100))
-        {
-            return ('0');
-        }
-        else
-        {
-            return ($filter['rating']);
-        }
-    }
+    // protected static function getRequestRating($filter)
+    // {
+    //     if (empty($filter['rating']) ||
+    //         (!is_numeric($filter['rating']) ||
+    //             $filter['rating'] < 0 ||
+    //             $filter['rating'] > 100))
+    //     {
+    //         return ('0');
+    //     }
+    //     else
+    //     {
+    //         return ($filter['rating']);
+    //     }
+    // }
 }
