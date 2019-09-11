@@ -2,9 +2,6 @@
 
 namespace App\Helper;
 
-// use Location\Line;
-// use Location\Coordinate;
-// use Location\Distance\Haversine;
 use Illuminate\Support\Collection;
 
 class FilterSearchHelper
@@ -26,15 +23,28 @@ class FilterSearchHelper
     */
 	public static function filterData(Collection $query, $params)
 	{
-		// if (empty($params))
-		// 	return ($query);
+		if (empty($params))
+			return ($query);
 
 		$filter = self::validateFilterParams($params);
 
 		$query = $query
 				->whereBetween('age', [$filter['age']['min'], $filter['age']['max']])
-				->whereBetween('rating', [$filter['rating'], '100']);
-				
+				->whereBetween('rating', [$filter['rating'], '100'])
+                ->where('distance', '<=', $filter['distance']);
+
+        if (!empty($filter['tags']))
+        {
+            foreach ($query as $key => $value){
+                if (empty($value->tags) ||
+                    !array_intersect($filter['tags'], $value->tags))
+                {
+                    unset($query[$key]);
+                }
+            }
+        }
+
+        return ($query);
     }
 
     /**
@@ -43,13 +53,13 @@ class FilterSearchHelper
     * @param  filter params array $params
     * @return Illuminate\Support\Collection $params
     */
-    protected static function validateFilterParams($params)
+    protected static function validateFilterParams(array $params)
     {
     	return ([
     			'age' => self::getAge($params),
             	'distance' => self::getDistance($params),
             	'rating' => self::getRating($params),
-            	'interests' => self::getInterests($params),
+            	'tags' => self::getInterests($params),
     		]);
     }
 
@@ -60,7 +70,7 @@ class FilterSearchHelper
     * @param  filter params array $params
     * @return array [min age, max age]
     */
-    protected static function getAge($params)
+    protected static function getAge(array $params)
     {
     	if (empty($params['age']))
             $age = null;
@@ -82,20 +92,15 @@ class FilterSearchHelper
     * @param  filter params array $params
     * @return array [min distance, max distance]
     */
-    protected static function getDistance($params)
+    protected static function getDistance(array $params)
     {
-    	if (empty($params['distance']))
-            $distance = null;
+    	if (empty($params['distance']) ||
+            !is_numeric($params['distance']) ||
+            (int)$params['distance'] <= 0 || 
+            (int)$params['distance'] >= 100)
+            return (40076);
         else
-            $distance = explode('-', $params['distance']);
-
-        if (empty($distance) ||
-            ((!is_numeric($distance[0]) ||
-            !is_numeric($distance[1])) ||
-            (int)$distance[0] > (int)$distance[1]))
-            return (null);
-        else
-            return (['min' => $distance[0], 'max' => $distance[1] ]);
+            return ((int)$params['distance']);
     }
 
     /**
@@ -104,7 +109,7 @@ class FilterSearchHelper
     * @param  filter params array $params
     * @return rating value
     */
-    protected static function getRating( $params)
+    protected static function getRating(array $params)
     {
     	if (empty($params['rating']) ||
             (!is_numeric($params['rating']) ||
@@ -121,7 +126,7 @@ class FilterSearchHelper
     * @param  filter params array $params
     * @return rating value
     */
-    protected static function getInterests( $params)
+    protected static function getInterests(array $params)
     {
     	if (empty($params['interests']))
     		return (null);

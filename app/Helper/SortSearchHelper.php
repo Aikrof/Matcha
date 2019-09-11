@@ -23,6 +23,93 @@ class SortSearchHelper
     */
     public static function sortData(Collection $query, $params)
     {
-    	exit;
+    	$sort = self::validateSortParams($params);
+
+        if (!empty($sort['tags']))
+            self::addInterestsMatch($query, $sort['tags']);
+
+        $query = $query->sortBy($sort['priority'])
+                ->groupBy($sort['priority'])
+                ->map(function($query){
+                    return (
+                        $query->sortByDesc('interests_matched')
+                        ->groupBy('matches')
+                    );
+                })->flatten(2);
+echo "<pre>";
+var_dump($query);
+exit;
+        return ($query);
+    }
+
+    /**
+    * Add count of interests match
+    *
+    * @param  Illuminate\Support\Collection $params
+    * @return void
+    */
+    protected static function addInterestsMatch(Collection &$query, $tags)
+    {
+        foreach ($query as $value){
+            if (!empty($value->tags))
+            {
+                $count = count(array_intersect($tags, $value->tags));
+            }
+            else
+                $count = 0;
+
+            $value->interests_matched = $count;
+        }
+    }
+
+    /**
+    * Validate sort params
+    *
+    * @param  sort params $params
+    * @return array $params
+    */
+    protected static function validateSortParams($params)
+    {
+        return ([
+            'priority' => self::getPrioryty($params),
+            'tags' => self::getInterests($params),
+            'sorted_by' => self::getSortedBy($params)
+        ]);
+    }
+
+    /**
+    * Get priority to sort
+    *
+    * @param  sort params $params
+    * @return string sort priority or null
+    */
+    protected static function getPrioryty($params)
+    {
+        return (empty($params['priority'])) ? 'distance' : $params['priority'];
+    }
+
+    /**
+    * Get priority to sort by interests
+    *
+    * @param  sort params $params
+    * @return array tags or null
+    */
+    protected static function getInterests($params)
+    {
+        if (empty($params['interests']))
+            return (null);
+        
+        return (explode(',', $params['interests']));
+    }
+
+    /**
+    * Get priority to sort by ASC or DESC
+    *
+    * @param  filter params $params
+    * @return string sort (ASC or DESC)
+    */
+    protected static function getSortedBy($params)
+    {
+        return (empty($params['sorted_by']) ? 'ASC' : $params['sorted_by']);
     }
 }

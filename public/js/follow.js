@@ -62,7 +62,7 @@ $('.f_ok_btn').click(function(){
 	$filter = {
 		age: getAge($('.filter_range_age').attr('data-lbound'), $('.filter_range_age').attr('data-ubound')),
 
-		distance: getDistance($('input[name="from"]').val(), $('input[name="to"]').val()),
+		distance: getDistance($('.distance_inp').attr('data-lbound')),
 
 		rating: getRating($('.filter_rating').attr('data-lbound')),
 
@@ -98,6 +98,24 @@ $('.interest_cont, .interest_cont_filter').on('click', 'p.tag_se, p.tag_fil', fu
 	$(this).remove();
 });
 
+/*
+* Set distance and add + if distance if equal 100
+*/
+function setDistance(inp){
+	$parent = $(inp).parent();
+	$parent.attr('data-lbound', inp.value);
+
+	if (inp.value === '100' && $parent.hasClass('less_100'))
+	{
+		$parent.removeClass('less_100');
+		$parent.addClass('more_100');
+	}
+	else if (inp.value !== '100' && $parent.hasClass('more_100'))
+	{
+		$parent.removeClass('more_100');
+		$parent.addClass('less_100');
+	}
+}
 
 /** ADD TAG IN FILTER **/
 
@@ -194,15 +212,15 @@ $(window).on('click', function(event){
         $helper1.hide();
 });
 
-/*
-* Delete in the Distance input if this is not a number
-*/
-$('.distance_inp').keyup(function(){
-    $testText =  $(this).val();
+// /*
+// * Delete in the Distance input if this is not a number
+// */
+// $('.distance_inp').keyup(function(){
+//     $testText =  $(this).val();
 	
-	if($testText*1 + 0  !=  $(this).val())
-  		$(this).val($testText.substring(0, $testText.length - 1));
-});
+// 	if($testText*1 + 0  !=  $(this).val())
+//   		$(this).val($testText.substring(0, $testText.length - 1));
+// });
 
 /*
 * Add new tag in to tags select
@@ -252,14 +270,8 @@ function getAge($min, $max){
 		return ($min + '-' + $max);
 }
 
-function getDistance($from, $to){
-	if ($from === "" && $to === "")
-		return (null);
-
-	$from = $from === "" ? '0' : $from;
-	$to = $to === "" ? '1000' : $to;
-
-	return ($from +'-'+ $to);
+function getDistance($distance){
+	return ($distance === '0' ? null : $distance);
 }
 
 function getRating($rating){

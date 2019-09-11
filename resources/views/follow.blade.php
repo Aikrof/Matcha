@@ -33,7 +33,7 @@
                     <input id="age__ham" class="sort_age f_imp_check" type="checkbox" name="toppings" value=false><label for="age__ham" class="f_lab_check" data="0"><div class="sort_checker"></div></label>
                 </div>
                 <div class="row">
-                    <label class="name_SF">Location:</label>
+                    <label class="name_SF">Distance:</label>
                     <input id="location_ham" class="sort_location f_imp_check" type="checkbox" name="toppings" value=false><label for="location_ham" class="f_lab_check" data="0"><div class="sort_checker"></div></label>
                 </div>
                 <div class="row">
@@ -83,11 +83,9 @@
                 <div class="row">
                    <label class="name_SF">Location Distance:</label>
                     <div class="col-md-12">
-                        <label><small class="font-s13_5">From, km:</small>
-                        <input class="form-control w120 distance_inp" type="text" name="from" placeholder="From" autocomplete="off" maxlength="4"></label>
-                        <span>-</span>
-                        <label><small class="font-s13_5">To, km:</small>
-                        <input class="form-control w120 distance_inp" type="text" name="to" placeholder="To" autocomplete="off" maxlength="4"></label>
+                        <div class='multi-range multi-range-one-km less_100 distance_inp' data-lbound='0'>
+                        <input class="slider" type="range" min="0" step="1" max="100" value="0" oninput='setDistance(this);'>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -137,44 +135,44 @@
     <div class="col-md-10 pr-1">
         <div class="form-group" style="width: 100%;">
             <div style="display: flex;width: 100%;">
-            <img class="img_for" src="{{$user['icon']}}">
+            <img class="img_for" src="{{$user->icon}}">
             <div style="display: flex;width: calc(90% - 124px);flex-direction: column;margin-left: 10px;">
                 <div style="display: flex;flex-direction: column;">
-                    <p class="login_for">{{$user['login']}}</p>
-                    <p class="first_last_for">({{$user['first_name'] . ' ' . $user['last_name']}})</p>
+                    <p class="login_for">{{$user->login}}</p>
+                    <p class="first_last_for">({{$user->first_name . ' ' . $user->last_name}})</p>
                 </div>
                 <label>Rating:</label>
                 <div class="progress" style="height: 3.5vh;background-color: #e74c3c;">
                     <div class="progress-bar bg-success" role="progressbar" aria-valuenow="70"
-                    aria-valuemin="0" aria-valuemax="100" style="width:{{$user['rating'] . '%'}};height: 3.5vh;">
-                        <p>{{$user['rating']}}</p>
+                    aria-valuemin="0" aria-valuemax="100" style="width:{{$user->rating . '%'}};height: 3.5vh;">
+                        <p>{{$user->rating}}</p>
                     </div>
                 </div>
-                @if (!empty($user['age']))
+                @if ($user->age !== 999)
                 <div>
                     <label>Age: </label>
-                    <span>{{$user['age']}}</span>
+                    <span>{{$user->age}}</span>
                 </div>
                 @endif
-                @if (!empty($user['location']))
+                @if (!empty($user->location))
                 <div>
                     <label>Location: </label>
-                    <span>{{$user['location']['country'] . ', ' . $user['location']['city']}}</span>
+                    <span>{{$user->location['country'] . ', ' . $user->location['city']}}</span>
                 </div>
                 @endif
             </div>
             </div>
             <div>
                 <label>Interests: </label>
-                @if ($user['interests'] && !empty($user['interests'][0]))
-                    @foreach ($user['interests'] as $tag)
+                @if ($user->tags && !empty($user->tags[0]))
+                    @foreach ($user->tags as $tag)
                         <p class="tag_for">#{{$tag}}</p>
                     @endforeach
                 @endif
             </div>
             <div>
                 <label>About:</label>
-                <span>{{$user['about']}}</span>
+                <span>{{$user->about}}</span>
             </div>
         </div>
     </div>
@@ -188,7 +186,7 @@
 
 </div>
 
-{{$paginate->appends($additional_data)->render()}}
+{{$paginate->appends($param)->render()}}
 <!-- {{$paginate->appends(['order' => 'ASC/DESC'])->links()}} -->
 @endsection
 <!-- /CONTENT -->

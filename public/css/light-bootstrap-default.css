@@ -1046,7 +1046,21 @@ multi-range, .multi-range *{
     height: 26px; width: auto; 
     font-size: 15px; line-height: 26px;
 }
-
+.less_100::after{
+    content: 'To: 'attr(data-lbound) ', km.'; 
+}
+.more_100::after{
+    content: 'To: 'attr(data-lbound) '+, km.';  
+}
+.multi-range-one-km::after{ 
+    position: absolute;
+    top: -1px;
+    left: 95%;
+    white-space: nowrap;
+    display: block;
+    height: 26px; width: auto; 
+    font-size: 15px; line-height: 26px;
+}
 .slider {
   -webkit-appearance: none;
   width: 100%;

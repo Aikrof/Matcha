@@ -51,14 +51,27 @@ class FirstEntryController extends Controller
     public function SuccessfulUserFirstEntry(Request $request)
     {
         if (!$request->done)
-        {
-            if (!Location::find($request->user()->id))
-                $this->createLocation($request, ['location' => null]);
-        }
+            $this->setDefaultValues($request);
         else
             Rating::addToRating($request->user()['id'], 'first_entry');
         
         DB::update('update `users` set first_entry = false WHERE `id` = ?', [$request->user()['id']]);
+    }
+
+    /**
+    * Set default values to table Locations, Interests
+    * if not exist 
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return void
+    */
+    protected function setDefaultValues(Request $request)
+    {
+        if (!Location::find($request->user()->id))
+            $this->createLocation($request, ['location' => null]);
+
+        if (!Interests::find($request->user()->id))
+            $this->addInterests($request, ['interests' => null]);
     }
 
     /**
