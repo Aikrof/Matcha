@@ -16,23 +16,24 @@ class FollowController extends Controller
     {
     	$title =  'Matcha' . ' :: Following';
 
-    	$data = [];
+        $query = self::supplementUserInfo(
+                    self::getFollowQuery(
+                        'followers_id',
+                        $request->user()->id,
+                        'follows.following_id'
+                    ),
+                Location::find($request->user()->id),
+                $request->sort
+            );
 
-        $additional_data = self::getAdditionDataRequest($request);
+        $query = Sort::sortData(
+                Filter::filterData($query,$request->filter),
+                $request->sort
+            );
 
-        $paginate = DB::table('follows')->select('following_id')->join('locations', 'locations.id', '=', 'follows.followers_id')->where('locations.city', 'Kyiv')->paginate(10);
+        $data = $query->paginate(2);
 
-    	foreach ($paginate = Follow::where('followers_id', $request->user()->id)->paginate(10) as $follow){
-
-    		$user = User::find($follow->following_id);
-    		$info = Info::find($follow->following_id);
-
-    		$userInfo = $this->getUserInformation($follow->following_id);
-
-    		array_push($data, $userInfo);
-		}
-
-		return (view('follow', ['title' => $title, 'section' => 'following','data' => $data, 'additional_data' => $additional_data, 'paginate' => $paginate]));
+		return (view('follow', ['title' => $title, 'section' => 'following','data' => $data, 'param' => $request->all(), 'paginate' => $data]));
     }
 
     public function getFollowers(Request $request)

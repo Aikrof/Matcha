@@ -143,38 +143,40 @@
                     <p class="login_for">{{$user->login}}</p>
                     <p class="first_last_for">({{$user->first_name . ' ' . $user->last_name}})</p>
                 </div>
-                <label>Rating:</label>
-                <div class="progress" style="height: 3.5vh;background-color: #e74c3c;">
-                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="70"
-                    aria-valuemin="0" aria-valuemax="100" style="width:{{$user->rating . '%'}};height: 3.5vh;">
-                        <p>{{$user->rating}}</p>
-                    </div>
-                </div>
                 @if ($user->age !== 999 && $user->age !== 0)
                 <div>
                     <label>Age: </label>
                     <span>{{$user->age}}</span>
                 </div>
                 @endif
-                @if (!empty($user->location))
+                <label>Rating:</label>
+                <div class="progress" style="height: 3.5vh;background-color: #e74c3c;">
+                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="70"
+                    aria-valuemin="0" aria-valuemax="100" style="width:{{$user->rating . '%'}};height: 3.5vh;">
+                    </div>
+                    <p style="color: #ffffff;">{{number_format((float)$user->rating, 2, '.', '')}}</p>
+                </div>
+                @if (!empty($user->country) && !empty($user->city))
                 <div>
                     <label>Location: </label>
-                    <span>{{$user->location['country'] . ', ' . $user->location['city']}}</span>
+                    <span>{{$user->country . ', ' . $user->city}}</span>
                 </div>
                 @endif
             </div>
             </div>
             <div>
+                @if (!empty($user->tags))
                 <label>Interests: </label>
-                @if ($user->tags && !empty($user->tags[0]))
                     @foreach ($user->tags as $tag)
                         <p class="tag_for">#{{$tag}}</p>
                     @endforeach
                 @endif
             </div>
             <div>
+                @if (!empty($user->about))
                 <label>About:</label>
                 <span>{{$user->about}}</span>
+                @endif
             </div>
         </div>
     </div>

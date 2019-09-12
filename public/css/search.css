@@ -201,9 +201,15 @@
   font-size: 1.9em;
 }
 
+.country_option,
+.city_option{
+  font-size: 14px;
+}
+
 @media (min-width: 768px) {
 
   .box-collapse {
     width: 50%;
   }
 }
+
