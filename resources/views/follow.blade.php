@@ -22,7 +22,7 @@
 </div>
 
 
-<div class="row" id="sf_show">
+<div class="row" id="sf_show" style="display: none;">
     <div class="col-md-12">
         <form class="form-group f_Sort_Filter">
         <div class="sf_cont">
@@ -129,6 +129,8 @@
 <div class="col-md-10">
 <div class="card">
 <div class="card-body">
+
+@if ($data->count() > 0)
 @foreach($data as $user)
 
 <div class="row">
@@ -148,7 +150,7 @@
                         <p>{{$user->rating}}</p>
                     </div>
                 </div>
-                @if ($user->age !== 999)
+                @if ($user->age !== 999 && $user->age !== 0)
                 <div>
                     <label>Age: </label>
                     <span>{{$user->age}}</span>
@@ -179,6 +181,13 @@
 </div>
 <div class="row gap_for"></div>
 @endforeach
+@else
+<div>
+    <h2 class="no_info">
+        The are no information about your request.
+    </h2>
+</div>
+@endif
 </div>
 </div>
 </div>

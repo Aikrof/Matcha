@@ -243,7 +243,7 @@ function sendTag(tag)
 function getSortPriority(){
 	$priority = {
 		age: ($('.sort_age').val() === 'false') ? false : true,
-		location: ($('.sort_location').val() === 'false') ? false : true,
+		distance: ($('.sort_location').val() === 'false') ? false : true,
 		rating: ($('.sort_rating').val() === 'false') ? false : true, 
 	}
 

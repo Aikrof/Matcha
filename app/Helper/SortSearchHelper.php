@@ -28,18 +28,28 @@ class SortSearchHelper
         if (!empty($sort['tags']))
             self::addInterestsMatch($query, $sort['tags']);
 
-        $query = $query->sortBy($sort['priority'])
-                ->groupBy($sort['priority'])
-                ->map(function($query){
-                    return (
-                        $query->sortByDesc('interests_matched')
-                        ->groupBy('matches')
-                    );
-                })->flatten(2);
-echo "<pre>";
-var_dump($query);
-exit;
-        return ($query);
+        return (
+        	$sort['sorted_by'] === 'ASC' ?
+        	self::sortAsc($query, $sort) :
+        	self::sortDesc($query, $sort)
+        );
+    }
+
+    public static function sortAsc(Collection $query, array $sort)
+    {
+    	return (
+    		$query->sortBy($sort['priority'])
+    			->sortByDesc('interests_matched')
+    	);
+
+    }
+
+    public static function sortDesc(Collection $query, array $sort)
+    {
+    	return (
+    		$query->sortByDesc($sort['priority'])
+    			->sortBy('interests_matched')
+    	);
     }
 
     /**

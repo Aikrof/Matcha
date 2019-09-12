@@ -902,6 +902,10 @@ h1 .subtitle {
 /*** /USER PAGE STYLESHEETS ***/
 
 /*** FOLLOW PAGE STYLESHEETS ***/
+.no_info{
+    font-weight: bold;
+    font-family: 'Pattaya', sans-serif;
+}
 .sf_cont{
     display: flex;
     justify-content: center;

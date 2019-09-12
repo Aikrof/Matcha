@@ -3,13 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
-
-use App\User;
-use App\Info;
-use App\Follow;
-use App\Interests;
 use App\Location;
-
 use App\Helper\RangeHelper;
 use App\Helper\FilterSearchHelper as Filter;
 use App\Helper\SortSearchHelper as Sort;
@@ -45,28 +39,27 @@ class FollowController extends Controller
     {
         $title = 'Matcha' . ' :: Followers';
 
-        $data = [];
+        $query = self::supplementUserInfo(
+                    self::getFollowQuery(
+                        'following_id',
+                        $request->user()->id,
+                        'follows.followers_id'
+                    ),
+                Location::find($request->user()->id),
+                $request->sort
+            );
 
         $query = Sort::sortData(
-                    Filter::filterData(
-                        self::supplementUserInfo(
-                            self::getFollowQuery(
-                                'following_id',
-                                $request->user()->id,
-                                'follows.followers_id'
-                            ),
-                            Location::find($request->user()->id)
-                        ),
-                        $request->filter
-                    ), $request->sort
-                );
+                Filter::filterData($query,$request->filter),
+                $request->sort
+            );
 
         $data = $query->paginate(5);
 
         return (view('follow', ['title' => $title, 'section' => 'followers','data' => $data, 'param' => $request->all(), 'paginate' => $data]));
     }
 
-    protected static function supplementUserInfo($query, $user_location)
+    protected static function supplementUserInfo($query, $user_location, $sort)
     {
         $range = new RangeHelper();
 
@@ -74,7 +67,10 @@ class FollowController extends Controller
             $value->icon = $value->icon === 'spy.png' ? '/img/icons/spy.png' : '/storage/' . $value->login . '/icon/' . $value->icon;
             $value->login = ucfirst(strtolower($value->login));
             $value->tags = empty($value->tags) ? null : explode(',', $value->tags);
-            $value->age = $value->age === 0 ? 999 : $value->age;
+
+            if (!isset($sort['sorted_by']) || $sort['sorted_by'] !== 'DESC')
+                $value->age = $value->age === 0 ? 999 : $value->age;
+            
             $value->rating = (string)$value->rating;
 
             $value->distance = (string)($range->getDistance(
@@ -83,8 +79,6 @@ class FollowController extends Controller
                 $user_location->latitude,
                 $user_location->longitude
             ) / 1000);
-
-            unset($value->followers_id);
         }
 
         return ($query);
