@@ -149,17 +149,29 @@
 
 })(jQuery);
 
-var locationAPI_KEY = [
-	'a97523dfa785d53e7c6bf1e50b1c2b5d',
-	'0bd339ee908bdf4f26e4276960e05822',
-	'b8e605eba06cbb901ec40222d952e5bd',
-	'1b99b07e9caf808ad0d5e9640fac9cd0',
-	'17e1d4695748c6cd585c533c792b6ac9',
-	'0c78ea4ff7d3ff899694cb53c9b3ad6c'
+var europeCountry= [
+	'Austria','Albania','Andorra','Belarus','Belgium',
+	'Bulgaria','Bosnia and Herzegovina','Vatican','Hungary',
+	'Germany','Guernsey','Gibraltar','Greece','Denmark',
+	'Jersey','Ireland','Iceland','Spain','Italy','Kosovo',
+	'Latvia','Lithuania','Liechtenstein','Luxembourg',
+	'Macedonia','Malta','Moldova','Monaco','Netherlands',
+	'Norway','Isle of Man','Holy See (Vatican City)','Poland',
+	'Portugal','Russia','Romania','San Marino','Serbia',
+	'Slovakia','Slovenia','United Kingdom','Ukraine',
+	'Faroe Islands','Finland','France','Croatia','Montenegro',
+	'Czech Republic','Switzerland','Sweden',
+	'Svalbard and Jan Mayen','Estonia'
 ];
 
 (function(){
-	data = getCountry(null);
+	for (let i in europeCountry){
+		$('#country_search').append('\
+			<option class="country_option">'
+			+ europeCountry[i] +
+			'</option>\
+		');
+	}
 }());
 
 $('#country_search').change(function(){
@@ -169,57 +181,20 @@ $('#country_search').change(function(){
 		getCity($val, null);
 });
 
-function getCountry($api_key){
-	var url = 'http://htmlweb.ru/geo/api.php?location=Европа&json&api_key=' + '0c78ea4ff7d3ff899694cb53c9b3ad6c';
-	
+function getCity($country){
+
+	var url = "http://api.geonames.org/searchJSON?q="+ $country +"&username=aikrof";
+	$('.city_option').remove()
 	$.getJSON(url, function(data, status){
-		console.log(data);
-    	// if (data)
-    	// 	addDataToSelect($('#country_search'), data, "country_option");
-	});
-}
-
-function getCity($country, $api_key){
-	id = "";
-
-	for (let elem of $('.country_option')){
-		if (elem.innerHTML === $country)
-		{
-			id = elem.getAttribute('id');
-			break;
-		}
-	}
-	if (id === "")
-		return;
-
-	// var url = 'http://htmlweb.ru/geo/api.php?country='+ id +'&json&api_key=' + $api_key;
-	
-	var url = 'http://htmlweb.ru/geo/api.php?country='+ id +'&id=200&sql&api_key=';
-
-	$.getJSON(url, function(data, status){
-		console.log(data);
-    	if (data)
+    	if (data.geonames)
     	{
-
+    		for (let i = 1; i < data.geonames.length; ++i){
+    			$('#city_search').append('\
+					<option class="city_option">'
+					+ data.geonames[i].toponymName +
+					'</option>\
+				');
+    		}
     	}
 	});
-}
-
-function addDataToSelect($parent, data, $class){
-	asd = "";
-	for (let i in data){
-		if (data[i].english !== undefined
-			&& data[i].english !== "")
-		{
-			asd += data[i].english + ',';
-			// $parent.append('\
-			//  	<option class='+ $class +'\
-			//  		id='+ data[i].id +' onclick="setCountry(this);">'
-			//  	+ data[i].english +
-			//  	'</option>\
-			// ');
-		}
-	}
-
-	console.log(asd);
 }
