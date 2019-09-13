@@ -40,6 +40,10 @@
                     <label class="name_SF">Rating:</label>
                        <input id="rating_ham" class="sort_rating f_imp_check" type="checkbox" name="toppings" value=false><label for="rating_ham" class="f_lab_check" data="0"><div class="sort_checker"></div></label>
                 </div>
+                <div class="row">
+                    <label class="name_SF">Same tags:</label>
+                       <input id="same_tags_ham" class="sort_same_tags f_imp_check" type="checkbox" name="toppings" value=false><label for="rating_ham" class="f_lab_check" data="0"><div class="sort_checker"></div></label>
+                </div>
                 <div class="row" style="display: flex;flex-direction: column;">
                     <label class="name_SF">Interests:</label>
                     <div class="col-md-10">

@@ -2,6 +2,8 @@
 
 namespace App\Helper;
 
+use Auth;
+use App\Interests;
 use Illuminate\Support\Collection;
 
 class SortSearchHelper
@@ -95,6 +97,11 @@ class SortSearchHelper
     */
     protected static function getPrioryty($params)
     {
+          if (!empty($params['priority']) &&
+            empty($params['interests']) &&
+            $params['priority'] === 'same_tags')
+            return ('distance');
+
         return (empty($params['priority'])) ? 'distance' : $params['priority'];
     }
 
@@ -106,6 +113,14 @@ class SortSearchHelper
     */
     protected static function getInterests($params)
     {
+        if (!empty($params['priority']) &&
+            empty($params['interests']) &&
+            $params['priority'] === 'same_tags')
+        {
+            if (!empty($interests = Interests::find(Auth::user()->id)))
+                return (explode(',', $interests->tags));
+        }
+
         if (empty($params['interests']))
             return (null);
         

@@ -125,7 +125,7 @@ function tagHelperFilter($value){
     $hash[0] = null;
 
     $tag = $hash[$hash.length - 1];
-    
+    console.log(1);
     if ($hash.length - 1 > 1)
     {
         if ($('.resultTagsFilter') !== undefined)
@@ -244,7 +244,8 @@ function getSortPriority(){
 	$priority = {
 		age: ($('.sort_age').val() === 'false') ? false : true,
 		distance: ($('.sort_location').val() === 'false') ? false : true,
-		rating: ($('.sort_rating').val() === 'false') ? false : true, 
+		rating: ($('.sort_rating').val() === 'false') ? false : true,
+		same_tags: ($('.sort_same_tags').val() === 'false') ? false : true,
 	}
 
 	for (let i in $priority){

@@ -149,6 +149,47 @@
 
 })(jQuery);
 
+
+
+(function(){
+
+	if ($(window).width() <= 1200)
+	{
+		$('.search_sf_container').removeClass('flx_search_cont');
+		$('.search_sort_cont').removeClass('col-md-6');
+		$('.seach_filter_cont').removeClass('col-md-6');
+		$('.search_sort_cont').addClass('col-md-12');
+		$('.seach_filter_cont').addClass('col-md-12');
+	}
+	else
+	{
+		$('.search_sf_container').addClass('flx_search_cont');
+		$('.search_sort_cont').removeClass('col-md-12');
+		$('.seach_filter_cont').removeClass('col-md-12');
+		$('.search_sort_cont').addClass('col-md-6');
+		$('.seach_filter_cont').addClass('col-md-6');
+	}
+
+	$(window).resize(function(){
+		if ($(window).width() <= 1200)
+		{
+			$('.search_sf_container').removeClass('flx_search_cont');
+			$('.search_sort_cont').removeClass('col-md-6');
+			$('.seach_filter_cont').removeClass('col-md-6');
+			$('.search_sort_cont').addClass('col-md-12');
+			$('.seach_filter_cont').addClass('col-md-12');
+		}
+		else
+		{
+			$('.search_sf_container').addClass('flx_search_cont');
+			$('.search_sort_cont').removeClass('col-md-12');
+			$('.seach_filter_cont').removeClass('col-md-12');
+			$('.search_sort_cont').addClass('col-md-6');
+			$('.seach_filter_cont').addClass('col-md-6');
+		}
+
+	});
+}());
 var europeCountry= [
 	'Austria','Albania','Andorra','Belarus','Belgium',
 	'Bulgaria','Bosnia and Herzegovina','Vatican','Hungary',
