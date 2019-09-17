@@ -29,6 +29,9 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
 	Route::post('/settings/changePassword', 'SettingsController@changePassword');
 	Route::post('/settings/changeEmail', 'SettingsController@changeEmail');
 
+	Route::post('/blockUser', 'BlockController@blockUser');
+	Route::post('/removeFromBlock', 'BlockController@removeUserFromBLock');
+
 	
 	Route::post('/saveUserIcon', 'ImageController@userIcon');
 	Route::post('/saveUserImg', 'ImageController@userImg');

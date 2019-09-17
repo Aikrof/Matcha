@@ -1,3 +1,34 @@
+$('.block_user_btn').click(function(){
+	let $user = {
+		login : $('#block_user_login').val(),
+	};
+
+	sender.form('/blockUser', {'user' : $user}, function(request){
+		console.log(request);
+		if (request.user){
+			location.href = location.href;
+		}
+		else
+			creatErrSwal(request.err);
+	});
+});
+$('.remove_block_user_btn, .block_user_div_btn').click(function(){
+	let $user = {
+		login: ($(this).attr('class') === 'btn remove_block_user_btn') ?
+			$('#remove_block_user_login').val() :
+			$(this).parent().children('.blocked_user_login').text()
+	}
+
+	sender.form('/removeFromBlock', {'user' : $user}, function(request){
+		if (request.user){
+			location.href = location.href;
+		}
+		else
+			creatErrSwal(request.err);
+	});
+});
+
+
 $('#set_change_login').click(function(){
 	let $html = '\
 <div class="form-group">\

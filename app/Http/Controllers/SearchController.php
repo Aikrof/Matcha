@@ -32,7 +32,7 @@ class SearchController extends Controller
             );
 
         $data = $query->paginate(config('paginate.rows'));
-
+        
 		return (view('index', ['section' => 'home','data' => $data, 'param' => $request->all(), 'paginate' => $data]));
     }
 

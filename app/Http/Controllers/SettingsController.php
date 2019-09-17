@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\User;
+use App\Info;
+use App\BlockedUser;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class SettingsController extends Controller
 {
@@ -14,7 +17,23 @@ class SettingsController extends Controller
     {
     	$title = 'Matcha :: Settings';
 
-    	return (view('settings')->with(['title' => $title]));
+        $blocked_users = BlockedUser::all();
+        
+        $data = collect();
+        foreach ($blocked_users as $value){
+
+            $user = User::find($value->blocked_user_id);
+            $info = Info::find($user->id);
+
+            $data = $data->push([
+                'icon' => $info->icon === 'spy.png' ? '/img/icons/spy.png' : '/storage/' . $user->login . '/icon/' . $info->icon,
+                'login' => ucfirst(strtolower($user->login)),
+            ]);
+        }
+        
+        $data = $data->paginate(10);
+
+        return (view('settings', ['title' => $title,'data' => $data, 'param' => $request->all(), 'paginate' => $data]));
     }
 
     public function changeLogin(Request $request)
