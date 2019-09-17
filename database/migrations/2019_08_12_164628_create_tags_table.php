@@ -16,7 +16,8 @@ class CreateTagsTable extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigInteger('count');
-            $table->string('tag', 100)->nullable()->default(0);
+            $table->string('tag', 100);
+            $table->string('users_id');
         });
     }
 

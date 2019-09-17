@@ -79,6 +79,12 @@ class UserProfileController extends ProfileController
 
         $search = Tags::where('tag', $request->tag)->first();
         $search->count--;
+        
+        $users_id = explode(',', $search->users_id);
+        $key = array_search($request->user()->id, $users_id);
+        unset($users_id[$key]);
+        $search->users_id = implode(',', $users_id);
+        
 
         if (!$search->count)
             $search->delete();
@@ -162,6 +168,7 @@ class UserProfileController extends ProfileController
         $interests->save();
 
         $tag->count++;
+        $tag->users_id .= $user_id . ',';
         $tag->save();
 
     }

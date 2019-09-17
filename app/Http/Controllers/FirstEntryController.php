@@ -155,6 +155,7 @@ class FirstEntryController extends Controller
             foreach ($info['interests'] as $value){
                 $tag = Tags::firstOrNew(['tag' => $value]);
                 $tag->count += 1;
+                $tag->users_id .= $request->user()['id']  . ',';
                 $tag->save();
             }
         }

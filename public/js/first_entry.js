@@ -444,8 +444,3 @@ function takeCoords(){
         $('input[name="city"]').val(location.city);
     });
 }
-
-// $(window).keydown(function(){
-//     console.log(123);
-// });
-

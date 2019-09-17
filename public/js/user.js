@@ -256,27 +256,27 @@ $('.user_img_area').on('click', '.snd_new_like', function(){
 /*
 * Show resize img
 */
-$('.user_img_area').on('click', '.pr_img_21', function(){
-    Swal.fire({
-        html: '\
-         <div class="full_scr_cont">\
-            <img class="full_scr_img" src='
-            +  $(this).attr('src') + 
-            '>\
-            <div class="full_src_lay">\
-                <div class="full_src_comments">\
-                </div>\
-                <div class="full_src_addComments">\
-                    <textarea rows="4" cols="80" class="form-control add_comment" name="comment" placeholder="Type your comment"></textarea>\
-                    <p class="btn add_comment_btn">Add</p>\
-                </div>\
-            </div>\
-        </div>',
-        customClass: 'swal-wide',
-        showCloseButton: true,
-        showConfirmButton: false,
-    })
-});
+// $('.user_img_area').on('click', '.pr_img_21', function(){
+//     Swal.fire({
+//         html: '\
+//          <div class="full_scr_cont">\
+//             <img class="full_scr_img" src='
+//             +  $(this).attr('src') + 
+//             '>\
+//             <div class="full_src_lay">\
+//                 <div class="full_src_comments">\
+//                 </div>\
+//                 <div class="full_src_addComments">\
+//                     <textarea rows="4" cols="80" class="form-control add_comment" name="comment" placeholder="Type your comment"></textarea>\
+//                     <p class="btn add_comment_btn">Add</p>\
+//                 </div>\
+//             </div>\
+//         </div>',
+//         customClass: 'swal-wide',
+//         showCloseButton: true,
+//         showConfirmButton: false,
+//     })
+// });
 
 /*
 * Hover effect
@@ -298,8 +298,11 @@ $('.user_img_area').on('mouseleave','.h-u-login, .h-u-img', function(){
 in 'comment' or 'like' area
 */
 $('.user_img_area').on('click','.h-u-login, .h-u-img', function(){
-    
-   location.href = '/' + $(this).parents('.h-u-cont').find('.h-u-login').text();
+    let $login = $(this).parents('.h-u-cont').find('.h-u-login').text();
+    let $char = $login.charAt(0).toUpperCase();
+    $login = $char + $login.substr(1, $login.length-1)
+
+   location.href = '/' + $login;
 });
 
 $('.remove_img').click(function(){

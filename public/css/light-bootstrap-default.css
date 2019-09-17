@@ -262,7 +262,6 @@ h1 .subtitle {
     width: 60%!important;
 }
 
-
 .helperRel{
     position: relative;
 }
@@ -279,7 +278,8 @@ h1 .subtitle {
     overflow: hidden;
     max-width: 280px;
 }
-.resultTags{
+.resultTags,
+.search_resultTags{
     height: 20px;
     cursor: pointer;
     padding: 0 18px;
@@ -506,14 +506,10 @@ h1 .subtitle {
     color: red;
 }
 
-.interest_cont{
-    background-color: #ffff;
-    border: 1px solid #E3E3E3;
-    border-radius: 4px;
-    height: 150px;
-    overflow-y: auto;
-}
-.interest_cont_filter{
+.interest_cont,
+.interest_cont_filter,
+.search_interest_cont_filter,
+.search_interest_cont_sort{
     background-color: #ffff;
     border: 1px solid #E3E3E3;
     border-radius: 4px;
@@ -533,7 +529,10 @@ h1 .subtitle {
     margin: 0;
     color: #9A9A9A;
 }
-.tag_se, .tag_fil{
+.tag_se,
+.tag_fil,
+.tag_sear_sort,
+.tag_sear_fil{
     display: inline-flex;
     font-size: 17px;
     margin: 0;
@@ -541,7 +540,10 @@ h1 .subtitle {
     font-family: 'Pattaya', sans-serif;
     color:  #330000;
 }
-.tag_se:hover, .tag_fil:hover{
+.tag_se:hover,
+.tag_fil:hover,
+.tag_sear_sort:hover,
+.tag_sear_fil:hover{
     cursor: pointer;
     font-weight: bold;
     text-decoration: line-through;
@@ -561,7 +563,9 @@ h1 .subtitle {
     border-bottom-right-radius: 4px;
     overflow-y: auto;
 }
-.helperProfIntFilter{
+.helperProfIntFilter,
+.search_helperProfIntFilter,
+.search_helperProfIntSort{
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -702,7 +706,6 @@ h1 .subtitle {
 }
 .comment_area_cont{
     display: flex;
-    /*align-items: center;*/
     margin-bottom: 1vw;
 }
 .comment_area_img{
@@ -754,6 +757,24 @@ h1 .subtitle {
 .swal-dell-wide{
     width: 50vw !important;
 }
+.swal-ress_suc{
+    color: #330000;
+    font-weight: bold;
+    font-family: 'Pattaya', sans-serif;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+.swal-change_title{
+    font-weight: bold;
+    font-family: 'Pattaya', sans-serif;
+}
+.swal-ress_err{
+    color:#f27474;
+    font-weight: bold;
+    font-family: 'Pattaya', sans-serif;
+    margin-bottom: 0;
+    margin-top: 0;
+}
 .full_scr_cont{
     width: 100%;
     height: 78vh!important;
@@ -793,6 +814,9 @@ h1 .subtitle {
 }
 .mr-20{
     margin-bottom: 20px;
+}
+.mr-rigtht-20{
+    margin-right: 20px;
 }
 
 .tab-group {
@@ -903,7 +927,11 @@ h1 .subtitle {
 }
 /*** /USER PAGE STYLESHEETS ***/
 
-/*** FOLLOW PAGE STYLESHEETS ***/
+/*** INDEX PAGE STYLESHEETS ***/
+.ind-contain{
+    display: flex;
+    width: 100%;
+}
 .no_info{
     font-weight: bold;
     font-family: 'Pattaya', sans-serif;
@@ -930,6 +958,7 @@ h1 .subtitle {
 }
 .img_for{
     border-radius: 50%;
+    cursor: pointer;
     width: 124px;
     height: 124px;
 }
@@ -991,7 +1020,7 @@ h1 .subtitle {
 .f_ok_btn:hover{
     border-color: #330000!important;
 }
-/*** /FOLLOW PAGE STYLESHEETS ***/
+/*** /INDEX PAGE STYLESHEETS ***/
 
 /*** RANGE ***/
 multi-range, .multi-range *{
@@ -1067,7 +1096,9 @@ multi-range, .multi-range *{
     height: 26px; width: auto; 
     font-size: 15px; line-height: 26px;
 }
-
+.lef-98::after{
+    left: 98%!important;
+}
 .slider {
   -webkit-appearance: none;
   width: 100%;
@@ -1100,6 +1131,9 @@ multi-range, .multi-range *{
 /*** /RANGE ***/
 
 /*** CHECKBOX ***/
+#search_by_same_tags{
+
+}
 input[type=checkbox] {
   opacity: 0;
   float:left;
@@ -1146,7 +1180,6 @@ input[type=checkbox] + label::before {
   transition: all .3s ease;
 }
 
-
 input[type=checkbox]:checked + .check_ok_content{
   -ms-transform: scale(1);
   -webkit-transform: scale(1);
@@ -1160,7 +1193,7 @@ input[type=checkbox]:checked + .check_ok_content{
     cursor: pointer;
 }
 
-input[type="radio"].toggle{
+input[type="radio"]{
     display: none;
     & + label{
         cursor: pointer;
@@ -1202,11 +1235,26 @@ input[type="radio"]:checked + label {
         &:after{
             left: 0;
         }
-    }
 }
 
+/*** SETTINGS PAGE ***/
 
+.set_change_name{
+    margin: 0;
+    font-family: 'Pattaya', sans-serif;
+    font-size: 23px;
+    color: #330000;
+}
+.settings_header{
+    display: flex;
+}
 
+@media(max-width: 574px){
+    .settings_header{
+        flex-direction: column;
+    }
+}
+/*** /SETTINGS PAGE ***/
 .text-muted {
     color: #9A9A9A;
 }

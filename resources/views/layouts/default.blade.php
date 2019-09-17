@@ -78,8 +78,8 @@
                         <p>Rating</p>
                     </a>
                 </li>
-                <li class="@yield('setting')">
-                    <a class="nav-link" href="/setting">
+                <li class="@yield('settings')">
+                    <a class="nav-link" href="/settings">
                         <i class="fa fa-cog"></i>
                         <p>Settings</p>
                     </a>
@@ -202,7 +202,7 @@
      <!--SEARCH -->
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="lib/scrollreveal/scrollreveal.min.js"></script>
-    <script src="js/search_property.js"></script>
+    <script src="js/search.js"></script>
     @if (Auth::user()->first_entry)
         <!-- FIRST ENTRY -->
         <script type="text/javascript" src="js/first_entry.js"></script>

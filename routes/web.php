@@ -15,12 +15,20 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
 
 	Route::get('/{login}', [
 		'uses' => 'Profile\ProfileController@getUserProfile'])->where(['login' => '^[A-Z].([a-z0-9-_])+$']);
+	
 	Route::get('/following', 'FollowController@getFollowing');
 	Route::get('/followers', 'FollowController@getFollowers');
-	Route::post('/followers', 'FollowController@getFollowers');
+
+	Route::get('/search', 'SearchController@search');
 	
 	Route::post('/firstEntry', 'FirstEntryController@firstEntry');
 	Route::post('/SuccessfulUserFirstEntry', 'FirstEntryController@SuccessfulUserFirstEntry');
+
+	Route::get('/settings', 'SettingsController@viewSettings');
+	Route::post('/settings/changeLogin', 'SettingsController@changeLogin');
+	Route::post('/settings/changePassword', 'SettingsController@changePassword');
+	Route::post('/settings/changeEmail', 'SettingsController@changeEmail');
+
 	
 	Route::post('/saveUserIcon', 'ImageController@userIcon');
 	Route::post('/saveUserImg', 'ImageController@userImg');

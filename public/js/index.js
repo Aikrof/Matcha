@@ -10,6 +10,33 @@ $(document).ready(function(){
 });
 
 /*
+* Hover effect on user login and icon
+*/
+$('.ind-contain').on('mouseenter','.img_for, .login_for', function(){
+
+    $(this).parents('.ind-contain').find('.login_for').css({"font-weight": "bold",
+    "color": "#E74C3C"});
+    $(this).parents('.ind-contain').find('.img_for').css({"border": "2px solid #E74C3C"});
+});
+$('.ind-contain').on('mouseleave','.img_for, .login_for', function(){
+    
+    $(this).parents('.ind-contain').find('.login_for').removeAttr('style');
+    $(this).parents('.ind-contain').find('.img_for').removeAttr('style');
+});
+
+/*
+* Redirect to another user page when click
+in user login or icon
+*/
+$('.ind-contain').on('click','.img_for, .login_for', function(){
+    let $login = $(this).parents('.ind-contain').find('.login_for').text();
+    let $char = $login.charAt(0).toUpperCase();
+    $login = $char + $login.substr(1, $login.length-1)
+
+   location.href = '/' + $login;
+});
+
+/*
 * Close Sort / Filter settings
 */
 $('.f_cancel_btn').click(function(){
@@ -42,7 +69,7 @@ $('.f_lab_check').click(function(){
 	}
 });
 
-$('.sort_by_cont > input[name="toggle"]').click(function(){
+$('.toggle').click(function(){
 	$('input[name="sorted_by"]').val($(this).val());
 });
 
@@ -71,18 +98,38 @@ $('.f_ok_btn').click(function(){
 
 	$local = location.href.split('/');
 	$local = '/' + $local[$local.length - 1];
-	$local = $local.split('?')[0];
+	$url = $local.split('?');
+	$local = $url[0];
 	$str = "?";
 
+	$sort_str = "";
 	for (let key in $sort){
 		if ($sort[key] !== null && $sort[key] !== false)
-			$str += 'sort['+ key + ']=' + $sort[key] + '&';
+			$sort_str += 'sort['+ key + ']=' + $sort[key] + '&';
 	}
 
+	$filter_str = "";
 	for (let key in $filter){
-		if ($filter[key])
-			$str += 'filter['+ key + ']=' + $filter[key] + '&';
+		if ($filter[key] !== null)
+			$filter_str += 'filter['+ key + ']=' + $filter[key] + '&';
 	}
+
+	if ($url[1] !== undefined && $filter_str === "")
+	{
+		$arr_url = decodeURI($url[1]).split('&');
+
+		$filter_str = "";
+		for (let i in $arr_url){
+			if ($arr_url[i].indexOf('sort') == -1 &&
+				$arr_url[i] !== "" &&
+				$arr_url[i].indexOf('page') == -1)
+			{
+				$filter_str += $arr_url[i] + '&';
+			}
+		}
+	}
+
+	$str += $sort_str + $filter_str;
 
 	if ($str !== "?")
 		location.href = $local + encodeURI($str);
@@ -98,25 +145,6 @@ $('.interest_cont, .interest_cont_filter').on('click', 'p.tag_se, p.tag_fil', fu
 	$(this).remove();
 });
 
-/*
-* Set distance and add + if distance if equal 100
-*/
-function setDistance(inp){
-	$parent = $(inp).parent();
-	$parent.attr('data-lbound', inp.value);
-
-	if (inp.value === '100' && $parent.hasClass('less_100'))
-	{
-		$parent.removeClass('less_100');
-		$parent.addClass('more_100');
-	}
-	else if (inp.value !== '100' && $parent.hasClass('more_100'))
-	{
-		$parent.removeClass('more_100');
-		$parent.addClass('less_100');
-	}
-}
-
 /** ADD TAG IN FILTER **/
 
 function tagHelperFilter($value){
@@ -125,7 +153,7 @@ function tagHelperFilter($value){
     $hash[0] = null;
 
     $tag = $hash[$hash.length - 1];
-    console.log(1);
+
     if ($hash.length - 1 > 1)
     {
         if ($('.resultTagsFilter') !== undefined)
@@ -193,34 +221,6 @@ function sendTagFilter(tag)
     }
 }
 /** /ADD TAG IN FILTER **/
-
-
-
-/*
-* Hide tag helper
-*/
-$(window).on('click', function(event){
-    let $helper = $('.helperProfInt');
-	let $helper1 = $('.helperProfIntFilter');
-    if ($helper !== undefined &&
-        $helper.attr('style') !== 'display: none;' &&
-        event.target !== $helper[0])
-        $helper.hide();
-    else if ($helper1 !== undefined &&
-        $helper1.attr('style') !== 'display: none;' &&
-        event.target !== $helper1[0])
-        $helper1.hide();
-});
-
-// /*
-// * Delete in the Distance input if this is not a number
-// */
-// $('.distance_inp').keyup(function(){
-//     $testText =  $(this).val();
-	
-// 	if($testText*1 + 0  !=  $(this).val())
-//   		$(this).val($testText.substring(0, $testText.length - 1));
-// });
 
 /*
 * Add new tag in to tags select
