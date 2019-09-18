@@ -10,7 +10,7 @@
 @section('content')
 
 <div class="container-fluid">
-
+@if (!empty($data))
 <div class="row mr-20">
     <div class="col-md-6 resizable-choice">
         <ul class="tab-group">
@@ -133,6 +133,17 @@
 <!-- /User Info Area -->
 </div>
 </div>
+@else
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="no_info c-e74">
+                Sorry, you was blocked by this user.
+            </h1>
+        </div>
+    </div>
+</div>
+@endif
 
 @endsection
 <!-- /CONTENT -->

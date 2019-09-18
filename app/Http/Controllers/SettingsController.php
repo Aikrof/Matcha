@@ -17,21 +17,18 @@ class SettingsController extends Controller
     {
     	$title = 'Matcha :: Settings';
 
-        $blocked_users = BlockedUser::all();
+        $data = BlockedUser::where('blocked_users.user_id', $request->user()->id)
+            ->select('blocked_users.blocked_user_id', 'users.login', 'infos.icon')
+            ->join('users', 'users.id', '=', 'blocked_users.blocked_user_id')
+            ->join('infos', 'infos.id', '=', 'blocked_user_id')
+            ->get();
         
-        $data = collect();
-        foreach ($blocked_users as $value){
-
-            $user = User::find($value->blocked_user_id);
-            $info = Info::find($user->id);
-
-            $data = $data->push([
-                'icon' => $info->icon === 'spy.png' ? '/img/icons/spy.png' : '/storage/' . $user->login . '/icon/' . $info->icon,
-                'login' => ucfirst(strtolower($user->login)),
-            ]);
+        foreach ($data as $value){
+            $value->icon = $value->icon === 'spy.png' ? '/img/icons/spy.png' : '/storage/' . $value->login . '/icon/' . $value->icon;
+            $value->login = ucfirst(strtolower($value->login));
         }
         
-        $data = $data->paginate(10);
+        $data = $data->paginate(15);
 
         return (view('settings', ['title' => $title,'data' => $data, 'param' => $request->all(), 'paginate' => $data]));
     }

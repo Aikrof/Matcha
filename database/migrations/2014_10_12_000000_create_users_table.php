@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('first_entry')->default(true);
-            $table->boolean('online')->default(false);
+            $table->timestamp('online')->nullable();
             $table->double('rating')->nullable()->default(0);
             $table->string('backgroundImg', 100)->default('sidebar-5.jpg');
             $table->string('backgroundColor', 100)->default('blue');

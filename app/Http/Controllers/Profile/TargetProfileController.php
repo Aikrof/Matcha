@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Profile;
 
-use DB;
+use App\User;
 use App\Follow;
+use App\BlockedUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Profile\ProfileController;
 
@@ -27,12 +28,18 @@ class TargetProfileController extends ProfileController
     */
     public function getProfile(Request $request, String $login)
     {
-    	$select = DB::select('SELECT `id` FROM `users` WHERE `login` = "' . $login . '"');
+    	$select = User::select('id')->where('login', $login)->first();
 
     	if (empty($select))
     		abort(404);
+        else if (!empty(
+            BlockedUser::where('user_id', $select->id)->where('blocked_user_id', $request->user()->id)->first()
+        ))
+        {
+            return(view('target_profile')->with('data', null));
+        }
 
-    	$id = $select[0]->id;
+    	$id = $select->id;
 
         Follow::firstOrCreate([
             'followers_id' => $request->user()->id,
