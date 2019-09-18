@@ -162,10 +162,12 @@
                     <span>{{$user->country . ', ' . $user->city}}</span>
                 </div>
                 @endif
+                @if (!empty($user->distance))
                 <div>
                     <label>Distance</label>
                     <span>{{number_format((float)$user->distance, 2, '.', '')}}</span><span> Km.</span>
                 </div>
+                @endif
             </div>
             </div>
             <div>

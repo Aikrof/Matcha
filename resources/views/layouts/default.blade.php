@@ -72,10 +72,10 @@
                         <p>Followers</p>
                     </a>
                 </li>
-                <li class="@yield('rating')">
-                    <a class="nav-link" href="/rating">
+                <li class="@yield('chat')">
+                    <a class="nav-link" href="/chat">
                         <i class="fa fa-users"></i>
-                        <p>Rating</p>
+                        <p>Chat</p>
                     </a>
                 </li>
                 <li class="@yield('settings')">

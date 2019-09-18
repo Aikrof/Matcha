@@ -15,6 +15,8 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
 
 	Route::get('/{login}', [
 		'uses' => 'Profile\ProfileController@getUserProfile'])->where(['login' => '^[A-Z].([a-z0-9-_])+$']);
+
+	Route::get('/chat', 'ChatController@chat');
 	
 	Route::get('/following', 'FollowController@getFollowing');
 	Route::get('/followers', 'FollowController@getFollowers');

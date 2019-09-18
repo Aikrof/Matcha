@@ -53,15 +53,18 @@ class SearchController extends Controller
             }
             
             $value->rating = (string)$value->rating;
-
-            $value->distance = (string)($range->getDistance(
-                $value->latitude,
-                $value->longitude,
-                $user_location->latitude,
-                $user_location->longitude
-            ) / 1000);
+            
+            if (!empty($user_location))
+            {
+                $value->distance = (string)($range->getDistance(
+                    $value->latitude,
+                    $value->longitude,
+                    $user_location->latitude,
+                    $user_location->longitude
+                ) / 1000);
+            }
         }
-
+        
         return ($query);
     }
 
