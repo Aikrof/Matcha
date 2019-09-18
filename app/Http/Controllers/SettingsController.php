@@ -40,9 +40,21 @@ class SettingsController extends Controller
     {
     	$this->validateData($request);
 
+        $old_login = Auth::user()->login;
+
     	$user = User::find(Auth::user()->id);
     	$user->login = $request->new_login['login'];
     	$user->save();
+
+        $old_name = storage_path('app/public/' . $old_login . '/');
+
+        if (file_exists(storage_path('app/public/' . $old_login)))
+        {
+            rename(
+                $old_name,
+                storage_path('app/public/' . $request->new_login['login'])
+            );
+        }
 
     	return (json_encode(['changed' => true]));
     }

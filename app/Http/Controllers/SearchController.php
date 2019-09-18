@@ -8,6 +8,7 @@ use App\Info;
 use App\Location;
 use App\Tags;
 use App\Interests;
+use App\BlockedUser;
 use App\Helper\RangeHelper;
 use App\Helper\FilterSearchHelper as Filter;
 use App\Helper\SortSearchHelper as Sort;
@@ -128,7 +129,7 @@ class SearchController extends Controller
     			->join('locations', 'locations.id', '=', 'users.id')
                 ->join('infos', 'infos.id', '=',  'users.id')
                 ->join('interests', 'interests.id', '=',  'users.id')
-    			->select('infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access')
+    			->select('users.id', 'infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access')
     			->get()
     	);
     }
@@ -172,7 +173,7 @@ class SearchController extends Controller
             ->join('infos', 'infos.id', '=',  'locations.id')
             ->join('interests', 'interests.id', '=',  'locations.id')
             ->join('users', 'users.id', '=', 'locations.id')
-    		->select('infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access', 'infos.gender', 'infos.orientation')
+    		->select('users.id', 'infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access', 'infos.gender', 'infos.orientation')
     		->get();
 
     	return (self::parseQuery($query, $search));
@@ -186,7 +187,7 @@ class SearchController extends Controller
     				->join('locations', 'locations.id', '=', 'infos.id')
                 	->join('users', 'users.id', '=',  'infos.id')
                 	->join('interests', 'interests.id', '=',  'infos.id')
-    				->select('infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access', 'infos.gender', 'infos.orientation')
+    				->select('users.id','infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access', 'infos.gender', 'infos.orientation')
     				->get();
 
     	return (self::parseQuery($query, $search));
@@ -200,7 +201,7 @@ class SearchController extends Controller
     			->join('locations', 'locations.id', '=', 'users.id')
                 ->join('infos', 'infos.id', '=',  'users.id')
                 ->join('interests', 'interests.id', '=',  'users.id')
-    			->select('infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access', 'infos.gender', 'infos.orientation')
+    			->select('users.id', 'infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access', 'infos.gender', 'infos.orientation')
     			->get()
     	);
     }
@@ -225,6 +226,10 @@ class SearchController extends Controller
     		return (false);
     	else if ($search['orientation'] !== 'Homosexual' && $value->gender === $search['gender'])
     		return (false);
+        else if (!empty(BlockedUser::where('user_id', Auth::user()->id)->where('blocked_user_id', $value->id)->first()))
+        {
+            return (false);
+        }
 
     	return (true);
     }

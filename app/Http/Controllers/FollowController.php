@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Location;
+use App\BlockedUser;
 use App\Helper\FilterSearchHelper as Filter;
 use App\Helper\SortSearchHelper as Sort;
 use Illuminate\Http\Request;
@@ -61,15 +62,25 @@ class FollowController extends SearchController
 
     protected static function getFollowQuery(String $search_id, $user_id, $take_id)
     {
-        return (
-            DB::table('follows')
-                ->where($search_id, $user_id)
-                ->select($take_id, 'infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access')
-                ->join('locations', 'locations.id', '=', $take_id)
-                ->join('infos', 'infos.id', '=', $take_id)
-                ->join('users', 'users.id', '=', $take_id)
-                ->join('interests', 'interests.id', '=', $take_id)
-                ->get()
-        );
+        $query = DB::table('follows')
+                    ->where($search_id, $user_id)
+                    ->select($take_id, 'users.id', 'infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access')
+                    ->join('locations', 'locations.id', '=', $take_id)
+                    ->join('infos', 'infos.id', '=', $take_id)
+                    ->join('users', 'users.id', '=', $take_id)
+                    ->join('interests', 'interests.id', '=', $take_id)
+                    ->get();
+
+
+        foreach ($query as $key => $value){
+            if (!empty(
+                BlockedUser::where('user_id', $user_id)->where('blocked_user_id', $value->id)->first()
+            ))
+            {
+                unset($query[$key]);
+            }
+        }
+
+        return ($query);
     }
 }

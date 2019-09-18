@@ -47,14 +47,14 @@
 	<div class="row">
 		<div class="col-md-6">
 			<label>Add to Block list:</label>
-			<div class="col-md-12" style="display: flex;">
+			<div class="col-md-12 add_remove_block_cont">
 				<input class="form-control" id="block_user_login" type="text" name="block" autocomplete="off">
 				<p class="btn block_user_btn">Add</p>
 			</div>
 		</div>
 		<div class="col-md-6">
 			<label>Remove from Block list:</label>
-			<div class="col-md-12" style="display: flex;">
+			<div class="col-md-12 add_remove_block_cont">
 				<input class="form-control" id="remove_block_user_login" type="text" name="block" autocomplete="off">
 				<p class="btn remove_block_user_btn">Remove</p>
 			</div>
@@ -69,7 +69,7 @@
 				<div class="blocked_user_div">
 					<img class="blocked_user_img" src="{{$user['icon']}}">
 					<p class="blocked_user_login">{{$user['login']}}</p>
-					<p class="btn block_user_div_btn">Remove from block list</p>
+					<img class="block_user_div_btn" src="/img/icons/close-button.png" title="Remove from Blocked users?">
 				</div>
 				@endforeach
 				@endif

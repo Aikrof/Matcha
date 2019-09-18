@@ -29,6 +29,28 @@ $('.remove_block_user_btn, .block_user_div_btn').click(function(){
 });
 
 
+/*
+* Hover effect on user login and icon
+*/
+$('.blocked_user_div').on('mouseenter','.blocked_user_img, .blocked_user_login', function(){
+
+    $(this).parents('.blocked_user_div').find('.blocked_user_login').css({"font-weight": "bold",
+    "color": "#E74C3C"});
+    $(this).parents('.blocked_user_div').find('.blocked_user_img').css({"border": "2px solid #E74C3C"});
+});
+$('.blocked_user_div').on('mouseleave','.blocked_user_img, .blocked_user_login', function(){
+    
+    $(this).parents('.blocked_user_div').find('.blocked_user_login').removeAttr('style');
+    $(this).parents('.blocked_user_div').find('.blocked_user_img').removeAttr('style');
+});
+$('.blocked_user_img, .blocked_user_login').click(function(){
+	$login = $(this).parent().children('.blocked_user_login').text();
+	let $char = $login.charAt(0).toUpperCase();
+    $login = $char + $login.substr(1, $login.length-1)
+
+   location.href = '/' + $login;
+});
+
 $('#set_change_login').click(function(){
 	let $html = '\
 <div class="form-group">\
