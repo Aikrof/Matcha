@@ -1303,6 +1303,28 @@ input[type="radio"]:checked + label {
 }
 /*** /SETTINGS PAGE ***/
 
+/*** NOTIFICATION ***/
+.notification_p{
+    cursor: default;
+    font-size:14px;
+    margin:0;
+    padding: 4px  16px 4px 0!important;
+}
+.n_count{
+    min-width: 16px;
+    height: 20px;
+    border-radius: 30%;
+    background-color: #FB404B;
+    text-align: center;
+    color: #FFFFFF;
+    margin-left: 4px!important;
+    margin-right: 4px!important;
+}
+.notification_login{
+    font-family: "Pattaya", sans-serif;
+}
+/*** /NOTIFICATION ***/
+
 /*** CHAT ***/
 .notify_p{
   margin: 0;  

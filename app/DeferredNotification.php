@@ -28,6 +28,6 @@ class DeferredNotification extends Model
      * @var array
      */
     protected $fillable = [
-        'to_id', 'from_id', 'msg'
+        'to_id', 'from_id', 'type'
     ];
 }

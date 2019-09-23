@@ -61,6 +61,7 @@ $('.list-group-item').click(function(){
             if (!checkText($msg))
                 return;
 
+            addNewMessage($msg);
             prepearMessage($msg);
 
             return (false);
@@ -75,6 +76,7 @@ $('.list-group-item').click(function(){
         if (!checkText($msg))
             return;
 
+        addNewMessage($msg);
         prepearMessage($msg);
     });
 
@@ -86,6 +88,20 @@ $('.list-group-item').click(function(){
         }
 
         return (false);
+    }
+
+    function addNewMessage($msg){
+
+        let date = new Date();
+
+        $('.message-scroll').append(
+            printMessage({
+                'user' : 'auth',
+                'msg' : $msg,
+                'time' : date.getHours() + ":" + date.getMinutes(),
+            })
+        );
+        $('.message-scroll')[0].scrollTop += 42;
     }
 
     function prepearMessage($msg){

@@ -82,8 +82,8 @@ entry = {
 <form class="row col-md-8 pr-1" onsubmit="return false">\
     <input type="interests" class="form-control"\
         name="interests" autocomplete="off"\
-        oninput="tagHelper(this.value)"\
-        id="interestsHelp" value="#">\
+        oninput="firstEntryTagHelper(this.value)"\
+        id="f_interestsHelp" value="#">\
 </form>\
 </div>\
 <div class="row pr-1 h-20 fle_xeble_col helperRel">\
@@ -223,11 +223,11 @@ Swal.mixin({
     {
         html: entry.interests(),
         preConfirm: function(value){
-            if ($('#interestsHelp').val() !== '#')
+            if ($('#f_interestsHelp').val() !== '#')
             {
-                $('#interestsHelp').val(
-                    $('#interestsHelp').val().split('#').join(''));
-                addTag($('#interestsHelp').val());
+                $('#f_interestsHelp').val(
+                    $('#f_interestsHelp').val().split('#').join(''));
+                addTag($('#f_interestsHelp').val());
             }
             firstEntrySender.sendInterests($('a[name="tag"]'));
         }
@@ -310,7 +310,7 @@ firstEntrySender = {
 
 
 /*** Tag helper section ***/
-function tagHelper($value){
+function firstEntryTagHelper($value){
     $hide = 0;
     $hash = $value.split('#');
     $hash[0] = null;
@@ -325,7 +325,7 @@ function tagHelper($value){
         addTag($hash[1]);
         $('.helperAbs').hide();
         $hide = 1;
-        $('#interestsHelp').val('#');
+        $('#f_interestsHelp').val('#');
     }
     
     if ($tag && $tag.length > 2)
@@ -358,7 +358,7 @@ function changeTag(tag){
 
     $('.resultTags').remove();
     $('.helperAbs').hide();
-    $('#interestsHelp').val('#');
+    $('#f_interestsHelp').val('#');
 }
 
 

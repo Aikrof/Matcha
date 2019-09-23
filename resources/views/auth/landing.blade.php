@@ -98,8 +98,8 @@
 				<a href="#" class="info fa fa-info-circle"><span>About</span></a>
 				<div class="inner">
 					<div class="content">
-						<h3>Vestibulum hendrerit tortor id gravida</h3>
-						<p>In tempor porttitor nisl non elementum. Nulla ipsum ipsum, feugiat vitae vehicula vitae, imperdiet sed risus. Fusce sed dictum neque, id auctor felis. Praesent luctus sagittis viverra. Nulla erat nibh, fermentum quis enim ac, ultrices euismod augue. Proin ligula nibh, pretium at enim eget, tempor feugiat nulla.</p>
+						<h3>Matcha WEB PROJECT</h3>
+						<p>App allowing two potential lovers to meet, from the registration to the final encounter.</p>
 					</div>
 					<div class="copyright">
 						<h3>Follow me</h3>
@@ -109,7 +109,7 @@
 							<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
 							<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
 						</ul>
-						&copy; Untitled. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com/">Unsplash</a>.
+						&copy; UNIT 2019.
 					</div>
 				</div>
 			</footer>

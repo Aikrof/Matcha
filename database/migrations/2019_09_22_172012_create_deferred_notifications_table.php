@@ -17,7 +17,7 @@ class CreateDeferredNotificationsTable extends Migration
             $table->engine = 'InnoDB';
             $table->bigInteger('to_id');
             $table->bigInteger('from_id');
-            $table->text('msg');
+            $table->String('type');
         });
     }
 

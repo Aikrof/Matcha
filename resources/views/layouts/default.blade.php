@@ -129,15 +129,10 @@
                         <li class="dropdown nav-item">
                             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                                 <i class="fa fa-envelope"></i>
-                                <span class="notification">5</span>
+                                <span class="notification notification_count" style="display: none"></span>
                                 <span class="d-lg-none">Notification</span>
                             </a>
-                            <ul class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Notification 1</a>
-                                <a class="dropdown-item" href="#">Notification 2</a>
-                                <a class="dropdown-item" href="#">Notification 3</a>
-                                <a class="dropdown-item" href="#">Notification 4</a>
-                                <a class="dropdown-item" href="#">Another notification</a>
+                            <ul class="dropdown-menu notification_ul">
                             </ul>
                         </li>
                         <li class="nav-item search_btn">
