@@ -75,7 +75,7 @@ class SearchController extends Controller
     	if ($info->orientation === 'Homosexual')
     		$gender = $info->gender;
     	else if ($info->orientation === 'Bisexual')
-    		$gender = "%";
+    		$gender = $info->gender;
     	else
     		$gender = $info->gender === 'Male' ? 'Female' : 'Male';
 
@@ -185,13 +185,33 @@ class SearchController extends Controller
     protected static function defaultSearch(array $search)
     {
     	$query = DB::table('infos')
-    				->where('infos.orientation', $search['orientation'])
-    				->where('infos.gender', 'like', $search['gender'])
-    				->join('locations', 'locations.id', '=', 'infos.id')
-                	->join('users', 'users.id', '=',  'infos.id')
-                	->join('interests', 'interests.id', '=',  'infos.id')
-    				->select('users.id','infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access', 'infos.gender', 'infos.orientation')
-    				->get();
+            ->where(function($query) use ($search){
+                if ($search['orientation'] === 'Homosexual')
+                {
+                    $query->where('infos.id', '!=', Auth::user()->id)
+                        ->where('infos.orientation', 'Homosexual')
+                        ->where('infos.gender', $search['gender'])
+                        ->orWhere('infos.orientation', 'Bisexual')
+                        ->where('infos.gender', $search['gender']);
+                }
+                else if ($search['orientation'] === 'Heterosexual')
+                {
+                    $query->where('infos.orientation', 'Heterosexual')
+                        ->where('infos.gender', $search['gender']);
+                }
+                else
+                {
+                    $query->where('infos.orientation', 'Homosexual')
+                        ->where('infos.gender', $search['gender'])
+                        ->orWhere('infos.orientation', 'Bisexual')
+                        ->where('infos.id', '!=', Auth::user()->id);
+                }
+            })
+    		->join('locations', 'locations.id', '=', 'infos.id')
+            ->join('users', 'users.id', '=',  'infos.id')
+            ->join('interests', 'interests.id', '=',  'infos.id')
+    		->select('users.id','infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access', 'infos.gender', 'infos.orientation')
+    		->get();
 
     	return (self::parseQuery($query, $search));
     }
@@ -221,18 +241,8 @@ class SearchController extends Controller
 
     private static function filterQuery($value, array $search)
     {
-    	if (strtolower($value->login) === strtolower(Auth::user()->login))
-    		return (false);
-    	else if ($value->orientation !== $search['orientation'])
-    		return (false);
-    	else if ($search['orientation'] === 'Homosexual' && $value->gender !== $search['gender'])
-    		return (false);
-    	else if ($search['orientation'] !== 'Homosexual' && $value->gender === $search['gender'])
-    		return (false);
-        else if (!empty(BlockedUser::where('user_id', Auth::user()->id)->where('blocked_user_id', $value->id)->first()))
-        {
+        if (!empty(BlockedUser::where('user_id', Auth::user()->id)->where('blocked_user_id', $value->id)->first()))
             return (false);
-        }
 
     	return (true);
     }

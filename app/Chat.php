@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Likes extends Model
+class Chat extends Model
 {
-    /**
+   /**
      * The name of the "created at" column.
      *
      * @var string
@@ -20,7 +20,7 @@ class Likes extends Model
      */
     const UPDATED_AT = null;
 
-    protected $primaryKey = 'img';
+    protected $primaryKey = 'room_id';
 
     /**
      * The attributes that are mass assignable.
@@ -28,6 +28,6 @@ class Likes extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'img',
+        'room_id', 'user_id', 'msg', 'time_sending'
     ];
 }

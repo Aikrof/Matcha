@@ -41,7 +41,7 @@ class WebSocketServer extends Command
      */
     public function handle()
     {
-        $port = 9547;
+        $port = 6322;
 
         $server = IoServer::factory(
             new HttpServer(

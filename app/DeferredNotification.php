@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Likes extends Model
+class DeferredNotification extends Model
 {
     /**
      * The name of the "created at" column.
@@ -20,7 +20,7 @@ class Likes extends Model
      */
     const UPDATED_AT = null;
 
-    protected $primaryKey = 'img';
+    protected $primaryKey = 'to_id';
 
     /**
      * The attributes that are mass assignable.
@@ -28,6 +28,6 @@ class Likes extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'img',
+        'to_id', 'from_id', 'msg'
     ];
 }
