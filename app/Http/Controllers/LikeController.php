@@ -60,9 +60,18 @@ class LikeController extends Controller
                
             Likes::where('img', $request->like['img'])->where('id', $request->user()->id)->delete();
 
-            $this->removeCommect($request->user()->id, $target_id);
+            $remove = $this->removeConnect($request->user()->id, $target_id);
 
-            exit(json_encode(['remove' => ['login' => $user->login]]));
+            exit(json_encode(['remove' => [
+                'login' => $user->login,
+
+                'notification' => [
+                    'type' => 'newNotification',
+                    'to_id' => $target_id,
+                    'action' => (!$remove) ? 'dislike' : 'remove_connect',
+                ],
+
+            ]]));
         }
         else
         {
@@ -73,11 +82,18 @@ class LikeController extends Controller
                 'img' => $request->like['img']
             ]);
 
-            $this->addConnect($request->user()->id, $target_id);
+            $add = $this->addConnect($request->user()->id, $target_id);
 
             exit(json_encode(['add' => [
                 'icon' => $info->icon === 'spy.png' ? '/img/icons/spy.png' : '/storage/' . $user->login . '/icon/' . $info->icon,
-                'login' => $user->login
+                'login' => $user->login,
+
+                'notification' => [
+                    'type' => 'newNotification',
+                    'to_id' => $target_id,
+                    'action' => (!$add) ? 'like' : 'connect',
+                ],
+
             ]]));
         }
     }
@@ -89,12 +105,19 @@ class LikeController extends Controller
         return (!empty($likes));
     }
 
+    /**
+    * Adds connection if auth user and target user liked imgs each other. Creates private room.
+    *
+    * @param  int $auth_id
+    * @var int $target_id
+    * @return boolean
+    */
     private function addConnect(int $auth_id, int $target_id)
     {
         $img = Img::find($auth_id);
         
         if (empty($img))
-            return;
+            return (false);
 
         $img = explode(',', $img->img);
         
@@ -109,7 +132,7 @@ class LikeController extends Controller
         }
 
         if (!$check)
-            return;
+            return (false);
 
         $room = Room::where(function($query) use ($auth_id, $target_id){
 
@@ -124,16 +147,29 @@ class LikeController extends Controller
         })->first();
         
         if (!empty($room))
-            return;
+            return (false);
 
         Room::create([
             'id_1' => $auth_id,
             'id_2' => $target_id
         ]);
+
+        return (true);
     }
 
-    private function removeCommect(int $auth_id, int $target_id)
+    /**
+    * Removes connection from auth user and target user if there are no more pictures liked from auth user.
+    *
+    * @param  int $auth_id
+    * @var int $target_id
+    * @return boolean
+    */
+    private function removeConnect(int $auth_id, int $target_id)
     {
+        //if true ---> return
+        if (self::checkAnotherLikeImg(Img::find($target_id), $auth_id))
+            return (false);
+
         $room = Room::where(function($query) use ($auth_id, $target_id){
 
             $query->where('id_1', $auth_id)
@@ -147,11 +183,44 @@ class LikeController extends Controller
         })->first();
 
         if (empty($room))
-            return;
+            return (false);
 
+        $room->delete();
         $chat = Chat::find($room->room_id);
         
+        if (empty($chat))
+            return (true);
+        
         $chat->delete();
-        $room->delete();
+
+        return (true);
+    }
+
+    /**
+    * Check if user like another img of target user
+    *
+    * @param  App\Img  $img
+    * @var int $user_id
+    * @return boolean
+    */
+    private static function checkAnotherLikeImg(Img $img, int $user_id)
+    {
+        if (empty($img))
+            return (false);
+
+        $img = explode(',', $img->img);
+        
+        $check = 0;
+        foreach ($img as $value){
+            if (!empty(Likes::where('img', $value)
+                        ->where('id', $user_id)
+                        ->first())){
+                $check = 1;
+
+                break;
+            }
+        }
+
+        return ($check);
     }
 }

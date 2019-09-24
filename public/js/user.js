@@ -213,6 +213,8 @@ $('.user_img_area').on('click', '.snd_new_comment', function(){
             if ($('.empty_comment') !== undefined)
                 $('.empty_comment').remove();
             addCommentsToArea($targetArrea, request.data.icon, request.data.login, request.data.comment);
+
+            sendMsg(request.data.notification);
         }
     });
 
@@ -235,6 +237,8 @@ $('.user_img_area').on('click', '.snd_new_like', function(){
         if (request.add)
         {
             addNewLikeToArea($targetArrea, request.add.icon, request.add.login);
+            
+            sendMsg(request.add.notification);
         }
         else if (request.remove)
         {
@@ -249,34 +253,11 @@ $('.user_img_area').on('click', '.snd_new_like', function(){
                 }
             }
             $('#remove_like').parents('.likes_area').remove();
+            
+            sendMsg(request.remove.notification);
         }
     });
 });
-
-/*
-* Show resize img
-*/
-// $('.user_img_area').on('click', '.pr_img_21', function(){
-//     Swal.fire({
-//         html: '\
-//          <div class="full_scr_cont">\
-//             <img class="full_scr_img" src='
-//             +  $(this).attr('src') + 
-//             '>\
-//             <div class="full_src_lay">\
-//                 <div class="full_src_comments">\
-//                 </div>\
-//                 <div class="full_src_addComments">\
-//                     <textarea rows="4" cols="80" class="form-control add_comment" name="comment" placeholder="Type your comment"></textarea>\
-//                     <p class="btn add_comment_btn">Add</p>\
-//                 </div>\
-//             </div>\
-//         </div>',
-//         customClass: 'swal-wide',
-//         showCloseButton: true,
-//         showConfirmButton: false,
-//     })
-// });
 
 /*
 * Hover effect
@@ -484,7 +465,7 @@ function addNewImageContent(request)
                 </div>\
                 <div class="row like_box">\
                     <div class="col-md-12 users_like"></div>\
-                <div class="col-md-12">\
+                <div class="col-md-12 add_new_like">\
                     <label>Add your like</label>\
                     <p class="btn snd_new_like form-control">Add like</p>\
                 </div>\

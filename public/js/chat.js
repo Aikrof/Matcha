@@ -9,21 +9,25 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 $('.list-group-item').click(function(){
-    $('#friend-list').find('.active').removeClass('active');
-    $(this).addClass('active');
+    let $elem = $(this);
 
-    $(this).children('.miss_message').text(" ");
-    $(this).children('.miss_message').hide();
+    let $active = $('#friend-list').find('.active');
+    $active.removeClass('active');
+    
+    $('.chat_header > b').attr('data', "");
+
+    $elem.children('.miss_message').text("");
+    $elem.children('.miss_message').hide();
 
     if (!$('.chat_cont').attr('style'))
     {
         $('.chat_cont').hide();
-        $(this).removeClass('active');
-        return;
+        if ($active[0] === $elem[0])
+            return;
     }
 
-    let $login = $(this).find('.username').text();
-    let $room = $(this).attr('data');
+    let $login = $elem.find('.username').text();
+    let $room = $elem.attr('data');
 
     let $data = {
         'login' : $login,
@@ -41,6 +45,8 @@ $('.list-group-item').click(function(){
             }
         }
         
+        $elem.addClass('active');
+
         $('.chat_header > b').text($login);
         $('.chat_header > b').attr('data', $room);
         $('.chat_cont').show();
@@ -141,9 +147,9 @@ function getNewMessage(data){
     }
 
     function roomActive(){
-        let user_room = $('.chat_header > b').attr('data');
+        let $user_room = $('.chat_header > b').attr('data');
 
-        return (user_room === data.room ? true : false);
+        return ($user_room === data.room ? true : false);
     }
 }
 
@@ -151,9 +157,9 @@ function getNewMessage(data){
 function printMessage(data){
     return ('\
     <div class="row '+getClassCont(data.user)+'">\
-        <div class="card message-card m-1">\
+        <div class="card message-card m-1" style="word-break: break-word;">\
             <div class="card-body p-2 msg_'+ data.user +'">\
-                <span class="">'+ data.msg +'</span>\
+                <span class="body_message">'+ data.msg +'</span>\
                 <span class="float-right mx-1">\
                     <small>'+ data.time +'</small>\
                 </span>\

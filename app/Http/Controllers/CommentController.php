@@ -32,8 +32,13 @@ class CommentController extends Controller
     	exit(json_encode(['data' => [
     		'icon' => $user->icon === 'spy.png' ? '/img/icons/spy.png' : '/storage/' . $request->user()->login . '/icon/' . $user->icon,
     		'login' => ucfirst(strtolower($request->user()->login)),
-    		'comment' => $request->comment['comment']]
-    	]));
+    		'comment' => $request->comment['comment'],
+            'notification' => [
+                'type' => 'newNotification',
+                'to_id' => $target_id,
+                'action' => 'comment',
+            ],
+        ]]));
     }
 
     public function getComments(Request $request)

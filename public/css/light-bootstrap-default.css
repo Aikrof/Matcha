@@ -665,9 +665,9 @@ h1 .subtitle {
     cursor: pointer;
     background-image: url('/img/icons/close-button.png');
     background-repeat: no-repeat;
-    background-size: 1.4vw;
-    width: 1.4vw;
-    height: 1.4vw;
+    background-size: 27px;
+    width: 27px;
+    height: 27px;
 }
 .comment_box{
     margin-left: 1rem;
@@ -679,12 +679,16 @@ h1 .subtitle {
 }
 .like_box{
     margin-left: .4vw;
-    height: 90%;
+    height: 95%;
 }
 .users_like{
     height: 80%;
     overflow-y: auto;
 }
+.add_new_like{
+    /*height: 20%;*/
+}
+
 .add_new_comment{
     height: 30%;
 }
@@ -710,8 +714,8 @@ h1 .subtitle {
 }
 .comment_area_img{
     cursor: pointer;
-    width: 10.2%;
-    height: 10.2%;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     background-color: #ffffff;
 }
@@ -719,7 +723,7 @@ h1 .subtitle {
     display: flex;
     cursor: pointer;
     margin: 0 0 0 10px;
-    font-size: 1.5vw;
+    font-size: 27px;
     font-family: 'Pattaya', sans-serif;
     color:  #330000;
 }
@@ -734,7 +738,7 @@ h1 .subtitle {
 }
 .comment_area_comment > p{
     margin: 0;
-    font-size: 1.2vw;
+    font-size: 21px;
 }
 .ecl{
     width: 100%;
@@ -856,17 +860,21 @@ h1 .subtitle {
 }
 .likes_area_img{
     cursor: pointer;
-    width: 18%;
-    height: 18%;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     background-color: #ffffff;
 }
 .likes_area_login{
     cursor: pointer;
     margin: 0 0 0 10px;
-    font-size: 1.5vw;
+    font-size: 27px;
     font-family: 'Pattaya', sans-serif;
     color:  #330000;
+}
+.snd_new_like{
+    padding: 0;
+    margin: 0;
 }
 .dell_cont{
     display: flex;
@@ -882,17 +890,6 @@ h1 .subtitle {
 .dell_img:hover{
     border: 3px solid #9A9A9A;
     border-radius: 4px;
-}
-@media (max-width: 450px){
-    .user_location_cont{
-        display: flex;
-        flex-direction: column;
-    }
-    .remove_birthday,
-    .user_location_add,
-    .user_location_remove{
-        width: 100%;
-    }
 }
 
 @media (max-width: 1200px){
@@ -923,6 +920,83 @@ h1 .subtitle {
     }
     .f_pSF{
         text-align: center;
+    }
+    .comment_area_img,
+    .likes_area_img{
+        width: 66px;
+        height: 66px;
+    }
+    .comment_area_login,
+    .likes_area_login{
+        font-size: 22px;
+    }
+    .comment_area_comment > p{
+        font-size: 17px;
+    }
+    .comment_close{
+        background-size: 23px;
+        width: 23px;
+        height: 23px;
+    }
+   /* .like_box{
+        height: 80%;
+    }*/
+}
+@media (max-width: 450px){
+    .user_location_cont{
+        display: flex;
+        flex-direction: column;
+    }
+    .remove_birthday,
+    .user_location_add,
+    .user_location_remove{
+        width: 100%;
+    }
+    .comment_area_img,
+    .likes_area_img{
+        width: 36px;
+        height: 36px;
+    }
+    .comment_area_login,
+    .likes_area_login{
+        font-size: 17px;
+    }
+    .comment_area_comment > p{
+        font-size: 14px;
+    }
+    .add_new_comment > label{
+        font-size: 8px!important;
+    }
+    .new_comment{
+        font-size: 14px;
+    }
+    .snd_new_comment{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 35px;
+        font-size: 14px;
+        margin: 0 0 0 4px;
+        padding: 0!important;
+        text-align: center;
+    }
+    .comment_close{
+        background-size: 16px;
+        width: 16px;
+        height: 16px;
+    }
+    .snd_new_like{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px!important;
+        padding: 0!important;
+    }
+    .like_box{
+        height: 65%;
+    }
+    .add_new_like > label{
+        font-size: 8px!important;
     }
 }
 /*** /USER PAGE STYLESHEETS ***/
@@ -1311,14 +1385,14 @@ input[type="radio"]:checked + label {
     padding: 4px  16px 4px 0!important;
 }
 .n_count{
-    min-width: 16px;
-    height: 20px;
-    border-radius: 30%;
+    display: inline-block;
+    width: 20px;
+    border-radius: 50%;
     background-color: #FB404B;
     text-align: center;
     color: #FFFFFF;
     margin-left: 4px!important;
-    margin-right: 4px!important;
+    margin-right: 8px!important;
 }
 .notification_login{
     font-family: "Pattaya", sans-serif;
@@ -1384,6 +1458,13 @@ input[type="radio"]:checked + label {
 .msg_auth{
     border-radius: 8px!important;
     background-color: #7cc0ff;
+}
+
+.see_when_click{
+    max-width: 75%!important;
+}
+.body_message{
+    font-family: "Arial";
 }
 
 @media (max-width: 575px) {

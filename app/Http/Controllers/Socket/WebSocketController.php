@@ -141,6 +141,10 @@ class WebSocketController implements MessageComponentInterface
                 $this->sendNotification($from);
                 break;
             }
+            case 'newNotification': {
+                $this->addNewNotification($from, $msg);
+                break;
+            }
         }
     }
 
@@ -162,6 +166,7 @@ class WebSocketController implements MessageComponentInterface
         $this->clients[$recipient_key]->send(
             json_encode([
                 'type' => 'message',
+                'action' => 'message',
                 'room' => $recipient_data['room'],
                 'from' => $recipient_data['from'],
                 'msg' => $recipient_data['msg'],
@@ -190,7 +195,7 @@ class WebSocketController implements MessageComponentInterface
             ]);
         }
 
-        Notifi::where('to_id', $id)->delete();
+        // Notifi::where('to_id', $id)->delete();
 
         $from->send(
             json_encode([
@@ -198,5 +203,28 @@ class WebSocketController implements MessageComponentInterface
                 'notifi_data' => $data,
             ])
         );
+    }
+
+    protected function addNewNotification(ConnectionInterface $from, $msg)
+    {
+        $from_id = $from->session->get(Auth::getName());
+
+        if (!$recipient_key = array_search($msg->to_id, $this->online)){
+
+            Notifi::create([
+                'to_id' => $msg->to_id,
+                'from_id' => $from_id,
+                'type' => $msg->action,
+            ]);
+        }
+        else{
+            $this->clients[$recipient_key]->send(
+                json_encode([
+                    'type' => 'alert',
+                    'from' => ucfirst(strtolower(User::find($from_id)->login)),
+                    'action' => $msg->action,
+                ])
+            );
+        }
     }
 }

@@ -5,10 +5,6 @@ socket.onopen = function(open){
 	socket.send(JSON.stringify({'type' : 'notification'}))
 };
 
-$('.s').click(function(){
-	socket.send($('#f').val());
-});
-
 function sendMsg($data){
 	socket.send(JSON.stringify($data));
 }
@@ -25,18 +21,13 @@ socket.onmessage = function(event){
 			if ($path[$path.length - 1] === 'chat')
 				getNewMessage(data);
 			else{
-				const Notifi = Swal.mixin({
-  					toast: true,
-  					position: 'bottom-end',
-  					showConfirmButton: false,
-				})
-				Notifi.fire({
-  					type: 'success',
-  					html: '<p class="notify_p">You have new message from</p>\
-  					<p class="notify_p notify_username c-e74">' + data.from + '</p>',
-				});
+				pushNewAlert(data);
 			}
 
+			break;
+		}
+		case 'alert': {
+			pushNewAlert(data);
 			break;
 		}
 		case 'notification': {
@@ -50,10 +41,50 @@ socket.onmessage = function(event){
 				
 				switch (n.type){
 					case 'message': {
-
 						result = {
 							'type' : 'message',
 							'str' : "You have new Message from: ",
+							'login' : n.login,
+						}
+
+						break;
+					}
+					case 'like':{
+						result = {
+							'type' : 'like',
+							'str' : "Your image was liked by: ",
+							'login' : n.login,
+						}
+						break;
+					}
+					case 'dislike':{
+						result = {
+							'type' : 'dislike',
+							'str' : "Your image was disliked by: ",
+							'login' : n.login,
+						}
+						break;
+					}
+					case 'comment': {
+						result = {
+							'type' : 'comment',
+							'str' : "Your img was comented by: ",
+							'login' : n.login,
+						}
+						break;
+					}
+					case 'connect': {
+						result = {
+							'type' : 'connect',
+							'str' : "You have new connect, now you can chat with: ",
+							'login' : n.login,
+						}
+						break;
+					}
+					case 'remove_connect': {
+						result = {
+							'type' : 'connect',
+							'str' : "You have lost connect, with: ",
 							'login' : n.login,
 						}
 						break;
@@ -64,8 +95,9 @@ socket.onmessage = function(event){
 
 				if ($repetitive.hasClass('notification_login') &&
 					$repetitive.parent().attr('data-type') === result.type){
-					
+
 					let $small = $repetitive.parent().find('.small_n_count');
+					
 					if ($small.text() === ""){
 						$small.text("2");
 					}
@@ -79,7 +111,7 @@ socket.onmessage = function(event){
 						+ result.str +
 						'<strong class="notification_login c-e74">'
 						+ result.login +
-						'</strong></p>'
+						'</strong><input type="hidden" value="'+ result.str +'"></p>'
 					);
 				}
 			}
@@ -90,6 +122,73 @@ socket.onmessage = function(event){
 	}
 }
 
+function pushNewAlert(data){
+	const Notifi = Swal.mixin({
+  		toast: true,
+  		position: 'bottom-end',
+  		showConfirmButton: false,
+	})
+	Notifi.fire({
+  		type: 'success',
+  		html: getHtmlNotifiView(),
+	});
+
+	function getHtmlNotifiView(){
+		switch (data.action){
+			case 'message': {
+				return ('\
+					<p class="notify_p">\
+						You have new message from:</p>\
+  						<p class="notify_p notify_username c-e74">'
+  						+ data.from +
+  					'</p>');
+			}
+			case 'like': {
+				return ('\
+					<p class="notify_p">\
+						Your image was liked by:</p>\
+  						<p class="notify_p notify_username c-e74">'
+  						+ data.from +
+  					'</p>');
+			}
+			case 'dislike': {
+				return ('\
+					<p class="notify_p">\
+						Your image was disliked by:</p>\
+  						<p class="notify_p notify_username c-e74">'
+  						+ data.from +
+  					'</p>');
+			}
+			case 'comment': {
+				return ('\
+					<p class="notify_p">\
+						Your img was comented by:</p>\
+  						<p class="notify_p notify_username c-e74">'
+  						+ data.from +
+  					'</p>');
+			}
+			case 'connect': {
+				return ('\
+					<p class="notify_p">\
+						You have new connect, now you can chat with:</p>\
+  						<p class="notify_p notify_username c-e74">'
+  						+ data.from +
+  					'</p>');
+			}
+			case 'remove_connect':{
+				return ('\
+					<p class="notify_p" style="display:inline-flex">\
+						You have lost connect, with:</p>\
+  						<p style="display:inline-flex" class="notify_p notify_username c-e74">'
+  						+ data.from +
+  					'</p>\
+  					<p class="notify_p" style="display:inline-flex">\
+  						now chat is unavailable.\
+  					</p>');
+			}
+		}
+	}
+}
 
 $('.logout').click(function(){
 	sender.form('/logout');
