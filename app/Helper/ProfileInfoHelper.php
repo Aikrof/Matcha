@@ -19,7 +19,7 @@ class ProfileInfoHelper
     public static function validateRequest($data, $user_id)
     {
         $key = key($data);
-
+ 
         $validation = Validator::make($data, [
             'first_name' => ['string', 'max:20', 'alpha'],
             'last_name' => ['string', 'max:20', 'alpha'],

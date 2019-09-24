@@ -51,7 +51,7 @@ $('.list-group-item').click(function(){
         $('.chat_header > b').attr('data', $room);
         $('.chat_cont').show();
 
-        $('.message-scroll')[0].scrollTop = 999999;
+        $('.message-scroll')[0].scrollTop = $('.message-scroll')[0].scrollHeight;
     });
 });
 
@@ -60,7 +60,7 @@ $('.list-group-item').click(function(){
         if (key.which == 13 && key.shiftKey)
             return;
         else if (key.which == 13){
-            let $msg = $(this).val();
+            let $msg = $(this).val().replace(/<\/?[^>]+(>|$)/g, "");
 
             $(this).val('');
 
@@ -75,7 +75,7 @@ $('.list-group-item').click(function(){
     });
 
     $('.send_text_msg').click(function(){
-        let $msg = $('.chat_text').val();
+        let $msg = $('.chat_text').val().replace(/<\/?[^>]+(>|$)/g, "");
 
         $('.chat_text').val('');
 

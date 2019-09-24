@@ -106,6 +106,10 @@
                 <a class="navbar-brand">
                     <span class="no-icon sign_login pattaya_style c-e74">{{ucfirst(strtolower(Auth::user()->login))}}</span>
                 </a>
+                <span class="default_user_rating c-e74">
+                    <span>Rating:</span>
+                    {{number_format((float)Auth::user()->rating, 2, '.', '')}}
+                </span>
                 <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-bar burger-lines"></span>
                     <span class="navbar-toggler-bar burger-lines"></span>

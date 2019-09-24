@@ -1,10 +1,9 @@
 $('.block_user_btn').click(function(){
 	let $user = {
-		login : $('#block_user_login').val(),
+		login : $('#block_user_login').val().replace(/<\/?[^>]+(>|$)/g, ""),
 	};
 
 	sender.form('/blockUser', {'user' : $user}, function(request){
-		console.log(request);
 		if (request.user){
 			location.href = location.href;
 		}
@@ -15,8 +14,8 @@ $('.block_user_btn').click(function(){
 $('.remove_block_user_btn, .block_user_div_btn').click(function(){
 	let $user = {
 		login: ($(this).attr('class') === 'btn remove_block_user_btn') ?
-			$('#remove_block_user_login').val() :
-			$(this).parent().children('.blocked_user_login').text()
+			$('#remove_block_user_login').val().replace(/<\/?[^>]+(>|$)/g, "") :
+			$(this).parent().children('.blocked_user_login').text().replace(/<\/?[^>]+(>|$)/g, "")
 	}
 
 	sender.form('/removeFromBlock', {'user' : $user}, function(request){

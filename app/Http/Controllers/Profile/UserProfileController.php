@@ -42,6 +42,9 @@ class UserProfileController extends ProfileController
 
         $data[$key] = ProfileHelper::validateRequest($request->all(), $user_id);
 
+        if (empty($data[$key]))
+            exit;
+
         if ($key === 'birthday')
             exit($this->updateBirthday($data, $user_id));
         else if ($key === 'location')

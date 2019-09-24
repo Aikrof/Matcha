@@ -159,7 +159,7 @@ function tagHelperFilter($value){
         if ($('.resultTagsFilter') !== undefined)
             $('.sendTagFilter').remove();
 
-        sendTagFilter($hash[1]);
+        sendTagFilter($hash[1].replace(/<\/?[^>]+(>|$)/g, ""));
         $('.helperAbs').hide();
         $hide = 1;
         $('#interestsHelpFilter').val('#');
@@ -172,7 +172,7 @@ function tagHelperFilter($value){
     	if ($hash[1])
     	{
     		$hide = 1;
-       		changeTagFilter($hash[1]);
+       		changeTagFilter($hash[1].replace(/<\/?[^>]+(>|$)/g, ""));
     	}
 	});
 

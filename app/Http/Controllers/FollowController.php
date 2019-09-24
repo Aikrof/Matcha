@@ -64,7 +64,7 @@ class FollowController extends SearchController
     {
         $query = DB::table('follows')
                     ->where($search_id, $user_id)
-                    ->select($take_id, 'users.id', 'infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access')
+                    ->select($take_id, 'users.id', 'infos.icon', 'users.login', 'infos.age', 'users.rating', 'users.online','infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access')
                     ->join('locations', 'locations.id', '=', $take_id)
                     ->join('infos', 'infos.id', '=', $take_id)
                     ->join('users', 'users.id', '=', $take_id)

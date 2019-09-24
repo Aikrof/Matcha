@@ -138,10 +138,13 @@
         <div class="form-group" style="width: 100%;">
             <div class="ind-contain">
             <img class="img_for" src="{{$user->icon}}">
-            <div style="display: flex;width: calc(90% - 124px);flex-direction: column;margin-left: 10px;">
+            <div style="display: flex;width: calc(100% - 124px);flex-direction: column;margin-left: 10px;">
                 <div style="display: flex;flex-direction: column;">
                     <p class="login_for">{{$user->login}}</p>
                     <p class="first_last_for">({{$user->first_name . ' ' . $user->last_name}})</p>
+                </div>
+                <div>
+                    <label style="color: #330000;">{{$user->online}}</label>
                 </div>
                 @if ($user->age !== 999 && $user->age !== 0)
                 <div>
@@ -149,12 +152,14 @@
                     <span>{{$user->age}}</span>
                 </div>
                 @endif
-                <label>Rating:</label>
-                <div class="progress" style="height: 3.5vh;background-color: #e74c3c;">
+                <div style="display: flex;width: 100%;">
+                <label style="margin: 0 4px 0 0;display: inline-flex;justify-content: center;align-items: center;">Rating: </label>
+                <div class="progress" style="height: 22px;background-color: #e74c3c; width: 100%;position: relative;">
                     <div class="progress-bar bg-success" role="progressbar" aria-valuenow="70"
-                    aria-valuemin="0" aria-valuemax="100" style="width:{{$user->rating . '%'}};height: 3.5vh;">
+                    aria-valuemin="0" aria-valuemax="100" style="width:{{$user->rating . '%'}};height: 22px;">
                     </div>
-                    <p style="color: #ffffff;">{{number_format((float)$user->rating, 2, '.', '')}}</p>
+                    <p style="color: #ffffff;position: absolute;top: 0;left: 10px;">{{number_format((float)$user->rating, 2, '.', '')}}</p>
+                </div>
                 </div>
                 @if (!empty($user->country) && !empty($user->city))
                 <div>

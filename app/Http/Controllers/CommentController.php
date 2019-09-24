@@ -29,16 +29,22 @@ class CommentController extends Controller
 
     	$user = Info::find($request->user()->id);
 
-    	exit(json_encode(['data' => [
-    		'icon' => $user->icon === 'spy.png' ? '/img/icons/spy.png' : '/storage/' . $request->user()->login . '/icon/' . $user->icon,
-    		'login' => ucfirst(strtolower($request->user()->login)),
-    		'comment' => $request->comment['comment'],
-            'notification' => [
+        //user data
+        $data['data'] = [
+            'icon' => $user->icon === 'spy.png' ? '/img/icons/spy.png' : '/storage/' . $request->user()->login . '/icon/' . $user->icon,
+            'login' => ucfirst(strtolower($request->user()->login)),
+            'comment' => $request->comment['comment']
+        ];
+
+        //add notification if user does not commented himself
+        if ($target_id != $request->user()->id)
+            $data['notification'] = [
                 'type' => 'newNotification',
                 'to_id' => $target_id,
                 'action' => 'comment',
-            ],
-        ]]));
+            ];
+
+    	exit(json_encode($data));
     }
 
     public function getComments(Request $request)

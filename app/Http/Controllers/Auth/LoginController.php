@@ -32,16 +32,6 @@ class LoginController extends Controller
     protected $redirectTo = '/';
 
     /**
-     * Get the login username to be used by the controller.
-     *
-     * @return string
-     */
-    public function username()
-    {
-        return 'login';
-    }
-
-    /**
      * Create a new controller instance.
      *
      * @return void
@@ -51,6 +41,26 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
+    {
+        abort(404);
+    }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return 'login';
+    }
+    
      /**
      * Handle a login request to the application.
      *

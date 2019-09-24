@@ -12,6 +12,7 @@ use App\BlockedUser;
 use App\Helper\RangeHelper;
 use App\Helper\FilterSearchHelper as Filter;
 use App\Helper\SortSearchHelper as Sort;
+use App\Helper\ParseOnlineHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -53,6 +54,8 @@ class SearchController extends Controller
             }
             
             $value->rating = (string)$value->rating;
+
+            $value->online = ParseOnlineHelper::getUserOnline($value->online);
             
             if (!empty($user_location))
             {
@@ -132,7 +135,7 @@ class SearchController extends Controller
     			->join('locations', 'locations.id', '=', 'users.id')
                 ->join('infos', 'infos.id', '=',  'users.id')
                 ->join('interests', 'interests.id', '=',  'users.id')
-    			->select('users.id', 'infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access')
+    			->select('users.id', 'users.online','infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access')
     			->get()
     	);
     }
@@ -151,6 +154,9 @@ class SearchController extends Controller
     		$users_id = array_filter(explode(',', $table_tags->users_id));
     		$tmp_collect = collect();
     		foreach ($users_id as $id){
+                if ($id == Auth::user()->id)
+                    continue;
+                
     			$query = self::getUserById($id);
 
     			$query = self::parseQuery($query, $search);
@@ -173,10 +179,11 @@ class SearchController extends Controller
 
     	$query = DB::table('locations')
     		->where('locations.' . $search_key, $search_val)
+            ->where('users.id', '!=', Auth::user()->id)
             ->join('infos', 'infos.id', '=',  'locations.id')
             ->join('interests', 'interests.id', '=',  'locations.id')
             ->join('users', 'users.id', '=', 'locations.id')
-    		->select('users.id', 'infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access', 'infos.gender', 'infos.orientation')
+    		->select('users.id', 'users.online','infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access', 'infos.gender', 'infos.orientation')
     		->get();
 
     	return (self::parseQuery($query, $search));
@@ -210,7 +217,7 @@ class SearchController extends Controller
     		->join('locations', 'locations.id', '=', 'infos.id')
             ->join('users', 'users.id', '=',  'infos.id')
             ->join('interests', 'interests.id', '=',  'infos.id')
-    		->select('users.id','infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access', 'infos.gender', 'infos.orientation')
+    		->select('users.id', 'users.online','infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access', 'infos.gender', 'infos.orientation')
     		->get();
 
     	return (self::parseQuery($query, $search));
@@ -224,7 +231,7 @@ class SearchController extends Controller
     			->join('locations', 'locations.id', '=', 'users.id')
                 ->join('infos', 'infos.id', '=',  'users.id')
                 ->join('interests', 'interests.id', '=',  'users.id')
-    			->select('users.id', 'infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access', 'infos.gender', 'infos.orientation')
+    			->select('users.id', 'users.online','infos.icon', 'users.login', 'infos.age', 'users.rating', 'infos.first_name', 'infos.last_name', 'infos.about', 'interests.tags', 'locations.latitude', 'locations.longitude', 'locations.country', 'locations.city', 'locations.user_access', 'infos.gender', 'infos.orientation')
     			->get()
     	);
     }

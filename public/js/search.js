@@ -357,7 +357,7 @@ function search_TagHelperSort($value){
         if ($('.search_resultTags') !== undefined)
             $('.search_resultTags').remove();
 
-        search_sendTag($hash[1], $('.search_interest_cont_sort'), 'tag_sear_sort');
+        search_sendTag($hash[1].replace(/<\/?[^>]+(>|$)/g, ""), $('.search_interest_cont_sort'), 'tag_sear_sort');
         $('.helperAbs').hide();
         $hide = 1;
         $('#search_interestsHelpSort').val('#');
@@ -367,10 +367,10 @@ function search_TagHelperSort($value){
     	$hash = $('#search_interestsHelpSort').val().split('#');
     	$hash[0] = null;
     	
-    	if ($hash[1])
+    	if ($hash[1].replace(/<\/?[^>]+(>|$)/g, ""))
     	{
     		$hide = 1;
-       		search_changeTagSort($hash[1]);
+       		search_changeTagSort($hash[1].replace(/<\/?[^>]+(>|$)/g, ""));
     	}
 	});
 
@@ -413,7 +413,7 @@ function search_tagHelperFilter($value){
         if ($('.search_resultTags') !== undefined)
             $('.search_resultTags').remove();
 
-        search_sendTag($hash[1], $('.search_interest_cont_filter'), 'tag_sear_fil');
+        search_sendTag($hash[1].replace(/<\/?[^>]+(>|$)/g, ""), $('.search_interest_cont_filter'), 'tag_sear_fil');
         $('.helperAbs').hide();
         $hide = 1;
         $('#search_interestsHelpFilter').val('#');
@@ -423,10 +423,10 @@ function search_tagHelperFilter($value){
     	$hash = $('#search_interestsHelpFilter').val().split('#');
     	$hash[0] = null;
     	
-    	if ($hash[1])
+    	if ($hash[1].replace(/<\/?[^>]+(>|$)/g, ""))
     	{
     		$hide = 1;
-       		search_changeTagFilter($hash[1]);
+       		search_changeTagFilter($hash[1].replace(/<\/?[^>]+(>|$)/g, ""));
     	}
 	});
 
@@ -505,7 +505,7 @@ function checkSearchProperty(){
 	return (($input_val.indexOf('#') == -1) ? 'login' : 'tags');
 }
 function getSearchProperty(){
-	$input_val = $('#search_input').val();
+	$input_val = $('#search_input').val().replace(/<\/?[^>]+(>|$)/g, "");
 
 	if ($input_val.indexOf('#') != -1)
 	{

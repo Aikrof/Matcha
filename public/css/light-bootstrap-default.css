@@ -180,13 +180,20 @@ h1 .subtitle {
 }
 
 .sign_login{
-    font-family: 'Bellefair', serif;
-    font-weight: bold;
-    font-size: 23px;
-    color: #d80247;
+    cursor: default;
 }
 
-
+.default_user_rating{
+    display: inline-flex;
+    cursor: default;
+    margin-left: 15px;
+    font-size: 22px;
+    font-family: 'Pattaya', sans-serif;
+}
+.default_user_rating > span {
+    margin-right: 5px;
+    color: #330000;
+}
 
 
 
@@ -665,9 +672,9 @@ h1 .subtitle {
     cursor: pointer;
     background-image: url('/img/icons/close-button.png');
     background-repeat: no-repeat;
-    background-size: 27px;
-    width: 27px;
-    height: 27px;
+    background-size: 22px;
+    width: 22px;
+    height: 22px;
 }
 .comment_box{
     margin-left: 1rem;
@@ -714,8 +721,8 @@ h1 .subtitle {
 }
 .comment_area_img{
     cursor: pointer;
-    width: 90px;
-    height: 90px;
+    width: 74px;
+    height: 74px;
     border-radius: 50%;
     background-color: #ffffff;
 }
@@ -723,7 +730,7 @@ h1 .subtitle {
     display: flex;
     cursor: pointer;
     margin: 0 0 0 10px;
-    font-size: 27px;
+    font-size: 24px;
     font-family: 'Pattaya', sans-serif;
     color:  #330000;
 }
@@ -860,15 +867,15 @@ h1 .subtitle {
 }
 .likes_area_img{
     cursor: pointer;
-    width: 90px;
-    height: 90px;
+    width: 74px;
+    height: 74px;
     border-radius: 50%;
     background-color: #ffffff;
 }
 .likes_area_login{
     cursor: pointer;
     margin: 0 0 0 10px;
-    font-size: 27px;
+    font-size: 24px;
     font-family: 'Pattaya', sans-serif;
     color:  #330000;
 }
@@ -923,8 +930,8 @@ h1 .subtitle {
     }
     .comment_area_img,
     .likes_area_img{
-        width: 66px;
-        height: 66px;
+        width: 54px;
+        height: 54px;
     }
     .comment_area_login,
     .likes_area_login{
@@ -934,9 +941,9 @@ h1 .subtitle {
         font-size: 17px;
     }
     .comment_close{
-        background-size: 23px;
-        width: 23px;
-        height: 23px;
+        background-size: 16px;
+        width: 16px;
+        height: 16px;
     }
    /* .like_box{
         height: 80%;
@@ -981,9 +988,9 @@ h1 .subtitle {
         text-align: center;
     }
     .comment_close{
-        background-size: 16px;
-        width: 16px;
-        height: 16px;
+        background-size: 12px;
+        width: 12px;
+        height: 12px;
     }
     .snd_new_like{
         display: flex;

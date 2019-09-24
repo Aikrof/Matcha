@@ -160,7 +160,7 @@ function tagHelper($value){
         if ($('.resultTags') !== undefined)
             $('.resultTags').remove();
 
-        sendTag($hash[1]);
+        sendTag($hash[1].replace(/<\/?[^>]+(>|$)/g, ""));
         $('.helperAbs').hide();
         $hide = 1;
         $('#interestsHelp').val('#');
@@ -173,7 +173,7 @@ function tagHelper($value){
         if ($hash[1])
         {
             $hide = 1;
-            changeTag($hash[1]);
+            changeTag($hash[1].replace(/<\/?[^>]+(>|$)/g, ""));
         }
     });
 

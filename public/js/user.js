@@ -37,7 +37,7 @@ $('.edit_inp').change(function(){
 	let $val;
 	let $name = $(this).attr('name');
 	
-	if ($name=== 'day' ||
+	if ($name === 'day' ||
 		$name === 'year')
 	{
 		birthday[$name] = $(this).val();
@@ -47,7 +47,7 @@ $('.edit_inp').change(function(){
 		$name = 'birthday';
 	}
 	else
-		$val = $(this).val();
+		$val = $(this).val().replace(/<\/?[^>]+(>|$)/g, "");
 
 	editProfile($name, $val);
 });
@@ -144,6 +144,8 @@ $('.user_img_area').on('click', '.see_img_likes', function(){
             for (let user of request.data){
                 addNewLikeToArea($targetArrea, user.icon, user.login);
             }
+
+            $('.users_like')[0].scrollTop = $('.users_like')[0].scrollHeight;
         }
         else if (request.empty)
         {
@@ -174,6 +176,8 @@ $('.user_img_area').on('click', '.hov_comments_fa', function(e){
             for (let $data of request.data){
                 addCommentsToArea($targetArrea, $data.icon, $data.login, $data.comment);
             }
+
+            $('.users_coments')[0].scrollTop = $('.users_coments')[0].scrollHeight;
         }
         else if (request.empty)
         {
@@ -203,19 +207,18 @@ $('.user_img_area').on('click', '.snd_new_comment', function(){
 
     $obj = {
         'img' : getImg($(this).parents('.img_cont').children('.pr_img_21').attr('src')),
-        'comment' : $text.val(),
+        'comment' : $text.val().replace(/<\/?[^>]+(>|$)/g, ""),
         'id' : $(this).parents('.img_cont').children('.pr_img_21').attr('data')
     };
    
     sender.form('/user/addComment', {'comment' : $obj}, function(request){
-        if (request.data)
-        {
+        if (request.data){
             if ($('.empty_comment') !== undefined)
                 $('.empty_comment').remove();
             addCommentsToArea($targetArrea, request.data.icon, request.data.login, request.data.comment);
-
-            sendMsg(request.data.notification);
         }
+        if (request.notification)
+                sendMsg(request.notification);
     });
 
     $text.val("");
@@ -237,7 +240,7 @@ $('.user_img_area').on('click', '.snd_new_like', function(){
         if (request.add)
         {
             addNewLikeToArea($targetArrea, request.add.icon, request.add.login);
-            
+
             sendMsg(request.add.notification);
         }
         else if (request.remove)
@@ -418,6 +421,8 @@ function addCommentsToArea($parent, $icon, $login, $comment){
                 </div>\
             </div>\
         </div>');
+    
+    $('.users_coments')[0].scrollTop = $('.users_coments')[0].scrollHeight;
 }
 
 function addNewLikeToArea($parent, $icon, $login){
@@ -430,6 +435,8 @@ function addNewLikeToArea($parent, $icon, $login){
             <p class="likes_area_login h-u-login">'+ $login +'</p>\
         </div>\
     ');
+
+    $('.users_like')[0].scrollTop = $('.users_like')[0].scrollHeight;
 }
 
 function addNewImageContent(request)
